@@ -13,7 +13,7 @@ time:
    the dropdown builder; the defect was in the request.
 3. ``test_preview_does_not_rate_limit_the_free_mock_provider`` asserted the HOLE
    as if it were a property, so closing the hole broke the test.
-4. ``make _test-python`` reported 2382 passing while ``pyproject.toml``'s
+4. the bar's python shard reported 2382 passing while ``pyproject.toml``'s
    ``--ignore`` list excluded the six shards that measure tour OUTPUT.
 
 One name for all four: **the thing named is not the thing measured.** A missing

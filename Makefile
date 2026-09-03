@@ -71,6 +71,17 @@ GOLDEN_TEST_FILES := \
 	tests/test_tour_golden_pdv.py
 GRADE_TEST_FILES := tests/test_tour_audit.py tests/test_tour_grade.py
 INVARIANT_TEST_FILES := tests/test_tour_invariants_live.py
+# The three dev-graph pytest files. Each opens its own localhost:7687 driver and
+# its own module `client`, and never touches the 7688-family test graphs — their
+# needs_db tag comes only from fixture NAMES matching conftest's auto-tagger set —
+# so they run as their own concurrent track while the DB workers keep 7688/90/91.
+DEVGRAPH_TEST_FILES := tests/test_trip_api.py tests/test_persona_traces.py \
+	tests/test_tour_authoring_gates.py
+DEVGRAPH_IGNORES := $(foreach f,$(DEVGRAPH_TEST_FILES),--ignore=$(f))
+# Set by the `test` orchestrator, which scrubs __pycache__ ONCE before launching
+# its concurrent tracks: a per-recipe scrub while a sibling track's pytest is
+# importing would race the interpreter's own .pyc writes.
+SKIP_PYC_SCRUB ?=
 
 # Reusable prerequisite sets.  A target names one of these, or spells its own list.
 PRE_PY := uv python-deps
@@ -134,7 +145,8 @@ check_db = @echo " $(LOCAL_DBS) " | grep -q " $(DB) " || \
 	measure-planned-audio measure-governor \
 	onboard-city flutter-ipa testflight render-status setup-audio \
 	aura-resume-proof flutter-test clean \
-	_test-python _test-golden _test-grade _test-invariants _test-cloud
+	_track-pure _track-db _track-db-live _track-devgraph _track-surfaces \
+	_track-tour-quality _test-golden _test-grade _test-invariants _test-cloud
 
 # ════════════════════════════════════════════════════════════════════════════
 #  QUICKSTART
@@ -256,17 +268,41 @@ flutter-analyze: ## Run Dart static analysis.
 # from a lane: PRE_FULL_SUITE above names the canonical graphs, and without the
 # override a `make test LANE=2` would preflight those and then run the shards
 # against lane 2's. One bar, one set of graphs, one meaning of green.
-test: ## THE definitive suite: Python, Flutter, browser, tour, live-provider, and cloud parity.
+#
+# FIVE CONCURRENT TRACKS, grouped by the resources they own so no two tracks
+# share mutable state: db+live (the 7688-family graphs, then the live shard that
+# needs them free), pure (CPU only), devgraph (the 7687 corpus + Valhalla),
+# surfaces (Dart VM, workbench's own 7689, Aura reads), and tour-quality (7687
+# reads + Valhalla, serialized within itself). db+live is the longest track and
+# streams to the terminal; the others buffer to per-track logs printed below it.
+# Every track always runs to completion — a red track never kills a sibling
+# mid-wipe — and any red track fails the bar with exit 2.
+test: ## THE definitive suite: Python, Flutter, browser, tour, live-provider, and cloud parity — five concurrent tracks.
 	@$(PREFLIGHT) --label test $(PRE_FULL_SUITE)
-	@$(MAKE) --no-print-directory LANE= _test-python
-	@$(MAKE) --no-print-directory LANE= flutter-test
-	@$(MAKE) --no-print-directory LANE= test-workbench
-	@$(MAKE) --no-print-directory LANE= _test-golden
-	@$(MAKE) --no-print-directory LANE= _test-grade
-	@$(MAKE) --no-print-directory LANE= _test-invariants
-	@$(MAKE) --no-print-directory LANE= test-live
-	@$(MAKE) --no-print-directory LANE= _test-cloud
-	@echo "✓ Every definitive test shard passed."
+	@find tests src -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
+	@set -u; logs=$$(mktemp -d /tmp/ondoway-test-tracks.XXXXXX); \
+	echo "── five tracks run concurrently; db+live (the longest) streams here, the rest print below ──"; \
+	$(MAKE) --no-print-directory LANE= SKIP_PYC_SCRUB=1 _track-pure         > "$$logs/pure.log" 2>&1 & pure_pid=$$!; \
+	$(MAKE) --no-print-directory LANE= SKIP_PYC_SCRUB=1 _track-devgraph     > "$$logs/devgraph.log" 2>&1 & devgraph_pid=$$!; \
+	$(MAKE) --no-print-directory LANE= SKIP_PYC_SCRUB=1 _track-surfaces     > "$$logs/surfaces.log" 2>&1 & surfaces_pid=$$!; \
+	$(MAKE) --no-print-directory LANE= SKIP_PYC_SCRUB=1 _track-tour-quality > "$$logs/tour-quality.log" 2>&1 & quality_pid=$$!; \
+	$(MAKE) --no-print-directory LANE= SKIP_PYC_SCRUB=1 _track-db-live; db_rc=$$?; \
+	wait $$pure_pid; pure_rc=$$?; \
+	wait $$devgraph_pid; devgraph_rc=$$?; \
+	wait $$surfaces_pid; surfaces_rc=$$?; \
+	wait $$quality_pid; quality_rc=$$?; \
+	for t in pure devgraph surfaces tour-quality; do \
+		echo ""; echo "────── track $$t ──────"; cat "$$logs/$$t.log"; \
+	done; \
+	echo ""; fail=0; \
+	for pair in "db+live:$$db_rc" "pure:$$pure_rc" "devgraph:$$devgraph_rc" "surfaces:$$surfaces_rc" "tour-quality:$$quality_rc"; do \
+		name=$${pair%%:*}; rc=$${pair##*:}; \
+		if [ "$$rc" -eq 0 ]; then echo "✓ track $$name: PASS"; \
+		else echo "✗ track $$name: FAIL (exit $$rc)"; fail=1; fi; \
+	done; \
+	rm -rf "$$logs"; \
+	[ "$$fail" -eq 0 ] || exit 2; \
+	echo "✓ Every definitive test shard passed."
 
 audit: ## Run lint and then the definitive test suite.
 	@$(PREFLIGHT) --label audit $(PRE_FULL_SUITE)
@@ -286,7 +322,7 @@ test-file: ## Run one test file safely. Usage: make test-file FILE=tests/test_x.
 test-live: ## Run every live-provider test with a fresh full Render environment.
 	@$(PREFLIGHT) --label test-live $(PRE_PYTEST) render-key
 	@$(MAKE) --no-print-directory render-auth-status
-	@find tests src -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
+	@if [ -z "$(SKIP_PYC_SCRUB)" ]; then find tests src -name __pycache__ -exec rm -rf {} + 2>/dev/null || true; fi
 	@$(RENDER_TEST_EXEC) env \
 		ONDOWAY_LIVE_TESTS=1 \
 		NO_PROXY="$(NO_PROXY_LIST)" no_proxy="$(NO_PROXY_LIST)" \
@@ -298,7 +334,7 @@ test-live: ## Run every live-provider test with a fresh full Render environment.
 # It also declares port-8001, the port its managed server binds.
 test-workbench: ## Run the Playwright workbench suite against isolated Neo4j 7689.
 	@$(PREFLIGHT) --label test-workbench uv python-deps db-$(TEST_PROFILE) db-$(WORKBENCH_PROFILE) valhalla playwright-browser
-	@find tests src -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
+	@if [ -z "$(SKIP_PYC_SCRUB)" ]; then find tests src -name __pycache__ -exec rm -rf {} + 2>/dev/null || true; fi
 	@$(TEST_EXEC) env NO_PROXY="$(NO_PROXY_LIST)" no_proxy="$(NO_PROXY_LIST)" \
 		uv run pytest tests/test_workbench_ui.py -o addopts= -v --tb=short --durations=15
 
@@ -333,21 +369,61 @@ golden-diff: ## Diff one golden fixture. Usage: make golden-diff FIXTURE=pdv_rou
 	@$(PREFLIGHT) --label golden-diff $(PRE_TOUR)
 	@$(LOCAL_EXEC) uv run python scripts/tour_golden_diff.py "$(FIXTURE)"
 
-# The parallel shard's three DB workers map to 7688/7690/7691 (tests/conftest.py
-# _XDIST_WORKER_DB), so this target must preflight ALL THREE test graphs — with only
-# db-test declared, workers 1 and 2 ran against stopped containers and two thirds of
-# the DB shard errored at fixture setup. Timeouts are a HANG-BREAKER, not a perf
-# police: --timeout-method=signal fails the one slow test; `thread` killed the whole
-# xdist worker (`node down: Not properly terminated`) and failed every test after it.
-_test-python:
-	@$(PREFLIGHT) --label _test-python $(PRE_PYTEST) db-test2 db-test3
-	@find tests src -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
-	@echo "── pure tests (no DB, full parallelism) ──"
+# THE FIVE TRACKS. Each names the resources it owns; two tracks never share
+# mutable state, which is what makes running them concurrently sound. The
+# python invocations carry -p no:cacheprovider because concurrent pytest
+# sessions would race on one .pytest_cache. Timeouts are a HANG-BREAKER, not a
+# perf police: --timeout-method=signal fails the one slow test; `thread` killed
+# the whole xdist worker and failed every test after it.
+
+# Pure tests: no DB at all. 8 workers, capped below `auto` on purpose — the
+# planner tracks (devgraph, tour-quality) and the workbench's Chromium need
+# cores of their own while this track runs beside them.
+_track-pure:
+	@$(PREFLIGHT) --label _track-pure $(PRE_PYTEST)
+	@echo "── pure tests (no DB; 8 workers) ──"
 	@$(TEST_EXEC) env NO_PROXY="$(NO_PROXY_LIST)" no_proxy="$(NO_PROXY_LIST)" \
-		uv run pytest tests/ -v -m "not needs_db" -n auto --dist loadfile --timeout=300 --timeout-method=signal --durations=15 $(PYTEST_ARGS)
-	@echo "── DB tests (3 workers, one DB each) ──"
+		uv run pytest tests/ -v -m "not needs_db" $(DEVGRAPH_IGNORES) -n 8 --dist loadfile --timeout=300 --timeout-method=signal --durations=15 -p no:cacheprovider $(PYTEST_ARGS)
+
+# DB tests: the three workers map to 7688/7690/7691 (tests/conftest.py
+# _XDIST_WORKER_DB), so this track preflights ALL THREE test graphs — with only
+# db-test declared, workers 1 and 2 ran against stopped containers and two
+# thirds of the shard errored at fixture setup. The dev-graph files are ignored
+# here: they never touch these graphs and run as their own track.
+_track-db:
+	@$(PREFLIGHT) --label _track-db $(PRE_PYTEST) db-test2 db-test3
+	@echo "── DB tests (3 workers, one test graph each) ──"
 	@$(TEST_EXEC) env NO_PROXY="$(NO_PROXY_LIST)" no_proxy="$(NO_PROXY_LIST)" \
-		uv run pytest tests/ -v -m "needs_db" -n 3 --dist loadfile --timeout=300 --timeout-method=signal --durations=15 $(PYTEST_ARGS)
+		uv run pytest tests/ -v -m "needs_db" $(DEVGRAPH_IGNORES) -n 3 --dist loadfile --timeout=300 --timeout-method=signal --durations=15 -p no:cacheprovider $(PYTEST_ARGS)
+
+# test-live needs the 7688-family graphs free (its files use the conftest DB
+# fixtures), so it chains after the DB shard inside one track.
+_track-db-live:
+	@$(MAKE) --no-print-directory LANE= SKIP_PYC_SCRUB=1 _track-db
+	@$(MAKE) --no-print-directory LANE= SKIP_PYC_SCRUB=1 test-live
+
+# The dev-graph tours: whole files (their untagged tests included), two workers
+# — one carries test_trip_api, the other test_persona_traces plus the gates.
+_track-devgraph:
+	@$(PREFLIGHT) --label _track-devgraph $(PRE_PYTEST)
+	@echo "── dev-graph tours (trip_api, persona traces, authoring gates; 2 workers on 7687) ──"
+	@$(TEST_EXEC) env NO_PROXY="$(NO_PROXY_LIST)" no_proxy="$(NO_PROXY_LIST)" \
+		uv run pytest $(DEVGRAPH_TEST_FILES) -v -n 2 --dist loadfile --timeout=300 --timeout-method=signal --durations=15 -p no:cacheprovider $(PYTEST_ARGS)
+
+# The surfaces: Dart VM, the workbench's own 7689 graph + managed server, and
+# read-only Aura parity. Nothing here touches a graph another track writes.
+_track-surfaces:
+	@$(MAKE) --no-print-directory LANE= flutter-test
+	@$(MAKE) --no-print-directory LANE= SKIP_PYC_SCRUB=1 test-workbench
+	@$(MAKE) --no-print-directory LANE= _test-cloud
+
+# Tour quality: golden, grade and invariants all read the 7687 corpus and route
+# through Valhalla, serialized WITHIN the track so their Valhalla load stays at
+# today's level; the goldens refuse an unrouted walk by name either way.
+_track-tour-quality:
+	@$(MAKE) --no-print-directory LANE= _test-golden
+	@$(MAKE) --no-print-directory LANE= _test-grade
+	@$(MAKE) --no-print-directory LANE= _test-invariants
 
 _test-golden:
 	@$(PREFLIGHT) --label _test-golden $(PRE_PYTEST)

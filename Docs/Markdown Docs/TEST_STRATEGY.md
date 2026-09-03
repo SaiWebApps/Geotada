@@ -1,19 +1,22 @@
 # Test Strategy
 
-`make test` is the only exhaustive executor. It runs eight shards in order and
-a skip counts as a failure — a test that has not run is not a test:
+`make test` is the only exhaustive executor. It runs FIVE CONCURRENT TRACKS —
+grouped so no two tracks share mutable state — and a skip counts as a failure;
+a test that has not run is not a test. The longest track (db+live) streams to
+the terminal; the others buffer and print below it, and any red track fails
+the bar:
 
-| Shard | What it proves | Needs |
+| Track | What it proves | Owns |
 |---|---|---|
-| `_test-python` (pure) | Hermetic Python logic, fully parallel | Nothing external |
-| `_test-python` (DB) | Neo4j-backed behavior, 3 workers with one test graph each | Docker + local Neo4j |
-| `flutter-test` | The mobile app | Flutter |
-| `test-workbench` | The editorial workbench in a real browser (Playwright), on its own isolated graph | Docker, Valhalla, Playwright |
-| `_test-golden` | Live dev-graph tours against the human-curated targets | Dev data, Valhalla |
-| `_test-grade` | Tour scoring against the graded baseline | Dev data, Valhalla |
-| `_test-invariants` | Customer-facing regression invariants on live tours | Dev data, Valhalla |
-| `test-live` | Real provider calls (TTS, transcription) | Render credential, provider credit |
-| `_test-cloud` | Read-only Aura parity | Render credential |
+| `_track-db-live` | Neo4j-backed behavior (3 workers, one test graph each), then real provider calls (TTS, transcription) | The 7688/7690/7691 test graphs; Render credential + provider credit for the live half |
+| `_track-pure` | Hermetic Python logic, 8 parallel workers | CPU only |
+| `_track-devgraph` | The trip API, the eleven persona traces and the authoring gates on the live corpus | Dev graph (7687) writes + Valhalla |
+| `_track-surfaces` | The mobile app (Flutter), the editorial workbench in a real browser (Playwright) on its own isolated graph, and read-only Aura parity | Dart VM; workbench graph 7689; Aura reads |
+| `_track-tour-quality` | Golden tours against the human-curated targets, tour scoring against the graded baseline, and customer-facing regression invariants — serialized within the track | Dev graph (7687) reads + Valhalla |
+
+The goldens refuse an UNROUTED walk by name (a Valhalla outage or contention
+fails as itself, never as a mystery overlap dip), which is what makes running
+the tracks concurrently safe.
 
 `make audit` is `make lint` followed by `make test`.
 

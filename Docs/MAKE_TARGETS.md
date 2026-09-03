@@ -22,7 +22,7 @@ process—never a cached or filtered subset.
 | `lint` | None | No | Yes |
 | `format` | None | No | Yes |
 | `flutter-analyze` | None | No | Yes, with Flutter |
-| `test` | Every database, data, Valhalla, browser/live/cloud shard | Where required | Yes; definitive suite |
+| `test` | Every database, data, Valhalla, browser/live/cloud shard | Where required | Yes; definitive suite, five concurrent tracks |
 | `audit` | Lint and `test` | Where required | Yes |
 | `test-file` | Test/dev DBs, dev data, Valhalla | Only with `LIVE=1` | Yes, with `FILE` |
 | `test-live` | Render auth, test/dev DBs, dev data, Valhalla | Yes | Yes |
@@ -81,7 +81,12 @@ process—never a cached or filtered subset.
 | `aura-resume-proof` | Explicit cloud profile | Yes | Yes; no graph writes |
 | `flutter-test` | Project hang detector | No | Yes |
 | `clean` | None | No | Yes; no databases |
-| `_test-python` | Test/dev DBs, dev data, Valhalla | No | Internal shard |
+| `_track-pure` | Test/dev DBs, dev data, Valhalla | No | Internal track: DB-free pytest, 8 workers |
+| `_track-db` | All three test DBs, dev data, Valhalla | No | Internal track: needs_db pytest on 7688/7690/7691 |
+| `_track-db-live` | Delegates to `_track-db` then `test-live` | Via test-live | Internal track chain |
+| `_track-devgraph` | Test/dev DBs, dev data, Valhalla | No | Internal track: the three 7687-corpus pytest files |
+| `_track-surfaces` | Delegates to `flutter-test`, `test-workbench`, `_test-cloud` | Via delegates | Internal track chain |
+| `_track-tour-quality` | Delegates to golden, grade, invariants | No | Internal track chain |
 | `_test-golden` | Test/dev DBs, dev data, Valhalla | No | Internal shard |
 | `_test-grade` | Test/dev DBs, dev data, Valhalla | No | Internal shard |
 | `_test-invariants` | Test/dev DBs, dev data, Valhalla | No | Internal shard |

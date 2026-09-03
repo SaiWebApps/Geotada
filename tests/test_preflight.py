@@ -25,7 +25,7 @@ line simply runs without one.)
     requirement whose dependency failed is reported as satisfied.
 
 Hermetic: no container, no database, no provider, no network.  Where a test still
-reads the Makefile it does so as text, lexed with ``shlex``; nothing here starts anything.
+reads the Makefile it does so as text; nothing here starts anything.
 """
 
 from __future__ import annotations
@@ -260,55 +260,6 @@ def test_database_specs_agree_with_the_compose_services():
         assert declared <= volumes, (
             f"{spec.service} mounts {declared - volumes}, which the volumes block omits"
         )
-
-
-# ── 2. Makefile coverage ─────────────────────────────────────────────────────
-
-
-def _makefile_lines() -> list[str]:
-    return MAKEFILE.read_text(encoding="utf-8").splitlines()
-
-
-def _documented_targets() -> list[str]:
-    """Targets carrying a `## ` help string -- the ones `make help` advertises."""
-    targets = []
-    for line in _makefile_lines():
-        if line.startswith((" ", "\t", "#")) or ":" not in line or "## " not in line:
-            continue
-        name = line.split(":", 1)[0].strip()
-        if name and not name.startswith("."):
-            targets.append(name)
-    return targets
-
-
-def _declared_requirements(target: str) -> list[str] | None:
-    """What the target declares, read by the same code the tool itself uses.
-
-    Deliberately not a second implementation: if this parsed the Makefile
-    independently, the guard could pass against a reading of the file that
-    differs from the one preflight acts on.
-    """
-    try:
-        return preflight.declared_requirements(target)
-    except KeyError as exc:
-        pytest.fail(str(exc))
-
-
-# Targets that legitimately declare nothing, and why:
-#   they check or install the very prerequisites preflight knows about
-#   (doctor, preflight, preflight-list, valhalla-build-tiles),
-#   they touch only local files (help, clean, valhalla-status),
-#   or they delegate wholly to another target that declares them (setup).
-NO_PREREQUISITES = {
-    "help",
-    "doctor",
-    "setup",
-    "preflight",
-    "preflight-list",
-    "clean",
-    "valhalla-status",
-    "valhalla-build-tiles",
-}
 
 
 # ── 3. no silent success ─────────────────────────────────────────────────────
@@ -609,52 +560,6 @@ def test_preflight_runs_on_the_system_interpreter():
 # ── 4. the mechanism cannot be switched off ─────────────────────────────────
 # A hostile review ran 24 mutations against the guards above; 21 passed. These
 # close the holes it found. Each names the mutation it exists to catch.
-
-
-# Preflight may legitimately sit inside a shell conditional only where the target
-# branches on a variable and each branch declares its own list. Anything else is
-# a call that can be skipped.
-CONDITIONAL_PREFLIGHT_IS_INTENDED = {
-    "test-file",  # LIVE=1 hands off to test-live, which declares its own
-    "tour-build",  # GLUE=--haiku additionally needs a provider key
-    "db-parity",  # TARGET=local|cloud need different things
-    "deploy",  # TARGET=local|cloud: the cloud path additionally needs render-key
-    "prune-orphans",  # same local|cloud split
-}
-
-
-def _every_rule_with_a_recipe() -> list[str]:
-    """Every target defined in the Makefile, documented or not.
-
-    The documented-only view left the five `_test-*` shards -- what `make test`
-    actually runs -- outside every guard. Deleting `_test-python`'s preflight
-    line entirely was green.
-    """
-    names = []
-    lines = MAKEFILE.read_text(encoding="utf-8").splitlines()
-    for number, line in enumerate(lines):
-        if line.startswith((" ", "\t", "#")) or ":" not in line or line.startswith(".PHONY"):
-            continue
-        if ":=" in line or "=" in line.split(":", 1)[0]:
-            continue  # a variable assignment, not a rule
-        name = line.split(":", 1)[0].strip()
-        if not name or name.startswith(".") or "=" in name or " " in name:
-            continue
-        # `foo: ; @cmd` is a valid recipe on the rule's own line. Without this a
-        # shard written that way is invisible to every guard below.
-        if ";" in line.split(":", 1)[1]:
-            names.append(name)
-            continue
-        # Scan past blank and comment lines: a `# note` between the rule and its
-        # recipe used to drop the target from every guard that iterates this list.
-        cursor = number + 1
-        while cursor < len(lines) and (
-            not lines[cursor].strip() or lines[cursor].lstrip().startswith("#")
-        ):
-            cursor += 1
-        if cursor < len(lines) and lines[cursor].startswith("\t"):
-            names.append(name)
-    return names
 
 
 # The reusable sets are the declaration for dozens of targets at once. Gutting
@@ -980,45 +885,6 @@ def test_every_listening_process_is_stopped_not_just_the_first(monkeypatch):
 
 
 # ── 6. the mechanism itself cannot be swapped out ───────────────────────────
-
-
-# Tokens that mean a recipe needs something provisioned. An exempt target may
-# use none of them -- that is what "needs nothing" has to mean mechanically,
-# rather than a comment asserting it.
-NEEDS_SOMETHING = (
-    "uv run",
-    "docker ",
-    "flutter ",
-    "xcrun",
-    "agvtool",
-    "$(LOCAL_EXEC)",
-    "$(TEST_EXEC)",
-    "$(WORKBENCH_EXEC)",
-    "$(ENV_EXEC)",
-    "$(RENDER_LOCAL_EXEC)",
-    "$(RENDER_TEST_EXEC)",
-    "$(CLOUD_EXEC)",
-)
-
-
-def _recipe_lines(target: str) -> list[str]:
-    """The recipe lines of one rule, joined across backslash continuations."""
-    lines = MAKEFILE.read_text(encoding="utf-8").splitlines()
-    start = next(n for n, line in enumerate(lines) if line.startswith(target + ":"))
-    body, pending = [], ""
-    for line in lines[start + 1 :]:
-        if line.startswith("\t"):
-            pending += line.rstrip()
-            if pending.endswith("\\"):
-                pending = pending[:-1] + " "
-                continue
-            body.append(pending)
-            pending = ""
-        elif line.strip() and not line.startswith("#"):
-            break
-    if pending:
-        body.append(pending)
-    return body
 
 
 def test_a_dependency_cycle_is_refused(isolated_registry):

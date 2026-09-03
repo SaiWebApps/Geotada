@@ -29,7 +29,9 @@ test is real, read it.
 ## The full suite
 
 `make test` is the definitive suite: local pytest, Flutter, workbench browser, golden tours,
-tour grade, tour invariants, live-provider tests, read-only cloud parity. It needs the
+tour grade, tour invariants, live-provider tests, read-only cloud parity — run as FIVE
+CONCURRENT TRACKS grouped by the resources they own (the `_track-*` targets), so no two
+tracks share mutable state and the wall-clock is the longest track, not the sum. It needs the
 matching live credentials, and it declares its prerequisites up front (`PRE_FULL_SUITE`), so
 a missing credential or Playwright browser fails in seconds rather than twenty minutes in.
 `make audit` is `make lint` then `make test`. `test-live` sets `ONDOWAY_LIVE_TESTS=1`.
