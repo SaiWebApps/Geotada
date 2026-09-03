@@ -2540,14 +2540,58 @@ def _select_route_once(
     # byte-identical.
     exterior_only_ids: set[str] = set()
 
-    def shape_visit(cand: POI, clock_hour: int | None) -> PromiseShape:
+    def _arrival_door_reason(
+        cand: POI, clock_hour: int | None, arrival_clock: datetime | None
+    ) -> str | None:
+        """THE whole-window closure rule aimed at ONE stop's own clock — the
+        arrival-window door check. None = the door is open (or unknowable) when
+        the walk arrives. The pool rule above judges a door against the whole
+        tour window, so on a long day a place open for any slice of it counts
+        open even when the walk reaches it hours outside that slice; this asks
+        the only question the visitor standing there cares about. Consulted only
+        on a decided order (an arrival clock exists only there — the estimate
+        half stays at the request hour, deviation v), only for a door the pool
+        rule has not already voided, and only for a visit that would otherwise
+        go inside. The window it tests is the stop's own uncollapsed stand, so
+        a door that opens or closes mid-visit stays open — the same
+        any-part-open trade the pool rule makes.
+        """
+        if arrival_clock is None or cand.opening_hours is None:
+            return None
+        if cand.id in closed_today_ids:
+            return None  # the pool rule already voided this door
+        open_shape = visit_shape(
+            cand,
+            interest,
+            snapshot,
+            party_ceiling_seconds=party_ceiling_seconds,
+            clock_hour=clock_hour,
+            weather=input.weather,
+            wall=wall_hardness,
+            exterior_only=cand.id in exterior_only_ids,
+        )
+        if not open_shape.goes_inside:
+            return None  # nothing behind the door to void
+        window_min = max(1, math.ceil(shape_total_seconds(open_shape) / 60))
+        return _clock_exclusion_reason(
+            cand.opening_hours, cand.opening_hours_source, arrival_clock, window_min
+        )
+
+    def shape_visit(
+        cand: POI, clock_hour: int | None, arrival_clock: datetime | None = None
+    ) -> PromiseShape:
         shape = visit_shape(
             cand,
             interest,
             snapshot,
             party_ceiling_seconds=party_ceiling_seconds,
             clock_hour=clock_hour,
-            closed_today=cand.id in closed_today_ids,
+            # A door is voided by the whole-window pool rule OR by this stop's
+            # own arrival window — one collapse, two clocks that can prove it.
+            closed_today=(
+                cand.id in closed_today_ids
+                or _arrival_door_reason(cand, clock_hour, arrival_clock) is not None
+            ),
             weather=input.weather,
             wall=wall_hardness,
             exterior_only=cand.id in exterior_only_ids,
@@ -2561,8 +2605,10 @@ def _select_route_once(
             return shape.model_copy(update={"inside_seconds": shape.inside_seconds + extra})
         return shape.model_copy(update={"outside_seconds": shape.outside_seconds + extra})
 
-    def price_visit(cand: POI, clock_hour: int | None) -> int:
-        return shape_total_seconds(shape_visit(cand, clock_hour))
+    def price_visit(
+        cand: POI, clock_hour: int | None, arrival_clock: datetime | None = None
+    ) -> int:
+        return shape_total_seconds(shape_visit(cand, clock_hour, arrival_clock))
 
     def ceiling_visit(cand: POI) -> int:
         return visit_ceiling_seconds(cand, party_ceiling_seconds=party_ceiling_seconds)
@@ -3797,21 +3843,41 @@ def _select_route_once(
     route = route.model_copy(
         update={
             "planned_queue_seconds": {
-                poi.id: shape_visit(poi, hour).queue_seconds
-                for poi, hour, _seconds, _clock in final_arrivals
+                poi.id: shape_visit(poi, hour, clock).queue_seconds
+                for poi, hour, _seconds, clock in final_arrivals
             },
             "visit_goes_inside": {
-                poi.id: shape_visit(poi, hour).inside_seconds > 0
-                for poi, hour, _seconds, _clock in final_arrivals
+                poi.id: shape_visit(poi, hour, clock).inside_seconds > 0
+                for poi, hour, _seconds, clock in final_arrivals
             },
             # Phase 7 S7.6: the placed OUTSIDE seconds — the same shape at the same
             # hour; the audio placement rule's threshold before a door.
             "planned_outside_seconds": {
-                poi.id: shape_visit(poi, hour).outside_seconds
-                for poi, hour, _seconds, _clock in final_arrivals
+                poi.id: shape_visit(poi, hour, clock).outside_seconds
+                for poi, hour, _seconds, clock in final_arrivals
             },
         }
     )
+    # SAY THE DOOR THE ARRIVAL CLOCK SHUT (the step-outside mould above). The
+    # pool rule spoke for whole-window closures before any stop was seated; a
+    # door shut at one stop's own arrival is known only now, off the served
+    # walk, so its disclosure lands here — the same notes channel, and the same
+    # `kept_outside` flag a whole-window demotion carries: the facade is kept,
+    # the door is voided, and every reader draws "closed" from the flag.
+    already_disclosed = {excl.poi_id for excl in clock_exclusions}
+    for poi, hour, _seconds, clock in final_arrivals:
+        if poi.id in already_disclosed:
+            continue
+        arrival_reason = _arrival_door_reason(poi, hour, clock)
+        if arrival_reason is not None:
+            clock_exclusions.append(
+                ClockExclusion(
+                    poi_id=poi.id,
+                    name=poi.name,
+                    reason=arrival_reason,
+                    kept_outside=True,
+                )
+            )
     # C9 governor exempt identity — record which POIs are EXEMPT from the per-stop
     # audio cap so compose and the golden harnesses (which lack the greedy locals,
     # and where pois[0] is NOT the start-anchor after Held-Karp) read the SAME
@@ -4900,6 +4966,12 @@ def _walk_arrivals(
     here, an estimate the hour-band granularity absorbs (peak bands are hours
     wide). A dateless request has no cursor and every stop prices at the
     None-hour (off-peak) band.
+
+    On a DATED walk the cursor itself — the minute-precise arrival clock — is
+    handed to ``price_visit`` as a third argument, so the one pricing closure
+    can void a door this stop's own arrival window proves shut (the
+    arrival-window check). A dateless walk keeps the two-argument call, so a
+    legacy double never sees an argument it was not written for.
     """
     out: list[tuple[POI, int | None, int, datetime | None]] = []
     cursor = clock_start
@@ -4907,7 +4979,9 @@ def _walk_arrivals(
         if cursor is not None:
             cursor += timedelta(seconds=leg_seconds)
         hour = cursor.hour if cursor is not None else None
-        seconds = price_visit(poi, hour)
+        seconds = (
+            price_visit(poi, hour, cursor) if cursor is not None else price_visit(poi, hour)
+        )
         out.append((poi, hour, seconds, cursor))
         if cursor is not None:
             cursor += timedelta(seconds=seconds)
@@ -5198,6 +5272,12 @@ def _assemble_promises(
         return ()
     ordered = [poi for poi, _hour, _seconds, _clock in arrivals]
     hour_by_id = {poi.id: hour for poi, hour, _seconds, _clock in arrivals}
+    # The minute-precise arrival clock, for the arrival-window door check: a
+    # promise must never say "goes inside" of a door shut at its own arrival.
+    # Dateless arrivals keep the two-argument call (legacy doubles never see
+    # an argument they were not written for) — the same contract
+    # `_walk_arrivals` keeps.
+    clock_by_id = {poi.id: clock for poi, _hour, _seconds, clock in arrivals}
     # The window, read off THE one accumulation (Phase 4, W4.2 deviation v):
     # arrival clock in, arrival + priced visit out; "" on a dateless day.
     window_by_id = {
@@ -5228,10 +5308,15 @@ def _assemble_promises(
             continue
         poi = poi_by_id[poi_id]
         arrives, departs = window_by_id[poi_id]
+        arrival_clock = clock_by_id[poi_id]
         promised[poi_id] = Promise(
             kind=kind,
             poi_id=poi_id,
-            shape=shape_visit(poi, hour_by_id[poi_id]),
+            shape=(
+                shape_visit(poi, hour_by_id[poi_id], arrival_clock)
+                if arrival_clock is not None
+                else shape_visit(poi, hour_by_id[poi_id])
+            ),
             arrives_hhmm=arrives,
             departs_hhmm=departs,
         )

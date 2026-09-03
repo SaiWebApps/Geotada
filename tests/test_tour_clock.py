@@ -531,6 +531,110 @@ def test_a_closure_is_disclosed_in_plain_words_and_keeps_its_doubt():
     assert "could not confirm" in unsourced, unsourced
 
 
+# --- the door is checked at each stop's own ARRIVAL window --------------------
+#
+# The pool rule above judges a door against the WHOLE tour window, so on a long
+# day a place open for any slice of it counts open — even when the walk reaches
+# it hours outside that slice. These tests pin the arrival-window check: the
+# served order's own clock decides whether the visitor can actually go in.
+
+#: 2026-09-07 is a Monday.
+_MONDAY_0930 = "2026-09-07T09:30:00"
+
+
+def _cathedral_hours(monday_windows):
+    import json as _json
+
+    return _json.dumps(
+        {
+            "mon": monday_windows,
+            "tue": [], "wed": [], "thu": [], "fri": [], "sat": [], "sun": [],
+        }
+    )
+
+
+def _dated_pont_neuf_run(monday_windows, start_datetime=_MONDAY_0930):
+    """The 100-minute Pont Neuf → cathedral day (the fits-the-interior fixture
+    from tests.test_tour_selection), with opening hours on the cathedral and a
+    clock on the request. The walk reaches the cathedral ~10:00: 720 s on the
+    bridge, ~1067 s of walking."""
+    from tests.test_tour_selection import _ND_END, _ND_START, _pont_neuf_to_cathedral
+
+    bridge, cathedral, snap = _pont_neuf_to_cathedral()
+    cathedral = cathedral.model_copy(
+        update={
+            "opening_hours": _cathedral_hours(monday_windows),
+            "opening_hours_source": "osm",
+        }
+    )
+    import dataclasses
+
+    snap = dataclasses.replace(snap, pois=(bridge, cathedral))
+    from src.tour.selection import select_route
+
+    inp = TourInput(
+        start=_ND_START,
+        end=_ND_END,
+        duration_min=100,
+        city_slug="paris",
+        lenses=["historic_arch"],
+        start_datetime=start_datetime,
+    )
+    return bridge, cathedral, select_route(inp, snap)
+
+
+def test_a_door_shut_at_the_stops_own_arrival_prices_the_stop_outside_only():
+    """A door open for a slice of the DAY but shut when the walk ARRIVES is a
+    shut door: the stop survives at its exterior price and the day says why.
+
+    The cathedral opens Monday 06:00-09:45. The 09:30 + 100-minute request's
+    whole window (09:30-11:10) overlaps that, so the pool rule keeps the full
+    interior — but the walk reaches the door ~10:00, fifteen minutes after it
+    shut. Pricing the interior and licensing "step inside" there is the exact
+    fault the roadmap names: the plan knows the door is shut; the voice says
+    go inside. The arrival-window check prices the stop through the same
+    exterior collapse a whole-window closure uses, at the same one site."""
+    bridge, cathedral, route = _dated_pont_neuf_run([["06:00", "09:45"]])
+
+    assert [p.id for p in route.pois] == [bridge.id, cathedral.id]
+    assert route.visit_goes_inside[cathedral.id] is False, (
+        "the door is shut at this stop's own arrival — the interior must not "
+        "be priced, and door lines must not be licensed"
+    )
+    assert route.planned_queue_seconds[cathedral.id] == 0
+    assert route.planned_visit_seconds[cathedral.id] == 25 * 60
+    said = [e for e in route.clock_exclusions if e.poi_id == cathedral.id]
+    assert len(said) == 1, route.clock_exclusions
+    assert said[0].kept_outside is True
+    assert "closed Monday" in said[0].reason, said[0].reason
+    finish = next(p for p in route.promises if p.poi_id == cathedral.id)
+    assert finish.shape.goes_inside is False
+    assert finish.shape.queue_seconds == 0
+
+
+def test_a_door_open_at_arrival_keeps_the_interior_untouched():
+    """The same day against a door that is open when the walk arrives changes
+    nothing: full interior, full queue, no disclosure — the arrival check may
+    only ever CLOSE a door the arrival clock proves shut."""
+    _bridge, cathedral, route = _dated_pont_neuf_run([["06:00", "20:00"]])
+
+    assert route.visit_goes_inside[cathedral.id] is True
+    assert route.planned_visit_seconds[cathedral.id] == 50 * 60 + 15 * 60
+    assert route.clock_exclusions == ()
+
+
+def test_a_dateless_day_never_consults_the_arrival_clock():
+    """No clock = no arrival check = today's behaviour, byte-identical — the
+    same identity default every other clock rule keeps (plan S1.6b)."""
+    _bridge, cathedral, route = _dated_pont_neuf_run(
+        [["06:00", "09:45"]], start_datetime=None
+    )
+
+    assert route.visit_goes_inside[cathedral.id] is True
+    assert route.planned_visit_seconds[cathedral.id] == 50 * 60 + 15 * 60
+    assert route.clock_exclusions == ()
+
+
 # --- dusk, and the after-dark finish (S3.7; design §4.3; Sofia's swap rule) ---
 
 # December early evening: a 17:00 + 60-min one-way plans to finish ~18:00,
