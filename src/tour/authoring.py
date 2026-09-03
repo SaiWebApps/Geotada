@@ -85,6 +85,18 @@ class ComposeRequest(BaseModel):
     # TIGHT telling here — the continuation must repeat nothing of it. Empty on a
     # tight (day) compose.
     already_told: str = ""
+    # THE STOP'S DOOR, told to the writer. The system prompt's rule ("invites
+    # the listener through a door only when this stop's visit goes inside") is
+    # unenforceable by a writer who is never told which side of the door the
+    # visit lives on: it wrote "step inside" at shut doors, the placement floor
+    # refused the stop, and the one blind re-roll sometimes killed the day.
+    # Non-empty ONLY for a stop the Route prices outside-only
+    # (`visit_goes_inside` explicitly False); "" = the door is open or nobody
+    # priced one, and the prompt is byte-identical to before this field.
+    # NOTE: any non-default ComposeRequest content moves compose_input_sha256
+    # and every request hash — the declared-breakage class; the frozen
+    # certification archive re-seals on its next paid run.
+    door_state: str = ""
 
 
 class CertificationComposition(BaseModel):
@@ -492,6 +504,8 @@ def _compose_user_prompt(
                 "the child-friendly true things and leave the rest to the full "
                 f"telling. Cushion DOWN from the telling as written. {invariants}"
             )
+    if request.door_state:
+        parts.append(f"DOOR — {request.door_state}")
     if request.already_told:
         parts.append(
             "ALREADY TOLD (the tight telling of this stop, which the walker has just "
@@ -716,6 +730,38 @@ def _sentences_from_json(sentences: list[dict], request: ComposeRequest) -> tupl
     return tuple(out)
 
 
+def _door_state(route: Route, stop_index: int) -> str:
+    """The writer's door instruction for one stop — "" when the door is open
+    or nobody priced one (`visit_goes_inside` empty or True: the identity).
+
+    Two different truths get two different sentences, keyed the way the wire
+    keys them (`ClockExclusion.kept_outside`): a door the CLOCK voided may be
+    said plainly to be closed today; a stop outside-only because the day has
+    no time for its interior is NOT closed, and calling it closed would be the
+    checkable lie the interior_did_not_fit rule exists to prevent. Neither
+    sentence hands the writer a weekday, an hour or a number — the glue
+    invention scan licenses none of those, and the honest line needs none.
+    """
+    if stop_index >= len(route.pois):
+        return ""
+    poi = route.pois[stop_index]
+    if route.visit_goes_inside.get(poi.id) is not False:
+        return ""
+    if any(e.poi_id == poi.id and e.kept_outside for e in route.clock_exclusions):
+        return (
+            "This stop's door is shut while the walker is here: the visit stays "
+            "on the OUTSIDE. Never invite the listener through the door — no "
+            "'step inside', 'go in', 'enter'. You may say plainly that it is "
+            "closed today, and stage the exterior instead."
+        )
+    return (
+        "This stop's visit stays on the OUTSIDE — the day has no time to go in. "
+        "Never invite the listener through the door — no 'step inside', 'go "
+        "in', 'enter'. Do NOT call the place closed (it is open; the hour is "
+        "the constraint); stage the exterior."
+    )
+
+
 def _certification_compose_requests(
     stitched: Script,
     beat_sequence: BeatSequence,
@@ -781,6 +827,7 @@ def _certification_compose_requests(
             tour_context=tour_context,
             thread_from=thread_from,
             already_told=already_told,
+            door_state=_door_state(route, stop_index),
         )
     return beats_by_id, stops, requests
 

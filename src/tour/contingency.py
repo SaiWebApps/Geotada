@@ -203,7 +203,13 @@ def stop_clocks(
         list(route.pois),
         legs,
         clock_start=start,
-        price_visit=lambda p, _h: stop_seconds(
+        # A dated walk hands its arrival clock as a third argument (the
+        # arrival-window door check). This pricer reads
+        # `route.planned_visit_seconds`, which selection already priced at
+        # each stop's arrival — doors included — so the clock is accepted
+        # and unused: re-checking here would be a second spelling of a
+        # decision the route already carries.
+        price_visit=lambda p, _h, _clock=None: stop_seconds(
             int(route.planned_visit_seconds.get(p.id, 0)),
             listened_seconds(int(audio.get(p.id, 0)), listening_rate),
         ),

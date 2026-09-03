@@ -837,6 +837,83 @@ def test_the_full_telling_rides_the_wire_and_the_more_tap_never_serves_the_dump(
 
 
 # ---------------------------------------------------------------------------
+# The writer is told the door — a compose request carries its stop's door
+# state, so the one writer never has to guess whether "step inside" is a lie.
+# The placement floor (validation.door_line_without_door) stays the backstop;
+# this is the instruction that makes the floor's refusal rare, and it is what
+# lets the narration SAY the honest thing at a shut door.
+# ---------------------------------------------------------------------------
+
+
+def _door_route(route, *, doorless: dict[str, bool], closed_ids: set[str] = frozenset()):
+    from src.tour.contract import ClockExclusion
+
+    exclusions = tuple(
+        ClockExclusion(poi_id=pid, name=pid, reason="closed today", kept_outside=True)
+        for pid in closed_ids
+    )
+    return route.model_copy(
+        update={
+            "visit_goes_inside": {
+                p.id: not doorless.get(p.id, False) for p in route.pois
+            },
+            "clock_exclusions": exclusions,
+        }
+    )
+
+
+def test_a_doorless_stops_compose_request_carries_the_door_and_an_open_one_carries_none():
+    """The one ComposeRequest builder reads the Route's own door map: a stop
+    priced outside-only gets a DOOR block in its user prompt — never invite
+    inside — and an open stop's prompt is untouched. UNDO: drop the door_state
+    wiring -> the writer is blind again -> RED."""
+    from src.tour.authoring import _certification_compose_requests, _compose_user_prompt
+
+    script, seq, route = _stitch_day(2, round_trip=False)
+    route = _door_route(route, doorless={"p1": True})
+    _beats, _stops, requests = _certification_compose_requests(script, seq, route)
+
+    assert requests[1].door_state, "the outside-only stop's request must carry its door"
+    assert not requests[0].door_state, "an open stop carries no door block"
+    doorless_prompt = _compose_user_prompt(requests[1], 1, None)
+    open_prompt = _compose_user_prompt(requests[0], 1, None)
+    assert "DOOR" in doorless_prompt
+    assert "never invite" in doorless_prompt.lower()
+    assert "DOOR" not in open_prompt
+
+
+def test_a_clock_shut_door_may_be_said_and_a_no_time_door_is_never_called_closed():
+    """Two different truths, two instructions (the `kept_outside` flag's own
+    distinction, contract.ClockExclusion): a door the CLOCK voided may be said
+    plainly to be closed today; a stop that is outside-only because the day
+    has no time for its interior is NOT closed, and the writer must not call
+    it that (the interior_did_not_fit rule: Notre-Dame is not closed — the day
+    is short)."""
+    from src.tour.authoring import _certification_compose_requests
+
+    script, seq, route = _stitch_day(2, round_trip=False)
+    clock_shut = _door_route(route, doorless={"p1": True}, closed_ids={"p1"})
+    _b, _s, shut_requests = _certification_compose_requests(script, seq, clock_shut)
+    assert "closed today" in shut_requests[1].door_state.lower()
+
+    no_time = _door_route(route, doorless={"p1": True})
+    _b, _s, time_requests = _certification_compose_requests(script, seq, no_time)
+    assert "not call the place closed" in time_requests[1].door_state.lower()
+
+
+def test_a_route_with_no_door_map_renders_every_prompt_exactly_as_before():
+    """The identity default: an empty ``visit_goes_inside`` map (a dateless or
+    legacy route) yields empty door_state everywhere and byte-identical
+    prompts — the compose seam never invents a door nobody priced."""
+    from src.tour.authoring import _certification_compose_requests, _compose_user_prompt
+
+    script, seq, route = _stitch_day(2, round_trip=False)
+    _b, _s, requests = _certification_compose_requests(script, seq, route)
+    assert all(not r.door_state for r in requests.values())
+    assert "DOOR" not in _compose_user_prompt(requests[0], 1, None)
+
+
+# ---------------------------------------------------------------------------
 # S6.7 — narration_register consumed (design §2.4; W6.2 R7, 11/11).
 # ---------------------------------------------------------------------------
 
