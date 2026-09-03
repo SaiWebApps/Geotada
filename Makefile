@@ -290,7 +290,7 @@ test-live: ## Run every live-provider test with a fresh full Render environment.
 	@$(RENDER_TEST_EXEC) env \
 		ONDOWAY_LIVE_TESTS=1 \
 		NO_PROXY="$(NO_PROXY_LIST)" no_proxy="$(NO_PROXY_LIST)" \
-		uv run pytest $(or $(FILE),$(LIVE_TEST_FILES)) -o addopts= -m live -v $(PYTEST_ARGS)
+		uv run pytest $(or $(FILE),$(LIVE_TEST_FILES)) -o addopts= -m live -v --durations=15 $(PYTEST_ARGS)
 
 # Declares `valhalla` because this shard really does route: test_workbench_ui.py
 # contains an unstubbed tour-generation section, and relying on a sibling shard to
@@ -300,7 +300,7 @@ test-workbench: ## Run the Playwright workbench suite against isolated Neo4j 768
 	@$(PREFLIGHT) --label test-workbench uv python-deps db-$(TEST_PROFILE) db-$(WORKBENCH_PROFILE) valhalla playwright-browser
 	@find tests src -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 	@$(TEST_EXEC) env NO_PROXY="$(NO_PROXY_LIST)" no_proxy="$(NO_PROXY_LIST)" \
-		uv run pytest tests/test_workbench_ui.py -o addopts= -v --tb=short
+		uv run pytest tests/test_workbench_ui.py -o addopts= -v --tb=short --durations=15
 
 # The filter matches the marker ANYWHERE in the line, not at its start. `-q -s` makes
 # pytest write its progress dots to stdout with no newline, so the test's own print
@@ -351,15 +351,15 @@ _test-python:
 
 _test-golden:
 	@$(PREFLIGHT) --label _test-golden $(PRE_PYTEST)
-	@$(TEST_EXEC) uv run pytest $(GOLDEN_TEST_FILES) -o addopts= -m golden -v $(PYTEST_ARGS)
+	@$(TEST_EXEC) uv run pytest $(GOLDEN_TEST_FILES) -o addopts= -m golden -v --durations=15 $(PYTEST_ARGS)
 
 _test-grade:
 	@$(PREFLIGHT) --label _test-grade $(PRE_PYTEST)
-	@$(TEST_EXEC) uv run pytest $(GRADE_TEST_FILES) -o addopts= -m grade -v $(PYTEST_ARGS)
+	@$(TEST_EXEC) uv run pytest $(GRADE_TEST_FILES) -o addopts= -m grade -v --durations=15 $(PYTEST_ARGS)
 
 _test-invariants:
 	@$(PREFLIGHT) --label _test-invariants $(PRE_PYTEST)
-	@$(TEST_EXEC) uv run pytest $(INVARIANT_TEST_FILES) -o addopts= -m invariants -v $(PYTEST_ARGS)
+	@$(TEST_EXEC) uv run pytest $(INVARIANT_TEST_FILES) -o addopts= -m invariants -v --durations=15 $(PYTEST_ARGS)
 
 _test-cloud:
 	@$(PREFLIGHT) --label _test-cloud $(PRE_PY) render-key

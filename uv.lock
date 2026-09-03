@@ -694,14 +694,14 @@ wheels = [
 
 [[package]]
 name = "neo4j"
-version = "5.28.5"
+version = "6.3.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pytz" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/a9/fc/56d23ba3eed18ad3cfece6fadc52a2386d16627e8d96554f43b14984e857/neo4j-5.28.5.tar.gz", hash = "sha256:22c17254dc99cded006ff8d1904fe4c8a09d2b67f4e02709bfeca95786b1b58d", size = 232775, upload-time = "2026-08-28T10:26:35.047Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/9d/57/f939c3b9b28e5851095eafb823b5a996eea3f21a14be513bcf9b355f97da/neo4j-6.3.0.tar.gz", hash = "sha256:d0d3986c37ad174a549a39dfec6d22a00a061ebcb0267f1a5caf856589838e73", size = 242487, upload-time = "2026-08-28T10:25:04.743Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/aa/fc/4e379b0bdecf3a22ec4581a594349f88546ee0a6e0d3cbd8941013e1411a/neo4j-5.28.5-py3-none-any.whl", hash = "sha256:b5a919bb7be2dd0ccb72acd52724964b73f1bb5f5c753a031af84dbbe170fbf3", size = 313920, upload-time = "2026-08-28T10:26:32.667Z" },
+    { url = "https://files.pythonhosted.org/packages/47/47/d29d93455fe2959e5b8383e52f68b3633d729f39e87fef94743f9f2240ae/neo4j-6.3.0-py3-none-any.whl", hash = "sha256:d243f9c8adf882ae7205a76eb2419b0a632d5f3c89383d4a0044d737a2223991", size = 331471, upload-time = "2026-08-28T10:25:03.263Z" },
 ]
 
 [[package]]
@@ -827,7 +827,7 @@ requires-dist = [
     { name = "fastapi", specifier = ">=0.115.0" },
     { name = "google-auth", specifier = ">=2.29" },
     { name = "httpx", specifier = ">=0.27" },
-    { name = "neo4j", specifier = ">=5.0,<6.0" },
+    { name = "neo4j", specifier = ">=6.1,<7.0" },
     { name = "playwright", marker = "extra == 'test'", specifier = ">=1.40" },
     { name = "pyjwt", extras = ["crypto"], specifier = ">=2.8" },
     { name = "pytest", marker = "extra == 'test'", specifier = ">=8.0" },
