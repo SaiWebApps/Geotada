@@ -43,3 +43,12 @@ These are coding rules, not a process. They bind every file under `src/`, `mobil
    change → confirm that test passes → `make lint`. No mutation proofs, no sabotage-and-restore
    cycles, no ladder of ceremonial re-verification between steps. Run the full suite
    (`make test`, or `make audit` for lint plus suite) once when the milestone is done.
+
+8. **Comments and rules are written in the present tense.** A comment, rule file, or agent
+   definition states the constraint that holds now — never the incident that motivated it.
+   No dates, no owner quotes, no session stories, no "this exists because X once did Y".
+   Incidents belong in git history and `.claude/LEARNINGS.md`; a constraint that cannot be
+   justified without its origin story points at the LEARNINGS entry instead of retelling it.
+   The same applies when cleaning up: removing a thing means removing every reference to it
+   — registrations, ignore rules, docs, agent prompts — in the same change, so nothing keeps
+   describing a world that no longer exists.
