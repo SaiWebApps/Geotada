@@ -22,6 +22,16 @@
 # live and interrogated through Chrome's own DevTools protocol before being killed. Two
 # distinct hangs exist; the runner tells them apart because they need different owners.
 #
+# RE-MEASURED 2026-09-03 on flutter 3.47.2 after a full `flutter pub upgrade` (the
+# update the Flutter team asked for on both issues): an 80-run soak with recovery
+# disabled (FLUTTER_TEST_MAX_ATTEMPTS=1) scored 78 PASS and TWO stalls — both the
+# LAUNCHER stall (#192013 below; zero tests completed, lsof shows the Chromium
+# itself LISTENing on its assigned debugging port while flutter_tools waits for a
+# stderr line that never comes). The ENGINE wedge (#192014) did not appear once in
+# those 80 runs; at its old 1-in-27 rate that leaves roughly 5% odds it is
+# unchanged, so it reads as improved or gone on 3.47.2 — evidence, not proof.
+# Tally + full stall diagnoses: the 2026-09-03 suite-under-15 run's soak/ dir.
+#
 #   1. THE OBSERVED ONE (flutter/flutter#192014) — the engine wedges loading CanvasKit,
 #      mid-run. The specimen stopped at "+83: loading test/pages/home_page_test.dart" and
 #      never moved. Chrome, its renderers, the compiler and the dart process were all
@@ -104,8 +114,8 @@ LOCK_WAIT="${FLUTTER_TEST_LOCK_WAIT:-900}"  # max seconds to wait on another run
 STALL_SECONDS="${FLUTTER_TEST_STALL_SECONDS:-48}"
 # Attempts, and ONLY a stall gets a second one. Both hangs above are in Flutter's own
 # engine and launcher: this repo cannot fix either, and `flutter test` exposes no
-# --web-renderer or --web-browser-flag in 3.41.9 to design them out (--wasm swaps in skwasm
-# but carries its own hang, flutter/flutter#177008). What the runner CAN guarantee is that
+# --web-renderer or --web-browser-flag in 3.47.2 either (re-checked at the upgrade) to
+# design them out (--wasm swaps in skwasm but carries its own hang, flutter/flutter#177008). What the runner CAN guarantee is that
 # neither one ever costs a green suite: the stall is bounded, diagnosed in full, and then
 # the suite is re-run from scratch, up to MAX_ATTEMPTS. That is safe precisely because a
 # stall happens at suite LOAD — no test has failed, nothing is half-applied, and a real
@@ -628,7 +638,7 @@ while :; do
     echo "" >&2
     if [ "$attempt" -ge "$MAX_ATTEMPTS" ]; then
       echo "FLUTTER TESTS STALLED ON ALL $attempt OF $MAX_ATTEMPTS ATTEMPTS, in $(elapsed_total)s." >&2
-      echo "That is not the intermittent engine wedge (measured at 1 run in 27) — something is" >&2
+      echo "That is not the intermittent stall (soaked at ~1 run in 40 on 3.47.2) — something is" >&2
       echo "reproducibly stuck. Read the diagnosis above rather than re-running." >&2
     else
       echo "FLUTTER TESTS STALLED on attempt $attempt, and there is not enough of the" >&2

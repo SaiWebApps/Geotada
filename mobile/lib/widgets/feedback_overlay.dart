@@ -105,8 +105,10 @@ class _FeedbackSheetState extends State<FeedbackSheet> {
             });
           }
         },
-        listenFor: const Duration(seconds: 30),
-        pauseFor: const Duration(seconds: 3),
+        listenOptions: stt.SpeechListenOptions(
+          listenFor: const Duration(seconds: 30),
+          pauseFor: const Duration(seconds: 3),
+        ),
       );
       setState(() => _isListening = true);
     }
