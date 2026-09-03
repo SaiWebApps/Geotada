@@ -248,20 +248,15 @@ temp/
 # Project Specific
 # ====================
 
-# Claude Code working state (keep shared commands, learnings, and the Judge
-# Protocol infrastructure — agents, guard hook, hook wiring; ignore the rest)
+# Claude Code working state (keep shared commands, learnings, agents, the
+# tracker, and workflow scripts; ignore machine-local state and run scratch)
 .claude/*
 !.claude/commands/
 !.claude/LEARNINGS.md
 !.claude/agents/
 !.claude/ledger/
-!.claude/hooks/
 !.claude/workflows/
 !.claude/settings.json
-!.claude/team-engine.js
-!.claude/team-engine.test.js
-.claude/hooks/guard-log.txt
-.claude/hooks/team-gate-log.txt
 # The tracker's database. Binary, rewritten on every agent write, and its
 # WAL/shm siblings churn constantly. The SCHEMA is version-controlled in
 # .claude/ledger/track.py; the rows are this machine's run, not history.
@@ -300,7 +295,6 @@ data/paris_test/
 
 # Valhalla OSM extracts + built tiles (multi-GB, machine-local; make valhalla-build-tiles)
 valhalla/custom_files/
-.claude/hooks/guard-log.txt
 
 # Scratch tour artifacts (make tour-build / measure-governor output) — machine-local
 # reproduction output, never committed. Keeping them ignored removes the recurring
@@ -328,19 +322,13 @@ data/certification/*-superseded-*/
 # any `git add -A`.
 .agents/
 
-# Plans and specs are the agent's own scratch and are not part of a production
-# launch. Owner ruling 2026-09-02: the directory was deleted and must never be
-# committed again. `specs/` is also a `forbidden` prefix in
-# .claude/hooks/production-junk-patterns.json, checked BEFORE the acknowledge
-# token, so unlike every other rule here it cannot be waived by appending a word
-# to a command. A /team run writes its context to `.claude/runs/{date}-{slug}`,
-# already excluded by the `.claude/*` rule above.
+# Plans and specs are the agent's own scratch, never committed. A /team run
+# writes its context to `.claude/runs/{date}-{slug}`, already excluded by the
+# `.claude/*` rule above.
 #
-# ANCHORED, with the leading slash. `specs/` on its own matches a directory at
-# any depth, and this repo has already shipped that defect twice — an unanchored
-# `models/` silently excluded src/api/models/ and mobile/lib/models/, real
-# product source (see the `/models/` rule below, which carries the same scar).
-# A third would be a pattern.
+# ANCHORED, with the leading slash: an unanchored `specs/` would match a
+# directory at any depth and silently exclude product source (the `/models/`
+# rule below exists for the same reason).
 #
 # Fourteen `!specs/...` exceptions used to sit here, because shipping code
 # OPENED nine files inside those folders. All nine moved to `fixtures/` on

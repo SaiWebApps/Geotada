@@ -25,10 +25,6 @@ To see what each requirement means and how it is restored:
 make preflight-list
 ```
 
-Node.js is NOT covered, deliberately: it is agent tooling only, needed solely for
-`node .claude/team-engine.test.js`. Its absence never blocks a product target — report it
-as a warning if the user asks about `/team`, never as a setup blocker.
-
 ## Reading the result
 
 Each line is `OK` (satisfied), `FIX` (was missing, preflight restored it), or `!!`
