@@ -31,7 +31,7 @@ process—never a cached or filtered subset.
 | `golden-diff` | Dev DB/data and Valhalla | No | Yes, with `FIXTURE` |
 | `score-saved-tours` | None; reads `data/{city}/tours/` only | No | Yes; $0, no DB or container |
 | `score-gold-text` | None; reads the quality standard only | No | Yes; $0, no DB or container |
-| `score-human-tours` | None; reads `Docs/tour-builder/empirical-tours/` only | No | Yes; $0, no DB or container |
+| `score-human-tours` | None; reads `fixtures/reference-tours/` only | No | Yes; $0, no DB or container |
 | `tour-batch-plan` | Dev DB/data and Valhalla | No | Yes |
 | `tour-batch-live` | Dev DB/data and Valhalla | Yes | Yes, with approved hash |
 | `tour-batch-review-plan` | Dev DB/data and Valhalla | No | Yes |
@@ -73,7 +73,7 @@ process—never a cached or filtered subset.
 | `tour-build` | Dev DB/data and Valhalla | No | Yes |
 | `measure-planned-audio` | Dev DB/data | No | Yes |
 | `measure-governor` | Dev DB/data | No | Yes |
-| `onboard-city` | Isolated temporary data/registry defaults | No | Yes, with city/modes |
+| `onboard-city` | Isolated temporary data and registry defaults | No | Yes, with city/modes |
 | `flutter-ipa` | None | No | Yes, with signing toolchain |
 | `testflight` | Credential validation, build-number bump, then fresh IPA | Yes | Yes, with App Store credentials |
 | `render-status` | Keychain API auth | API auth only | Yes |

@@ -457,18 +457,15 @@ knowing:** this filter does not check the corpus's own
 `vignette_eligible`/`requires_dwell` flags, so a beat the corpus explicitly
 marks unfit for walk-past voicing can still be selected here.
 
-**6. Script assembly — deterministic template, and deliberately so.**
-`generate_trip` calls `generate()` (`src/tour/generation.py:310+`) once per
-flavour; a separate call to the same function happens inside the different
-`compose_trip` handler (`:771`) — not as a second call from `generate_trip`
-itself. Neither call site passes a `glue_client` argument, so `generate()`'s
-`client = glue_client or MockGlueClient()` (`:328`) always resolves to
-`MockGlueClient` (class at `src/tour/glue_client.py:64-81`; the dict at
-`:51-61` immediately above it is a separate, unrelated constant).
-**Corrected — this is documented as deliberate design, not undocumented
-tech debt:** `scripts/tour_build.py`'s own docstring states "Defaults to the
-deterministic MockGlueClient so this works without ANTHROPIC_API_KEY. Pass
-`--haiku` to switch on the real Haiku glue stitch." **Corrected — the
+**6. Script assembly — real glue by default.** `generate_trip` calls
+`generate()` (`src/tour/generation.py`) once per flavour; a separate call to
+the same function happens inside the different `compose_trip` handler — not
+as a second call from `generate_trip` itself. Neither call site passes a
+`glue_client`, and `generate()` resolves a missing client to the REAL
+`HaikuGlueClient` — a caller that wants the deterministic double must pass
+`MockGlueClient` explicitly (the test bar does; so does
+`scripts/tour_build.py`'s default `--canned` mode, which states the choice
+rather than hiding it — pass `--haiku` there for real glue). **Corrected — the
 cold-open text is not simply unmodified `script_body`:** it always prepends
 a fixed "Settle in." glue line, and in the common case (most tier-5 anchors,
 which lack a `stop_orientation` beat) falls through to a synthesized-
@@ -515,11 +512,8 @@ path. **Updated 2026-07-31:** both real-compose paths were once gated by
 `ONDOWAY_ENABLE_PAID_LLM_CALLS`. That gate was DELETED by owner order — it
 raised deep at SDK-client construction, so it surfaced as "paid LLM calls are
 locked" inside unrelated fixtures. Nothing gates a real call now; the hermetic
-suite stays free by blanking the provider keys (`tests/conftest.py`). **Corrected —
-`tests/conftest.py` is not the only offline-stub site:**
-`tests/conftest.py:91,102,108,115` patches these classes for the general
-test bar, but `tests/test_compose_provider.py` independently patches them
-again for its own tests.
+suite stays free by blanking the provider keys and binding the offline glue
+double once, in `tests/conftest.py`, for the whole test bar.
 
 **Net effect for API consumers:** calling `/trips/generate` alone returns a
 structurally complete, correctly-selected, correctly-persisted trip whose
@@ -545,10 +539,10 @@ checker, the coverage baseline and the full forbidden-phrase scan; preview
 runs the structural validator only. Two further consequences are written up in
 `Docs/bug-reports/2026-07-27-preview-failure-observability-salvage.md`: five
 distinct causes still collapse into a single `generation_failed` code (§2),
-and the certification path silently skips the forbidden-phrase scan, so the
-`"forbidden"` counter at `src/api/routes/trips.py:793` reads 0 by
-construction (§1, pinned by
-`tests/test_compose_gate_forbidden_scan.py`).
+and the certification REPLAY path skips the forbidden-phrase scan by
+default (`scan_glue_for_invention=False` in
+`finalize_certification_composition`; every live surface turns it on), so a
+replay's `"forbidden"` count reads 0 by construction (§1).
 
 **Resolved from the prior version's open questions:**
 - Test coverage for the generate-then-compose chain **does exist**:

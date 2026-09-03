@@ -63,7 +63,7 @@ These are locked. Do not re-open without a sprint decision entry in the PM Livin
 - Payment gateway (all content free for demo phase)
 - Pipeline automation (PDF upload → auto-extraction abandoned; manual JSON upload instead)
 - Embedding-based lens similarity
-- ~~POI hierarchy~~ → **Moved to active** (2026-04-09): Area nodes with WITHIN containment. See `specs/2026-04-09-area-containment/`.
+- ~~POI hierarchy~~ → **Moved to active** (2026-04-09) and since shipped: Area nodes with WITHIN containment live in the graph schema.
 - **Entity resolution** (promoting `NarrativeBeat.entities` from string tags to first-class `Entity` nodes with canonical IDs and a reified `MENTIONS` edge). *Known future improvement, captured 2026-04-15.* Rationale: string tags are the canonical KG anti-pattern and runtime theme discovery depends on reliable entity overlap across beats. Promote when (a) unified extraction pipeline has landed, (b) city_name MERGE keys are live, and (c) a feature depending on cross-beat entity queries (theme surfacing, "other beats that mention X", cross-city narrative linking) becomes the next unlock. Do not promote earlier — the current string-tag approach is good enough to validate the MVP thesis.
 - Post-MVP graph nodes: UserPreferences, Badge, Achievement, Challenge, ChallengeCompletion
 

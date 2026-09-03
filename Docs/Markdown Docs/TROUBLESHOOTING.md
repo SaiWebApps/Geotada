@@ -81,11 +81,11 @@ brew install python@3.11
 
 ### "pip: command not found" or wrong pip
 
-The Makefile uses `.venv/bin/pip`. If the venv doesn't exist:
+Dependencies are managed by uv, never pip. If the environment is missing or
+broken:
 
 ```bash
-make venv               # Creates .venv/
-make install            # Installs deps into venv
+make sync               # Resolves uv.lock into .venv/
 ```
 
 ### Import errors after pulling new code
@@ -93,7 +93,7 @@ make install            # Installs deps into venv
 Dependencies may have changed. Reinstall:
 
 ```bash
-make install
+make sync
 ```
 
 ### "No module named 'dotenv'" (or similar)
@@ -156,10 +156,10 @@ make db-up              # Start Neo4j
 make test               # Run all tests
 ```
 
-To run only unit tests (no Neo4j needed):
+To run one focused test file (the target provisions its own databases):
 
 ```bash
-make test-unit
+make test-file FILE=tests/test_x.py
 ```
 
 ### Tests fail after schema changes
@@ -167,7 +167,7 @@ make test-unit
 The database may have stale schema or data:
 
 ```bash
-make clean-db           # Wipe all data
+make db-reset DB=test   # Wipe one local data volume (never cloud)
 make setup              # Re-apply schema + seed
 make test               # Run tests
 ```
@@ -193,7 +193,7 @@ If it has `(deny network*)`, change it to `(allow network*)` and restart Claude 
 If nothing else works, a complete reset:
 
 ```bash
-make db-reset           # Stop Neo4j + wipe data volume
+make db-reset DB=dev    # Stop one Neo4j + wipe its data volume
 cp .env.example .env    # Reset environment
-make all                # Full bootstrap from scratch
+make bootstrap          # Full bootstrap from scratch
 ```

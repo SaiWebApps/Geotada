@@ -138,7 +138,7 @@ python3 scripts/preflight.py --target workbench --no-fix
 |----------|-------------|
 | [Graph Editor Guide](Docs/Markdown%20Docs/GRAPH_EDITOR.md) | How to use the interactive graph editor — UI layout, creating nodes/edges, keyboard shortcuts, working with test data |
 | [API Reference](Docs/Markdown%20Docs/API_REFERENCE.md) | All 16 REST endpoints with parameters, request/response bodies, status codes, and examples |
-| [Test Strategy](Docs/Markdown%20Docs/TEST_STRATEGY.md) | 177-test breakdown, unit vs integration, fixtures, adding new tests |
+| [Test Strategy](Docs/Markdown%20Docs/TEST_STRATEGY.md) | The eight test shards, the day-to-day loop, fixtures, adding new tests |
 | [Troubleshooting](Docs/Markdown%20Docs/TROUBLESHOOTING.md) | Docker, Neo4j, Python venv, API, and editor issues with fixes |
 | [Security & Privacy](Docs/Markdown%20Docs/SECURITY_PRIVACY_PRACTICES.md) | Non-negotiable security and privacy constraints for development |
 
@@ -198,5 +198,5 @@ frontend/
 ├── index.html                 # Read-only dashboard
 └── editor/
     └── index.html             # Interactive graph editor
-tests/                         # 177 tests — see Test Strategy doc
+tests/                         # the Python suite — see Test Strategy doc
 ```

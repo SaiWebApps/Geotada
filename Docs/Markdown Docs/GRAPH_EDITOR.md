@@ -6,7 +6,7 @@ Interactive canvas-based editor for viewing and modifying the Ondoway knowledge 
 
 ```bash
 # 1. Bootstrap (first time only)
-make all                # Creates venv, installs deps, starts Neo4j, seeds data
+make setup              # Installs deps, starts the databases, provisions data
 
 # 2. Start the API server
 make api                # FastAPI at http://localhost:8000
