@@ -244,6 +244,13 @@ Then for each milestone, in dependency order:
    dashboard's narrative channel: attributed commentary beside the facts,
    structurally unable to move a box or the percentage.
 
+**A milestone that removes something runs `/cleanup` inside itself.**
+Deleting or renaming a file, symbol, make target, command, or concept
+invokes `Skill(cleanup)` before that milestone's commit, so one commit
+carries the removal AND every reference to the removed thing — its manifest,
+sweep, trap checks and receipt. No dead code, no hanging fragments, no
+string-anchored traps left for the next reader to step on.
+
 **If reality diverges from the plan — stop.** A wrong signature, a test that
 was supposed to be red but is green, a function that doesn't behave as the
 plan traced: that is a *planning* failure, and improvising a fix on the spot

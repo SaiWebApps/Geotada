@@ -51,4 +51,5 @@ These are coding rules, not a process. They bind every file under `src/`, `mobil
    justified without its origin story points at the LEARNINGS entry instead of retelling it.
    The same applies when cleaning up: removing a thing means removing every reference to it
    — registrations, ignore rules, docs, agent prompts — in the same change, so nothing keeps
-   describing a world that no longer exists.
+   describing a world that no longer exists. `/cleanup` (`.claude/commands/cleanup.md`) is
+   the procedure that makes this mechanical; every removal runs it.
