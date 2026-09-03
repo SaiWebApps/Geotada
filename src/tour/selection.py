@@ -969,6 +969,22 @@ def _clock_exclusion_reason(
     return detail + doubt
 
 
+def _closed_all_day(opening_hours_json: str, day: datetime) -> bool:
+    """Whether the table lists NO open window at all on ``day`` — the fact the
+    voice's "closed today" branch needs, read from the data itself (a decision
+    belongs in a field, never recovered from the reason sentence's words).
+    Fails to False on bad data, the same trusting direction as the closure
+    rule: an unknowable schedule never strengthens a claim."""
+    try:
+        table = json.loads(opening_hours_json)
+    except (json.JSONDecodeError, TypeError):
+        return False
+    if not isinstance(table, dict):
+        return False
+    windows = table.get(_CLOCK_DAY_KEYS[day.weekday()])
+    return isinstance(windows, list) and not windows
+
+
 def _is_unadopted_placeholder_beat(record: dict) -> bool:
     """True for a seed-artifact beat: no stable beat_id AND placeholder audio.
 
@@ -2751,6 +2767,7 @@ def _select_route_once(
                         name=poi.name,
                         reason=clock_reason,
                         kept_outside=kept_outside,
+                        all_day=_closed_all_day(poi.opening_hours, clock_start),
                     )
                 )
                 if not kept_outside:
@@ -3876,6 +3893,14 @@ def _select_route_once(
                     name=poi.name,
                     reason=arrival_reason,
                     kept_outside=True,
+                    # An arrival-window closure on a day with windows is by
+                    # construction not all-day; read the table anyway so a
+                    # data edit cannot desynchronise the two claims.
+                    all_day=(
+                        _closed_all_day(poi.opening_hours, clock)
+                        if poi.opening_hours is not None
+                        else False
+                    ),
                 )
             )
     # C9 governor exempt identity — record which POIs are EXEMPT from the per-stop

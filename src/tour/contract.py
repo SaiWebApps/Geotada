@@ -758,6 +758,13 @@ class ClockExclusion(BaseModel):
     name: str
     reason: str
     kept_outside: bool = False
+    #: Whether the place is shut for the WHOLE day the walk happens on — the
+    #: planner sets it from the day's own empty window list, so the voice can
+    #: say "closed today" (Aiko must not plan a wasted return trip) instead of
+    #: "closed at the moment" (true for a door that opens later, or shut for
+    #: lunch). A decision in a field, never recovered from the reason's words.
+    #: Additive: False keeps every existing exclusion byte-identical.
+    all_day: bool = False
 
 
 class PromiseShape(BaseModel):

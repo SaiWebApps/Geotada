@@ -1876,7 +1876,7 @@ def test_a_dateless_route_with_no_door_map_filters_nothing():
     assert any("Step inside" in s.text for s in script.script)
 
 
-def _closed_route(pois, closed_ids):
+def _closed_route(pois, closed_ids, *, all_day=False):
     from src.tour.contract import ClockExclusion
 
     route = _route(pois)
@@ -1885,7 +1885,8 @@ def _closed_route(pois, closed_ids):
             "visit_goes_inside": {p.id: (p.id not in closed_ids) for p in pois},
             "clock_exclusions": tuple(
                 ClockExclusion(
-                    poi_id=pid, name=pid, reason="closed all day Monday", kept_outside=True
+                    poi_id=pid, name=pid, reason="closed all day Monday",
+                    kept_outside=True, all_day=all_day,
                 )
                 for pid in closed_ids
             ),
@@ -1945,6 +1946,57 @@ def test_a_closed_first_stop_says_so_right_after_settle_in():
     assert texts[1] == (
         "Pantheon is closed at the moment, so we'll take it in from out here."
     ), texts[:3]
+
+
+def test_an_all_day_closure_says_closed_today_not_at_the_moment():
+    """Aiko's wasted return trip (07, step 6): "closed at the moment" reads as
+    "opens later today", which is a lie at a museum shut ALL day. The all_day
+    flag — set by selection from the day's own empty window list, never from
+    words — picks the honest branch. A partial closure keeps "at the moment"
+    (true whether the door opens later or already shut)."""
+    poi = _poi("p1", "Musee de Cluny")
+    beat = _beat("b", poi.id, body="The tapestries are in room 13.", nf="establishing")
+    seq = BeatSequence(poi_beats=(_poi_beats(poi, (beat,)),))
+
+    all_day = generate(
+        seq, _closed_route((poi,), {poi.id}, all_day=True), _input(),
+        glue_client=MockGlueClient(),
+    )
+    assert any(
+        s.text == "Musee de Cluny is closed today, so we'll take it in from out here."
+        for s in all_day.script
+    ), [s.text for s in all_day.script][:4]
+    assert not any("at the moment" in s.text for s in all_day.script)
+
+    partial = generate(
+        seq, _closed_route((poi,), {poi.id}, all_day=False), _input(),
+        glue_client=MockGlueClient(),
+    )
+    assert any("closed at the moment" in s.text for s in partial.script)
+
+
+def test_no_staging_cue_points_behind_a_shut_door():
+    """Acceptance's Aiko finding: three sentences after "we'll take it in from
+    out here", the synthesized opener said "Look up at crypt with tombs of…" —
+    the guide's own voice directing her at something behind the shut door. At
+    a clock-closed stop the cue staging line is suppressed; the closure line
+    already stages the stop. An open stop keeps its cue (the existing
+    view-cue tests are the pin)."""
+    poi = _poi("p1", "Pantheon")
+    body = _beat_with_cues(
+        "body", poi.id,
+        cues=(PhysicalCue(cue="crypt with tombs of Voltaire", direction="up",
+                          feature_type="view"),),
+        body="A grounded fact.",
+    )
+    seq = BeatSequence(poi_beats=(_poi_beats(poi, (body,)),))
+    script = generate(
+        seq, _closed_route((poi,), {poi.id}, all_day=False), _input(),
+        glue_client=MockGlueClient(),
+    )
+    texts = [s.text for s in script.script if s.stop_idx == 0]
+    assert not any("Look up at" in t or "Notice " in t for t in texts), texts
+    assert any("closed at the moment" in t for t in texts)
 
 
 def test_an_open_day_and_screen_only_notes_speak_no_closure_line():

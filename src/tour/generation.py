@@ -671,8 +671,16 @@ def _build_synthesized_opener(
             )
         )
 
-    # 3. Physical staging from the strongest available cue.
-    chosen_cue = _synth_pick_cue(poi_beats)
+    # 3. Physical staging from the strongest available cue — UNLESS the clock
+    # has shut this stop's door: a cue can point at something behind it ("Look
+    # up at crypt…" at the closed Panthéon directed Aiko underground), and the
+    # closure line has already staged the stop ("we'll take it in from out
+    # here"). The stop keeps its story; only the pointing finger is lowered.
+    clock_closed = any(
+        e.poi_id == first_stop.poi_id and e.kept_outside
+        for e in route.clock_exclusions
+    )
+    chosen_cue = None if clock_closed else _synth_pick_cue(poi_beats)
     has_view_cue = any(
         (cue.feature_type or "").lower() == _SYNTH_VIEW_FEATURE_TYPE
         for beat in poi_beats
@@ -1260,11 +1268,17 @@ def _build_stop_close(
     return Sentence(text=text, source_id=GLUE_CLOSING, source_type="glue", stop_idx=stop_idx)
 
 
-#: The one spoken acknowledgment at a clock-closed stop. No weekday, no clock
-#: time — the glue invention scan licenses neither, and the schedule detail
-#: stays on the day's notes channel; the voice states the state.
+#: The spoken acknowledgment at a clock-closed stop — two branches, because
+#: two different things are true (`ClockExclusion.all_day` picks): a place
+#: shut for the whole day must say so, or Aiko plans a wasted return trip;
+#: "at the moment" stays for a partial closure, true whether the door opens
+#: later or already shut. No weekday, no clock time — the glue invention scan
+#: licenses neither, and the schedule detail stays on the day's notes channel.
 CLOSED_STOP_LINE_TEMPLATE: str = (
     "{name} is closed at the moment, so we'll take it in from out here."
+)
+CLOSED_ALL_DAY_LINE_TEMPLATE: str = (
+    "{name} is closed today, so we'll take it in from out here."
 )
 
 
@@ -1277,18 +1291,22 @@ def _closure_opening_lines(route: Route) -> dict[int, Sentence]:
     said, once, FIRST. The caller places this as the stop's first stationary
     sentence; the premium writer receives it in the stitch and may rewrite it
     (its DOOR block already licenses "closed today")."""
-    closed_ids = {e.poi_id for e in route.clock_exclusions if e.kept_outside}
-    if not closed_ids:
+    closed = {e.poi_id: e for e in route.clock_exclusions if e.kept_outside}
+    if not closed:
         return {}
     return {
         idx: Sentence(
-            text=CLOSED_STOP_LINE_TEMPLATE.format(name=poi.name),
+            text=(
+                CLOSED_ALL_DAY_LINE_TEMPLATE
+                if closed[poi.id].all_day
+                else CLOSED_STOP_LINE_TEMPLATE
+            ).format(name=poi.name),
             source_id=GLUE_STAGING,
             source_type="glue",
             stop_idx=idx,
         )
         for idx, poi in enumerate(route.pois)
-        if poi.id in closed_ids
+        if poi.id in closed
     }
 
 

@@ -635,6 +635,28 @@ def test_a_dateless_day_never_consults_the_arrival_clock():
     assert route.clock_exclusions == ()
 
 
+# --- the all_day flag: a decision in a field, never recovered from words ------
+
+
+def test_the_planner_flags_an_all_day_closure_and_an_arrival_window_one_apart():
+    """The voice's "closed today" vs "closed at the moment" branch is picked by
+    `ClockExclusion.all_day` — set by the planner from the day's own empty
+    window list, never by string-matching the reason sentence (the W4.12
+    lesson: a decision belongs in a field). The whole-window Tuesday museum is
+    all-day; the arrival-window cathedral (open 06:00-09:45, reached ~10:00)
+    is not."""
+    from src.tour.selection import select_route
+
+    museum = _tuesday_closed_museum_with_an_exterior()
+    tuesday = select_route(_clock_request(_TUESDAY_10AM), _clock_corpus(museum))
+    demoted = [e for e in tuesday.clock_exclusions if e.poi_id == museum.id]
+    assert demoted[0].all_day is True
+
+    _bridge, cathedral, route = _dated_pont_neuf_run([["06:00", "09:45"]])
+    said = [e for e in route.clock_exclusions if e.poi_id == cathedral.id]
+    assert said[0].all_day is False
+
+
 # --- dusk, and the after-dark finish (S3.7; design §4.3; Sofia's swap rule) ---
 
 # December early evening: a 17:00 + 60-min one-way plans to finish ~18:00,
