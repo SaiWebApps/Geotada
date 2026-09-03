@@ -1,9 +1,9 @@
 """Measure per-POI planned voiced audio vs the tier-dwell proxy.
 
-The dwell/audio reconciliation critique (specs/2026-07-02-dwell-audio-reconciliation/
-DESIGN-AND-CRITIQUE.md, "FATAL DIRECTION ERROR") requires this measurement BEFORE any
-Step-3 implementation: for each candidate anchor, what would selection consume under
-honest accounting max(tier_dwell, planned_audio) versus today's tier constant?
+The dwell/audio reconciliation critique (its spec tree is retired — git history)
+requires this measurement before changing the accounting: for each candidate
+anchor, what would selection consume under honest accounting
+max(tier_dwell, planned_audio) versus a flat tier constant?
 
 Planned audio mirrors generation._sum_audio's per-beat rule exactly
 (est_spoken_seconds override, else word_count @ 150 wpm) applied to the plan

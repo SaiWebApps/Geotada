@@ -25,9 +25,9 @@ and uploads each record with ``poi_role="body"``; the planner prices the "body"
 role at 0.0 in ``POI_ROLE_MULTIPLIER``, so a body place can never seat as a
 narrated stop — only the cadence axis may ever schedule one.
 
-WHY THE DATA EXISTS AT ALL (redesign, specs/2026-08-07-tour-algorithm-redesign):
-design §3.1 makes body stops first-class promises — "a rest window with no bench
-under it is thirteen minutes standing on a stick" (01-design.md:158-161). Nadia's
+WHY THE DATA EXISTS AT ALL (the tour-algorithm redesign; its spec tree is
+retired — git history): design §3.1 makes body stops first-class promises — "a
+rest window with no bench under it is thirteen minutes standing on a stick". Nadia's
 toilet stop is "ten minutes, zero cultural content, entirely non-negotiable"
 (docs/personas/03-family-with-children.md step 5), and Rosemary's bench IS a
 stop, with a location and a duration (docs/personas/05-step-free-visitor.md

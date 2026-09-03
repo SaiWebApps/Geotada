@@ -72,8 +72,8 @@ def _assert_local_target(allow_cloud: bool) -> None:
         raise SystemExit(
             f"REFUSING a name_key backfill against non-local NEO4J_URI={uri!r} "
             f"(host={host!r}). This migration writes to every POI missing name_key; "
-            f"run `make use-local` first, or pass --allow-cloud to deliberately "
-            f"target Aura."
+            f"point NEO4J_URI at the local database first (the local Make targets "
+            f"do), or pass --allow-cloud to deliberately target Aura."
         )
 
 

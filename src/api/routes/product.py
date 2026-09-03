@@ -2,9 +2,7 @@
 
 Unlike the workbench CRUD routers (graph/nodes/edges/schema/onboard), these are
 mounted UNCONDITIONALLY in src/api/app.py — outside `_workbench_api_enabled()`
-— because the mobile client needs them with the gate off (see
-specs/2026-08-09-public-read-endpoints/run-context.md, decision
-`workbench_stays_off`). /profile contract: specs/2026-08-10-profile-endpoint/design.md.
+— because the mobile client needs them with the workbench gate off.
 """
 
 from __future__ import annotations
@@ -62,7 +60,7 @@ def get_profile(
     and theme_preference (verbatim when set, null when the property is absent —
     read-only pass-through). 404 (not a fabricated empty profile) when the user
     has no HAS_PROFILE. When a user has >1 profile, the latest by created_at wins
-    and its lens set is returned. See specs/2026-08-10-profile-endpoint/design.md.
+    and its lens set is returned.
     """
     record = session.run(
         "MATCH (u:User {id: $uid})-[:HAS_PROFILE]->(p:Profile) "

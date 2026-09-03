@@ -316,7 +316,7 @@ def craft_score(text: str) -> float:
 
     G2/G3 (motivated_transition / causal_chain terms below): a LEXICAL PROXY for the
     tour-quality standard's semantic checks G2 (motivated transitions, S2) and G3
-    (causal chain not list, S3) — see specs/2026-07-19-tour-quality-standard/01-standard.md
+    (causal chain not list, S3) — see fixtures/tour-quality-standard/01-standard.md
     §4. This module is already an explicitly lexical/statistical heuristic (see module
     docstring). See _MOTIVATED_TRANSITION / _BARE_ADJACENCY / _CAUSAL_CHAIN above for
     the documented false-positive/false-negative shapes of this proxy.

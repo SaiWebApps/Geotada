@@ -10,13 +10,12 @@ here, is it OK to be left standing here after dark — not time. Folding it in w
 two prompts, two validators and two review protocols into one CLI whose halves succeed
 and fail independently.
 
-WHAT IT PRODUCES, per POI in ``data/{slug}/poi-raw.json``
-(specs/2026-08-07-tour-algorithm-redesign/01-design.md row 6.4):
+WHAT IT PRODUCES, per POI in ``data/{slug}/poi-raw.json`` (the redesign's data
+row 6.4; the spec tree is retired — git history):
 
 ``children_can_run``  Can children be loud, fast and free-range here? Nadia's finding:
                       38 of her 55 place-minutes were valuable BECAUSE the kids could
-                      run, and the corpus had no channel for it
-                      (specs/2026-08-07-tour-algorithm-redesign/03-panel-findings.md:160).
+                      run, and the corpus had no channel for it.
 ``sit_and_talk``      Can two people sit down somewhere quiet enough to hear each
                       other? Fiona & Dev's two green chairs: the Palais-Royal garden
                       wins their afternoon on seating, enclosure and quiet — "three

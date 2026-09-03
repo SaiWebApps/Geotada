@@ -970,8 +970,8 @@ def api_server():
         raise RuntimeError(
             f"Port {WORKBENCH_API_PORT} is already in use. The workbench suite starts its "
             f"own API and does not reuse external servers (concurrent runs would wipe each "
-            f"other's seed data). Stop whatever is on :{WORKBENCH_API_PORT} — e.g. a "
-            f"`make api-test` server or another `make test-workbench` run — and re-run."
+            f"other's seed data). Stop whatever is on :{WORKBENCH_API_PORT} — e.g. another "
+            f"`make test-workbench` run or a stray uvicorn — and re-run."
         )
 
     # Materialize the hermetic registry before the API imports city_registry.

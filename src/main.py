@@ -26,7 +26,8 @@ def _assert_local_target() -> None:
     Fires BEFORE any driver/session is opened, so it protects even when the
     (production) Aura instance is unreachable or paused. The single persistent
     store (Aura) is NEVER wiped or seeded from the CLI — only a local Docker
-    Neo4j on localhost may be. Run `make use-local` to switch first.
+    Neo4j on localhost may be. Point NEO4J_URI at a local service (the Make
+    targets do) before running.
     """
     uri = os.getenv("NEO4J_URI", "")
     host = urlparse(uri).hostname or ""
@@ -34,7 +35,8 @@ def _assert_local_target() -> None:
         raise SystemExit(
             f"REFUSING a destructive/seed op against non-local NEO4J_URI={uri!r} "
             f"(host={host!r}). clean()/setup() may only target localhost; Aura is "
-            f"never wiped or seeded from the CLI. Use `make use-local` first."
+            f"never wiped or seeded from the CLI. Run this through a Make target, "
+            f"which sets a local NEO4J_URI."
         )
 
 

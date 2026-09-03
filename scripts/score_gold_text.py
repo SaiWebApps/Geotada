@@ -19,7 +19,7 @@ There are two possible explanations demanding opposite fixes:
   2. the bar sits somewhere the owner's OWN gold text cannot reach either.
 
 This settles it by running the SAME rubric over the gold text in
-``specs/2026-07-19-tour-quality-standard/01-standard.md`` §1 — the passage the owner wrote
+``fixtures/tour-quality-standard/01-standard.md`` §1 — the passage the owner wrote
 by hand and from which S1-S10 were derived. **A check the gold fails is mis-calibrated.**
 
 READ THIS BEFORE QUOTING A NUMBER

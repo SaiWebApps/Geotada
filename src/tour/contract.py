@@ -1199,7 +1199,7 @@ class RouteOption(BaseModel):
 
 class StopCorrectionCounts(BaseModel):
     """Per-stop correct-loop outcome counts (ported from the
-    correct-don't-reject branch, specs/2026-07-13-compose-correct-dont-reject).
+    correct-don't-reject branch; its spec tree is retired — git history).
 
     ``verified`` = shipped beat-cited sentences that came through the gate
     unmodified; ``corrected`` = shipped sentences whose text was rewritten or
@@ -1301,8 +1301,8 @@ class ValidationReport(BaseModel):
 
         They return to blocking when the scored replacement lands: per-CLAIM scores
         carrying the unsupported SPAN, bands rather than an average, and a repair pass
-        before anything is cut. See the run-context addendum in
-        ``specs/2026-08-03-premium-tour-crash-never-silent/``.
+        before anything is cut (planned in the crash-never-silent run's addendum;
+        its spec tree is retired — git history).
 
         The three that remain are cheap, exact, and name their subject: an unknown cited
         beat id, a banned phrase, a source passage that does not match its chunk.

@@ -6,7 +6,7 @@ City-parameterized (multi-city safe). Does, idempotently (all MERGE-based):
   2. Area->Area WITHIN <- areas.json parent_area chain
   3. POI->Area WITHIN  <- data/{slug}/within_edges.json (poi_to_area)
 
-Prereqs: API running (make api) and the city's POIs already uploaded (make upload CITY=...).
+Prereqs: API running (make api) and the city's POIs already uploaded (make deploy CITY=...).
 
 Usage:
     python scripts/upload_areas.py --slug new_york

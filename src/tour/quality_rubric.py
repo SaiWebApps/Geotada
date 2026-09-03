@@ -1,7 +1,7 @@
 """THE TOUR QUALITY RUBRIC — the mechanical floor that runs on every tour.
 
 Full standard, gold examples and threshold provenance:
-``specs/2026-07-19-tour-quality-standard/01-standard.md``. Read it before changing a
+``fixtures/tour-quality-standard/01-standard.md``. Read it before changing a
 number here; every threshold there is either MEASURED, INHERITED from the engine, or
 CITED to professional audio-guide practice, and says which.
 

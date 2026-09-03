@@ -8,13 +8,13 @@ window grammar as the opening-hours pass (``_TIME_RE`` is imported, not restated
 "what is a valid HH:MM" keeps exactly one definition). It is a separate script because
 it answers a DIFFERENT QUESTION (the header rule in ``scripts/poi_visit_duration.py``):
 not how long a place absorbs a visitor, not when its door is open, but how long the
-LINE in front of that door costs — a fourth kind of time
-(specs/2026-08-07-tour-algorithm-redesign/01-design.md:178-184, §3.3): "a queue is
-priced separately, by hour and season, it belongs to the day rather than to the
-building, and it is excluded entirely under `wall`".
+LINE in front of that door costs — a fourth kind of time (the redesign's §3.3;
+its spec tree is retired — git history): "a queue is priced separately, by hour
+and season, it belongs to the day rather than to the building, and it is
+excluded entirely under `wall`".
 
-WHAT IT PRODUCES, per POI in ``data/{slug}/poi-raw.json``
-(specs/2026-08-07-tour-algorithm-redesign/01-design.md:369, data row 6.5):
+WHAT IT PRODUCES, per POI in ``data/{slug}/poi-raw.json`` (the redesign's data
+row 6.5):
 
 ``queue_class``           ``none | short | long | unpredictable``. ``none`` means no
                           line exists to stand in — a street, a bridge, a square, an

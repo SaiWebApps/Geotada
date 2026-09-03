@@ -940,8 +940,8 @@ def _nav_walk_minutes(leg_seconds: int) -> int:
     Not a separate display-pace constant — the same leg-seconds the engine
     budgets everywhere else (routed Valhalla seconds when present, else the
     pace-corrected haversine fallback; see ``_segment_leg_seconds``). The
-    underlying 3 km/h tourist pace itself stays a tracked open question
-    (specs/2026-06-13-tour-planner-canonical/GOLDEN-GAP-DIAGNOSTIC.md:209-231).
+    underlying tourist pace itself stays a tracked open question (the planner
+    diagnostic that tracks it lives in git history — its spec tree is retired).
     """
     return round(leg_seconds / 60) if leg_seconds and leg_seconds > 0 else 0
 

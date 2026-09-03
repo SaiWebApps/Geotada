@@ -5,7 +5,7 @@ deploy seam, so nothing here spends an Anthropic credit or touches the network /
 a real deploy. London bbox = [51.28, 51.7, -0.51, 0.33]; its committed connector
 fixtures live under tests/fixtures/onboard/london/.
 
-Run one file: make test-file-local FILE=tests/test_onboard_api.py
+Run one file: make test-file FILE=tests/test_onboard_api.py
 """
 
 from __future__ import annotations

@@ -35,8 +35,8 @@ def route_script_to_stops(
     Pure function — no DB, no engine run. Each ScriptPOI becomes one stop in route
     order; ALL of its beats are kept (`beat_ids`) with `primary_beat_id` = the first
     (so single-beat read paths still work); the per-stop lens is the dominant lens of
-    its beats (computed, not fabricated). See
-    specs/2026-06-12-tour-algorithm-decision/M0b-DESIGN.md.
+    its beats (computed, not fabricated). Per the M0b design (its spec tree is
+    retired — git history).
 
     THE CLOCK IS NOT SPELLED HERE (Phase 5 S5.10). ``clocks`` is poi id -> "HH:MM"
     from THE one expression (`src.tour.contingency.stop_clocks`, walks and priced
@@ -144,8 +144,8 @@ def create_trip_with_stops(
       `beat_ids` (engine narration order), `primary_beat_id` (= beat_ids[0],
       for single-beat read paths), the stop's dominant `lens_name` (nullable),
       and the stitched per-stop `narration` (Phase 1, Step 1.2; nullable — a
-      null/absent value is simply not stored). See
-      specs/2026-06-12-tour-algorithm-decision/M0b-DESIGN.md.
+      null/absent value is simply not stored). Per the M0b design (its spec
+      tree is retired — git history).
 
     Phase 4 (Step 4.6): ``tour_input_json`` (the RESOLVED engine input incl.
     lenses + start_time) and ``options_json`` (per flavour, the ORDERED poi id

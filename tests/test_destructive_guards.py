@@ -2,7 +2,7 @@
 
 Root cause these tests lock down (forensically confirmed): destructive code
 trusted the active ``NEO4J_URI`` with no localhost check, so with ``.env`` in
-cloud mode, ``make clean-db`` / ``make setup`` / ``make upload-paris`` / pytest
+cloud mode, ``make db-reset`` / ``make setup`` / ``make deploy`` / pytest
 all hit production. The guards below refuse a non-local target and — critically
 — fire BEFORE any driver/session is opened, so they protect even when Aura is
 unreachable or paused (no network call is needed to reject the op).

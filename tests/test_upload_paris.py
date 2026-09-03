@@ -217,7 +217,7 @@ class TestProvenanceUploadAndBackfill:
     def test_full_upload_preserves_audio_url_on_reupload(self, clean_driver):
         """A repo->graph re-deploy via the FULL upload path must NOT wipe live
         audio_url (it is stamped ON CREATE only); every other field re-syncs.
-        This makes `make deploy-cloud` / re-`upload` safe to run repeatedly."""
+        This makes `make deploy TARGET=cloud` / a re-deploy safe to run repeatedly."""
         self._seed_poi(clean_driver)
         beat = _provenance_beat("prov-audio", self.POI_NAME, with_fields=True)
         with clean_driver.session(database=get_database()) as s:

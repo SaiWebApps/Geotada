@@ -753,7 +753,7 @@ class TripAuthoredTourResponse(BaseModel):
     # not vibes. None when not composed. See tour.narration_quality.
     narration_quality: dict | None = None
     # THE QUALITY RUBRIC verdict for this tour — the mechanical floor of the tour
-    # quality standard (specs/2026-07-19-tour-quality-standard/01-standard.md), run
+    # quality standard (fixtures/tour-quality-standard/01-standard.md), run
     # on EVERY tour at $0. Carries {passed, blockers[], warnings[], stats{}}. A
     # failing verdict means the tour breached the standard (a rich POI starved to a
     # line, a stop gorged past the listenable cap, a repeated sentence) and the

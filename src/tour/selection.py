@@ -219,7 +219,7 @@ MIN_DWELL_AUDIO_SECONDS: int = 90
 # routing.beat_spoken_seconds converting at 150 wpm, this permitted 420*150/60 = 1050
 # words in a single stop -- 40% above the published 750-word cap
 # (src/tour/quality_rubric.py GORGE_MAX_WORDS_PER_STOP, sourced in
-# specs/2026-07-19-tour-quality-standard/01-standard.md from museum-sector practice).
+# fixtures/tour-quality-standard/01-standard.md from museum-sector practice).
 # Notre-Dame's MEASURED 1038-word stop was therefore the ceiling WORKING AS CONFIGURED,
 # not a cap failure. Tied to the word cap so the two can no longer drift:
 #     750 words / 150 wpm = 5.0 min = 300 s

@@ -18,10 +18,7 @@ Every public method degrades to the pure-math fallback —
 when Valhalla is unreachable or answers garbage, so the engine and the test
 suite work with no container running. A ``None`` polyline (route) or ``None``
 result (isochrone) is the caller's signal that the fallback produced the
-numbers; M2 surfaces that as ``TransitSegment.source``.
-
-Nothing consumes this module yet — M2 wires it into ``summarise_route`` and
-the contract. See specs/2026-06-12-tour-algorithm-decision/IMPLEMENTATION-PLAN.md M1/M2.
+numbers, which ``summarise_route`` surfaces as ``TransitSegment.source``.
 """
 
 from __future__ import annotations
@@ -58,8 +55,8 @@ _ROUTING_CONFIG = {
 }
 
 #: What each `TourInput.route_surface` axis value asks Valhalla for, per
-#: W2.1's live capability proof (redesign §2.4; plan S2.7;
-#: specs/2026-08-07-tour-algorithm-redesign/phase2-ledger.md): a real request
+#: W2.1's live capability proof (redesign §2.4; plan S2.7; the redesign's
+#: spec tree is retired — git history): a real request
 #: over the Rue Foyatier stairs (Place Saint-Pierre -> Sacre-Coeur forecourt)
 #: measurably swung the route around the butte under `step_penalty` alone
 #: (+878 m, +1060 s) and under `step_penalty` + `type: "wheelchair"` combined

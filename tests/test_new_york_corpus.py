@@ -4,7 +4,7 @@ New York is the second city loaded into the graph (slug ``new_york``). Because
 POIs MERGE on ``{name_key, city_name}`` and NarrativeBeats MERGE on ``beat_id``
 alone, a NY corpus that (a) leaks POIs outside the NY geofence or (b) reuses a
 Paris ``beat_id`` would silently corrupt the shared multi-city graph on upload.
-These guards catch both before ``make upload CITY=new_york`` ever runs.
+These guards catch both before ``make deploy CITY=new_york`` ever runs.
 
 Runs in <20ms with no DB.
 """

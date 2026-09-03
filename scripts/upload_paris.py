@@ -16,8 +16,7 @@ Creates:
   - TAGGED_WITH relationships (Beat → Lens)
 
 Usage:
-    make upload-paris                 # Paris (default)
-    make upload CITY=new_york         # any city in CITY_BBOX
+    make deploy CITY=paris            # any city in CITY_BBOX
     # or directly:
     python -m scripts.upload_paris new_york
 """
@@ -57,8 +56,9 @@ def _assert_upload_target_allowed(allow_cloud: bool) -> None:
     if host not in _LOCAL_HOSTS:
         raise SystemExit(
             f"REFUSING to upload against non-local NEO4J_URI={uri!r} (host={host!r}). "
-            f"This path overwrites live fields (audio_url='' etc.). Run `make use-local` "
-            f"first, or pass --allow-cloud to deliberately target Aura."
+            f"This path overwrites live fields (audio_url='' etc.). Point NEO4J_URI at "
+            f"the local database first (the local Make targets do), or pass "
+            f"--allow-cloud to deliberately target Aura."
         )
 
 

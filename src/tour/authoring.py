@@ -159,7 +159,7 @@ COMPOSE_MAX_OUTPUT_TOKENS = 64000
 # zero-retry is paid-and-lost, so the margin is deliberately wide.
 CERTIFICATION_COMPOSE_MAX_OUTPUT_TOKENS = 32_000
 
-# The LOCKED narrator voice (specs/2026-06-14-compose-narrator/): ONE warm,
+# The LOCKED narrator voice (its spec tree is retired — git history): ONE warm,
 # second-person narrator; the newcomer's curiosity captured as STRUCTURE;
 # lens = a register/diction dial on the one voice. Grounding is enforced by
 # VERIFY, but the prompt states the rules so attempt 1 usually passes.

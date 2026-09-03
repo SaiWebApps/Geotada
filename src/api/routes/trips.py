@@ -2756,7 +2756,7 @@ def _author_preview_impl(
     }
 
     # THE QUALITY RUBRIC — runs on EVERY tour, deterministic and $0. The mechanical
-    # floor of specs/2026-07-19-tour-quality-standard/01-standard.md: it catches the
+    # floor of fixtures/tour-quality-standard/01-standard.md: it catches the
     # two failures the corpus-vs-render comparison can prove (a rich POI STARVED to a
     # line, a stop GORGED past the listenable cap) plus repeats, empty stops and
     # imbalance. Surfaced to the editor rather than silently swallowed — a tour that
