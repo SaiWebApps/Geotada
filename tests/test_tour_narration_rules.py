@@ -903,14 +903,18 @@ def test_a_clock_shut_door_may_be_said_and_a_no_time_door_is_never_called_closed
 
 def test_a_route_with_no_door_map_renders_every_prompt_exactly_as_before():
     """The identity default: an empty ``visit_goes_inside`` map (a dateless or
-    legacy route) yields empty door_state everywhere and byte-identical
-    prompts — the compose seam never invents a door nobody priced."""
+    legacy route) renders byte-identical prompts — the compose seam never
+    invents a door nobody priced. The PROMPT is asserted first and alone: it
+    is the behavioural identity, meaningful on any tree (the QA undo test
+    flagged the field read below as API-coupled — it stays, second, as the
+    wiring check)."""
     from src.tour.authoring import _certification_compose_requests, _compose_user_prompt
 
     script, seq, route = _stitch_day(2, round_trip=False)
     _b, _s, requests = _certification_compose_requests(script, seq, route)
+    for request in requests.values():
+        assert "DOOR" not in _compose_user_prompt(request, 1, None)
     assert all(not r.door_state for r in requests.values())
-    assert "DOOR" not in _compose_user_prompt(requests[0], 1, None)
 
 
 # ---------------------------------------------------------------------------
