@@ -510,3 +510,86 @@ def test_every_prefix_is_decent_and_wrap_up_ends_with_a_close(served):
                 )
     assert versions_checked, "no version of any day was checked for its prefixes"
     assert stops_checked, "no stop was checked for its close (§5.3 measured nothing)"
+
+
+def _anchored_poi_ids(driver) -> set[str]:
+    """The graph ids of every place carrying reviewed anchors — read from the graph the
+    day was planned from, so the pin follows the data rather than a hardcoded list."""
+    with driver.session() as session:
+        return {
+            record["id"]
+            for record in session.run(
+                "MATCH (p:POI {city_name: 'paris'}) WHERE p.anchors IS NOT NULL RETURN p.id AS id"
+            )
+        }
+
+
+@needs_neo4j
+def test_no_leg_line_outlives_its_pair_and_every_reviewed_anchor_gets_its_chapter(
+    served, live_neo4j
+):
+    """S1 across the eleven: two things a walker cannot check for themselves.
+
+    A leg line names both its ends, so it is true of ONE pair. Every replan in the walk
+    re-orders the same stops, and the phone plays a leg file against whichever stop now
+    comes before — so on every version of every served day, a stop carrying leg words
+    records the stop it is actually walked to from. A line with no recorded pair predates
+    the field and is exempt: there is nothing to check it against.
+
+    And a place big enough to walk around in tells its named spots AT them. Where a
+    person reviewed an anchor, the story is cut there and the chapter rides the stop; a
+    stop with reviewed anchors and no chapters is telling the whole place from whichever
+    edge the walker came in by.
+
+    The narration is deliberately NOT scanned for standing words: measured across every
+    large Paris footprint, most are true — "crowning himself emperor here in 1804" is a
+    claim about the cathedral, true anywhere inside it. Only a claim the corpus tied to a
+    named spot is a distance claim, and which sentence came from which beat is not on the
+    wire. The stitch filter owns that rule and its own tests pin it.
+
+    UNDO: give a replan back the wholesale stop copy -> a re-ordered stop keeps the
+    predecessor it was written from -> RED. Take the anchors back off the graph -> a
+    reviewed place emits no chapters -> RED.
+    """
+    anchored_ids = _anchored_poi_ids(live_neo4j)
+    legs_checked = 0
+    anchored_checked = 0
+    versions_checked = 0
+    for name, trace in served.items():
+        days = [trace.session]
+        days += [step.reply for step in trace.walk if "refusal" not in step.reply]
+        if trace.final_session and "refusal" not in trace.final_session:
+            days.append(trace.final_session)
+        for day in days:
+            stops = day.get("stops", [])
+            if not stops:
+                continue
+            versions_checked += 1
+            for position, stop in enumerate(stops):
+                written_from = stop.get("leg_from_poi_id")
+                # Position 0 of a replanned tail is walked to from the stop the walker
+                # has already LEFT, which this reply no longer lists — its pair is real
+                # and simply not checkable from here. Every later stop's is.
+                if position and stop.get("leg_narration") and written_from is not None:
+                    legs_checked += 1
+                    walked_from = stops[position - 1]["poi_id"]
+                    assert written_from == walked_from, (
+                        f"{name}: {stop['poi_name']}'s leg line was written for the walk "
+                        f"from {written_from!r} and is now walked to from {walked_from!r} "
+                        "— it names an end nobody is coming from"
+                    )
+
+    for name, trace in served.items():
+        for stop in (trace.session or {}).get("stops", []):
+            if stop["poi_id"] in anchored_ids:
+                anchored_checked += 1
+                assert stop.get("segments"), (
+                    f"{name}: {stop['poi_name']} carries reviewed anchors but emitted no "
+                    "chapter — its named spots are being told from the footprint's edge"
+                )
+
+    assert versions_checked, "no served day to check"
+    assert legs_checked, (
+        "no leg line carried a recorded pair on any served day — the check would pass "
+        "vacuously, so the field is not reaching the wire"
+    )
