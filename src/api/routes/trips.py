@@ -2003,6 +2003,57 @@ def _releg_kept_stops(
     return out
 
 
+def _persist_releg_to_items(session, stops: list[GeneratedStop]) -> None:
+    """The re-legged lines land on the ITEMS, in the same request. Audio truth lives
+    on the items — the session GET overlays their current files onto the stops — so a
+    line rewritten only in the session json is un-dropped on the phone's very next
+    fetch: the item still holds the OLD text's file and the overlay serves it under
+    the new words. The hash is cleared with the url so the voicing pass treats the
+    corrected line as unmade rather than skipping it."""
+    session.run(
+        """
+        UNWIND $rows AS row
+        MATCH (item:ItineraryItem {id: row.item_id})
+        SET item.leg_narration = row.leg_narration,
+            item.leg_from_poi_id = row.leg_from_poi_id,
+            item.leg_audio_url = null,
+            item.leg_audio_duration_sec = null,
+            item.leg_audio_hash = null
+        """,
+        rows=[
+            {
+                "item_id": stop.stop_id,
+                "leg_narration": stop.leg_narration,
+                "leg_from_poi_id": stop.leg_from_poi_id,
+            }
+            for stop in stops
+        ],
+    )
+
+
+def _revoice_replanned_legs(driver: Driver, item_ids: list[str]) -> None:
+    """Voice the re-legged lines off the live path — the `_finish_session_set`
+    mould: a fresh session from the driver, through the one session-line voicing
+    pass, so the corrected words have their file before the walker reaches the leg
+    when the machine is quick, and the leg stays silent rather than wrong when it
+    is not."""
+    from src.api.routes.audio import _voice_session_lines  # circular at module load
+
+    with driver.session() as session:
+        rows = session.run(
+            "MATCH (item:ItineraryItem) WHERE item.id IN $ids "
+            "RETURN item.id AS stop_id, item.leg_narration AS leg_narration, "
+            "       item.leg_audio_url AS leg_audio_url, "
+            "       item.leg_audio_hash AS leg_audio_hash",
+            ids=item_ids,
+        ).data()
+        for row in rows:
+            if row["leg_narration"]:
+                _voice_session_lines(
+                    session, row, provider_name=None, voice_id=None, force=False
+                )
+
+
 @router.post("/trips/{trip_id}/session/replan", response_model=SessionPlan)
 @_reports_degradations
 def replan_trip_session(
@@ -2094,15 +2145,19 @@ def replan_trip_session(
         record_routing_degradations(route, component="trips.replan_trip_session")
 
     by_poi = {st.poi_id: st for st in current.stops}
-    new_stops = _releg_kept_stops(
-        [
-            by_poi[p.id].model_copy(update={"sort_order": i + 1})
-            for i, p in enumerate(route.pois)
-            if p.id in by_poi
-        ],
-        route,
-        walked_in_from=visited[-1] if visited else None,
-    )
+    kept = [
+        by_poi[p.id].model_copy(update={"sort_order": i + 1})
+        for i, p in enumerate(route.pois)
+        if p.id in by_poi
+    ]
+    new_stops = _releg_kept_stops(kept, route, walked_in_from=visited[-1] if visited else None)
+    relegged = [
+        stop
+        for stop, was in zip(new_stops, kept, strict=True)
+        if stop.stop_id
+        and (stop.leg_narration, stop.leg_from_poi_id)
+        != (was.leg_narration, was.leg_from_poi_id)
+    ]
     plan_version = int(inputs["plan_version"] or 0) + 1
     # THE LIVE PATH IS THE DAY (W5.12, measured: the set is ~0.4 s per entry and the
     # planner ~1 s — the design's remedy is to narrow the live path). The reply
@@ -2144,6 +2199,11 @@ def replan_trip_session(
     write_trip_session(
         session, trip_id, plan_version=plan_version, session_json=session_plan.model_dump_json()
     )
+    if relegged:
+        _persist_releg_to_items(session, relegged)
+        background_tasks.add_task(
+            _revoice_replanned_legs, driver, [stop.stop_id for stop in relegged]
+        )
     background_tasks.add_task(
         _finish_session_set,
         driver,

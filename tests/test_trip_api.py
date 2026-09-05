@@ -1409,6 +1409,119 @@ class TestLivingSession:
             f"only the failing stop re-rolls: {day_calls}"
         )
 
+    def test_a_reordering_replan_rewrites_the_item_so_no_fetch_can_resurrect_the_stale_line(
+        self, client, live_neo4j, cutover_trip, monkeypatch, tmp_path
+    ):
+        """S1.M6 — the replanned line reaches the ITEM, where audio truth lives.
+
+        The session GET overlays the items' current audio onto the stops
+        (`_with_live_audio`), because audio facts live on the items. A replan that
+        rewrites a leg line only in the session json therefore un-drops itself on the
+        phone's very next fetch: the item still carries the OLD text's file, and the
+        overlay serves it over the cleared field. Sofia hears the stale walk again.
+
+        So a re-legged stop's new text and cleared audio are written to its item in the
+        same request, and the voicing pass is scheduled for exactly those items — the
+        `_finish_session_set` mould — so the corrected words get their file before the
+        walk when the machine is quick, and the leg is silent rather than wrong when it
+        is not. A stop whose pair still holds keeps its item byte-untouched: its audio
+        was paid for and its words are still true.
+
+        UNDO: skip the item write -> the overlay serves the stale file under the new
+        words -> RED here.
+        """
+        monkeypatch.setenv("AUDIO_STORAGE", "local")
+        monkeypatch.setenv("AUDIO_STORAGE_PATH", str(tmp_path))
+        # The fixture day's own two stops, PINNED (Theo's gesture), at the exact
+        # duration the planner names for the pinned pair: the same clean-composing
+        # beats with no room for a third stop. A pinned stop is a protected
+        # promise, so the replan must KEEP both and can only re-order them.
+        day_poi_ids = [st["poi_id"] for st in cutover_trip["stops"]]
+        assert len(day_poi_ids) >= 2, cutover_trip["stops"]
+        gen = client.post(
+            "/api/v1/trips/generate",
+            json=_body(NOLENS_PROFILE_ID, pinned_poi_ids=day_poi_ids, duration_min=109),
+        )
+        assert gen.status_code == 201, gen.text
+        trip_id = gen.json()["trip_id"]
+        composed = _compose(client, trip_id, _MarkerAuthoringExecutor())
+        assert composed.status_code == 200, composed.text
+        v1 = client.get(f"/api/v1/trips/{trip_id}/session").json()
+        stops = v1["stops"]
+        assert len(stops) >= 2, [st["poi_name"] for st in stops]
+        legged_items = [st["stop_id"] for st in stops if st["leg_narration"]]
+        assert legged_items, "premise: the composed day carries leg lines"
+        line_was = {st["stop_id"]: st["leg_narration"] for st in stops}
+        # The voiced state: every leg line already has its file on the ITEM.
+        with live_neo4j.session() as s:
+            s.run(
+                "MATCH (i:ItineraryItem) WHERE i.id IN $ids "
+                "SET i.leg_audio_url = 'file:///stale-' + i.id + '.mp3', "
+                "    i.leg_audio_duration_sec = 9.0",
+                ids=legged_items,
+            )
+
+        # Replanning from beside the LAST stop re-orders the kept day (measured on
+        # this corpus: the planner walks nearest-first from where the person stands).
+        # Beside the FAR stop, a street off its pin: from there the planner walks
+        # nearest-first, and with both stops protected it can only swap them.
+        far = stops[-1]
+        reply = client.post(
+            f"/api/v1/trips/{trip_id}/session/replan",
+            json={
+                "lat": far["lat"] + 0.0003,
+                "lng": far["lng"] + 0.0003,
+                "wall_elapsed_seconds": 15 * 60,
+                "tour_elapsed_seconds": 14 * 60,
+                "next_stop_index": 0,
+            },
+        )
+        assert reply.status_code == 200, reply.text
+        new_order = [st["poi_id"] for st in reply.json()["stops"]]
+        kept = set(new_order)
+        assert new_order != [st["poi_id"] for st in stops if st["poi_id"] in kept], (
+            f"premise: standing at the far end re-orders the kept stops — v1 "
+            f"{[st['poi_name'] for st in stops]} -> reply "
+            f"{[st['poi_name'] for st in reply.json()['stops']]}"
+        )
+
+        # THE PHONE'S NEXT FETCH — the overlay path, where the stale file used to
+        # come back. Every leg line either kept its own audio (pair unchanged) or
+        # was rewritten and carries anything but the old file.
+        fetched = client.get(f"/api/v1/trips/{trip_id}/session").json()
+        assert fetched["plan_version"] == reply.json()["plan_version"]
+        rewritten = 0
+        for position, st in enumerate(fetched["stops"]):
+            if position and st["leg_from_poi_id"] is not None and st["leg_narration"]:
+                assert st["leg_from_poi_id"] == fetched["stops"][position - 1]["poi_id"], (
+                    f"{st['poi_name']} is walked to from a stop its line was not written for"
+                )
+            if st["leg_narration"] != line_was.get(st["stop_id"]):
+                rewritten += 1
+                stale = f"file:///stale-{st['stop_id']}.mp3"
+                assert st["leg_audio_url"] != stale, (
+                    f"{st['poi_name']}: the overlay serves the OLD line's file under "
+                    f"the NEW words — {st['leg_narration']!r}"
+                )
+        assert rewritten, "premise: a re-ordering replan rewrites at least one leg line"
+
+        # The item is the source of truth: it carries the new words, and never the
+        # stale file beside them.
+        with live_neo4j.session() as s:
+            rows = s.run(
+                "MATCH (i:ItineraryItem) WHERE i.id IN $ids "
+                "RETURN i.id AS id, i.leg_narration AS text, i.leg_audio_url AS url",
+                ids=[st["stop_id"] for st in fetched["stops"] if st["stop_id"]],
+            ).data()
+        by_item = {st["stop_id"]: st for st in fetched["stops"]}
+        for row in rows:
+            served = by_item[row["id"]]
+            assert row["text"] == served["leg_narration"], (
+                f"the item and the wire disagree about {row['id']}'s leg words"
+            )
+            if served["leg_narration"] != line_was.get(row["id"]):
+                assert row["url"] != f"file:///stale-{row['id']}.mp3"
+
     def test_compose_rebuilds_the_day_under_the_surface_it_was_planned_with(
         self, client, live_neo4j, monkeypatch
     ):
