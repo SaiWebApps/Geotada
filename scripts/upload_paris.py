@@ -596,7 +596,11 @@ def main() -> None:
     bbox = CITY_BBOX[city_slug]
 
     db = get_database()
-    db_label = f"cloud ({db})" if db else "local"
+    # WHERE THE WRITE LANDS, from the same signal the cloud guard refuses on — the URI's
+    # host. `get_database()` returns the database NAME, which a local instance sets too
+    # ("neo4j"), so reading it made every local run announce itself as cloud.
+    host = urlparse(os.getenv("NEO4J_URI", "")).hostname or ""
+    db_label = "local" if host in _LOCAL_HOSTS else f"cloud ({db or host})"
     provenance_only = "--provenance-only" in sys.argv
     anchors_only = "--anchors-only" in sys.argv
     if provenance_only:

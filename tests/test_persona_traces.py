@@ -530,26 +530,29 @@ def test_no_leg_line_outlives_its_pair_and_every_reviewed_anchor_gets_its_chapte
 ):
     """S1 across the eleven: two things a walker cannot check for themselves.
 
-    A leg line names both its ends, so it is true of ONE pair. Every replan in the walk
-    re-orders the same stops, and the phone plays a leg file against whichever stop now
-    comes before — so on every version of every served day, a stop carrying leg words
-    records the stop it is actually walked to from. A line with no recorded pair predates
-    the field and is exempt: there is nothing to check it against.
+    A leg line names both its ends, so it is true of ONE pair. On every version of every
+    served day, a stop carrying leg words records the stop it is actually walked to from.
+    A line with no recorded pair predates the field and is exempt: there is nothing to
+    check it against.
 
     And a place big enough to walk around in tells its named spots AT them. Where a
     person reviewed an anchor, the story is cut there and the chapter rides the stop; a
     stop with reviewed anchors and no chapters is telling the whole place from whichever
     edge the walker came in by.
 
-    The narration is deliberately NOT scanned for standing words: measured across every
-    large Paris footprint, most are true — "crowning himself emperor here in 1804" is a
-    claim about the cathedral, true anywhere inside it. Only a claim the corpus tied to a
-    named spot is a distance claim, and which sentence came from which beat is not on the
-    wire. The stitch filter owns that rule and its own tests pin it.
+    WHAT THIS DOES NOT GUARD, measured rather than assumed. **No replan in these eleven
+    days ever re-orders the stops it keeps** — every scripted replan truncates from the
+    front, so the predecessor of a kept stop never changes and the re-leg rule is a
+    no-op on the whole trace corpus. Reduce `_releg_kept_stops` to `return stops` and
+    this test still passes. What it does pin is that the provenance reaches the wire and
+    stays consistent: blank the adapter's `leg_from_poi_id` and `legs_checked` falls to
+    zero, which is RED. The DROP-and-rewrite behaviour is guarded by the re-leg rule's
+    own unit tests, which construct the re-ordered day these personas never produce.
+    Closing this gap needs a persona whose day re-orders — a real gap, named here so the
+    next reader does not mistake this green for proof.
 
-    UNDO: give a replan back the wholesale stop copy -> a re-ordered stop keeps the
-    predecessor it was written from -> RED. Take the anchors back off the graph -> a
-    reviewed place emits no chapters -> RED.
+    UNDO: blank `leg_from_poi_id` in the adapter -> nothing carries provenance -> RED.
+    Take the anchors back off the graph -> a reviewed place emits no chapters -> RED.
     """
     anchored_ids = _anchored_poi_ids(live_neo4j)
     legs_checked = 0
