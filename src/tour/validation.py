@@ -392,14 +392,30 @@ def _cited_beat_corpus_text(script: Script, beat_sequence: BeatSequence) -> str:
 # route-free and there is ONE definition of every floor.
 # ---------------------------------------------------------------------------
 
-#: Arrived deixis — words only true standing AT the place (R2's own list: here,
-#: this, you're standing, look up). "From here" is the leg's START and is true
-#: where it plays (the final-destination template's own words).
-_ARRIVED_DEIXIS_RES: tuple[re.Pattern[str], ...] = (
+#: The STANDING-POSITION half of arrived deixis: words that claim a body is at a
+#: particular spot. On a leg they are wrong because the walker is moving; inside a
+#: place big enough to walk around in they are wrong by distance, which is what the
+#: stitch's proximity filter reads them for. "From here" is the leg's START and is
+#: true where it plays (the final-destination template's own words).
+_STANDING_POSITION_RES: tuple[re.Pattern[str], ...] = (
     re.compile(r"\byou'?re standing\b|\byou are standing\b", re.IGNORECASE),
     re.compile(r"\blook up\b", re.IGNORECASE),
     re.compile(r"(?<![Ff]rom )\bhere\b", re.IGNORECASE),
+)
+
+#: The REFERENT half: words that point at what the sentence is about. Wrong on a leg,
+#: where there is nothing yet to point at — but ordinary standing at a stop, however
+#: large ("follow this itinerary" claims no position), so the proximity filter reads
+#: only the half above.
+_REFERENT_DEIXIS_RES: tuple[re.Pattern[str], ...] = (
     re.compile(r"\bthis\b|\bthese\b", re.IGNORECASE),
+)
+
+#: Arrived deixis — words only true standing AT the place (R2's own list: here,
+#: this, you're standing, look up).
+_ARRIVED_DEIXIS_RES: tuple[re.Pattern[str], ...] = (
+    *_STANDING_POSITION_RES,
+    *_REFERENT_DEIXIS_RES,
 )
 
 #: A through-the-door line — legal ONLY where the wire says door=true (R2,

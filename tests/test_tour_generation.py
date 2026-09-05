@@ -11,6 +11,7 @@ import pytest
 
 from src.tour.contract import (
     POI,
+    Anchor,
     BeatRef,
     BeatSequence,
     PhysicalCue,
@@ -33,6 +34,7 @@ from src.tour.generation import (
     SPOKEN_WPM,
     SYNTHESIZED_OPENER,
     _area_article,
+    _drop_unplaceable_proximity_claims,
     _nav_walk_minutes,
     _segment_leg_seconds,
     _sum_audio,
@@ -2048,3 +2050,148 @@ def test_a_dropped_only_invitation_beat_is_not_reported_as_voiced():
         "a beat whose every sentence dropped at the shut door must not be "
         "reported as voiced"
     )
+
+
+# ---------------------------------------------------------------------------
+# S1.M2 — a claim that only a named spot can carry never plays from the whole
+# footprint. A place you walk IN is told from anywhere inside it, so a sentence
+# ABOUT THE PLACE is true at its edge; a sentence the corpus assigned to a named
+# spot inside it (the beat's own `sub_location`) is not, unless a reviewed anchor
+# gives that spot its own chapter to play in.
+# ---------------------------------------------------------------------------
+
+_WALL = Anchor(
+    label="The Mur des Fédérés",
+    sub_locations=("mur-des-federes",),
+    lat=48.85917,
+    lng=2.39722,
+    radius_m=40.0,
+    indoor=False,
+    basis="where a person stands to look at the wall",
+)
+
+
+def _big_poi(pid: str, *, radius: float, anchors: tuple[Anchor, ...] = ()) -> POI:
+    return _poi(pid).model_copy(update={"trigger_radius": radius, "anchors": anchors})
+
+
+def _seq(beats: tuple[BeatRef, ...], poi: POI) -> BeatSequence:
+    return BeatSequence(
+        poi_beats=(
+            POIBeats(
+                poi_id=poi.id,
+                poi_name=poi.name,
+                ordering_strategy="sub_location",
+                beats=beats,
+            ),
+        ),
+    )
+
+
+def _said(sentences: list[Sentence]) -> list[str]:
+    return [s.text for s in sentences]
+
+
+def test_a_claim_tied_to_an_unanchored_spot_never_plays_from_the_whole_footprint():
+    """The measured fault: a cemetery's arrival story, armed at the edge of a 500 m
+    footprint, telling you where to stand in a corridor you are half a kilometre from.
+
+    The beat carries `sub_location="columbarium"` and no reviewed anchor claims it, so
+    there is no chapter for it to play in and the sentence joins the arrival story. The
+    standing claim goes; the rest of the sentence stays.
+    """
+    poi = _big_poi("lachaise", radius=500.0)
+    beat = _beat("b-col", "lachaise", body="x", sub="columbarium")
+    sentences = [
+        Sentence(
+            text="Look up: the plaque is here, halfway along the first corridor. "
+            "The columbarium holds Maria Callas.",
+            source_id="b-col",
+            source_type="beat",
+            stop_idx=0,
+        )
+    ]
+    kept = _drop_unplaceable_proximity_claims(
+        sentences, _route((poi,)), _seq((beat,), poi)
+    )
+    assert _said(kept) == ["The columbarium holds Maria Callas."]
+
+
+def test_the_same_claim_stands_where_a_reviewed_anchor_gives_it_a_chapter():
+    """An anchored spot has its own place to be told at, so the claim is left alone —
+    the placement rule cuts it out of the arrival story into the anchor's chapter, where
+    standing words are true. The remedy for a dropped claim is a reviewed anchor, never
+    a rewritten fact."""
+    poi = _big_poi("lachaise", radius=500.0, anchors=(_WALL,))
+    beat = _beat("b-wall", "lachaise", body="x", sub="mur-des-federes")
+    text = "The Communards made their last stand here among the tombstones."
+    sentences = [
+        Sentence(text=text, source_id="b-wall", source_type="beat", stop_idx=0)
+    ]
+    kept = _drop_unplaceable_proximity_claims(
+        sentences, _route((poi,)), _seq((beat,), poi)
+    )
+    assert _said(kept) == [text]
+
+
+def test_a_claim_about_the_place_itself_is_true_anywhere_inside_it():
+    """Measured across every large-footprint Paris stop: a bare standing word is usually
+    TRUE at the edge — "Queues here can be very long" is true anywhere in the Eiffel
+    Tower's footprint. Only the beat's own sub_location distinguishes the two, so a beat
+    that names no spot is never touched."""
+    poi = _big_poi("eiffel", radius=500.0)
+    beat = _beat("b-place", "eiffel", body="x", sub=None)
+    text = "Queues here can be very long."
+    sentences = [
+        Sentence(text=text, source_id="b-place", source_type="beat", stop_idx=0)
+    ]
+    kept = _drop_unplaceable_proximity_claims(
+        sentences, _route((poi,)), _seq((beat,), poi)
+    )
+    assert _said(kept) == [text]
+
+
+def test_a_small_footprint_leaves_every_standing_word_alone():
+    """A door, a plaque, a bench: you are AT it or you are not inside it at all, so a
+    standing word cannot be wrong by distance. The identity default — a route of ordinary
+    places is untouched."""
+    poi = _big_poi("door", radius=10.0)
+    beat = _beat("b-door", "door", body="x", sub="the-portal")
+    text = "Look up at the tympanum here."
+    sentences = [Sentence(text=text, source_id="b-door", source_type="beat", stop_idx=0)]
+    kept = _drop_unplaceable_proximity_claims(
+        sentences, _route((poi,)), _seq((beat,), poi)
+    )
+    assert _said(kept) == [text]
+
+
+def test_pointing_at_a_subject_is_not_claiming_to_stand_beside_it():
+    """`this`/`these` point at what the sentence is about and stay legal at a stop; only
+    the standing-position half of the arrived-deixis vocabulary is a distance claim.
+    Measured: including the referent half here would fire on legitimate prose like "you
+    can then follow this itinerary"."""
+    poi = _big_poi("lachaise", radius=500.0)
+    beat = _beat("b-this", "lachaise", body="x", sub="columbarium")
+    text = "This itinerary takes in the famous graves."
+    sentences = [Sentence(text=text, source_id="b-this", source_type="beat", stop_idx=0)]
+    kept = _drop_unplaceable_proximity_claims(
+        sentences, _route((poi,)), _seq((beat,), poi)
+    )
+    assert _said(kept) == [text]
+
+
+def test_a_leg_line_keeps_its_own_floor_and_is_never_touched_here():
+    """Walk-concurrent sentences play on the leg, where the arrived-deixis floor already
+    refuses standing words. Exempt exactly as the shut-door filter exempts them, so one
+    sentence is never judged by two rules."""
+    poi = _big_poi("lachaise", radius=500.0)
+    beat = _beat("b-leg", "lachaise", body="x", sub="columbarium")
+    text = "You're standing at the gate; walk on."
+    sentences = [
+        Sentence(text=text, source_id=GLUE_NAV, source_type="glue", stop_idx=0),
+        Sentence(text=text, source_id="b-leg", source_type="beat", stop_idx=0),
+    ]
+    kept = _drop_unplaceable_proximity_claims(
+        sentences, _route((poi,)), _seq((beat,), poi)
+    )
+    assert _said(kept) == [text], "the leg line stays, the stationary claim goes"
