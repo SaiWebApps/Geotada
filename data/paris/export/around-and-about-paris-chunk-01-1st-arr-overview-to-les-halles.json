@@ -735,7 +735,32 @@
       ]
     ],
     "queue_basis": "Security into the glass pyramid, then ticket gates, produce a substantial line at midday; timed tickets shorten but do not remove it, and off-peak means opening or late afternoon.",
-    "anchors": null
+    "anchors": [
+      {
+        "label": "The Pyramid courtyard",
+        "sub_locations": [
+          "pyramid-courtyard",
+          "cour-napoleon-pyramid"
+        ],
+        "lat": 48.8609,
+        "lng": 2.3358,
+        "radius_m": 60.0,
+        "indoor": false,
+        "basis": "Cour Napoleon is where a person stands back from the glass pyramid to take the palace's three wings in at once; the corpus's pyramid beats are told facing it. Half the footprint covers the courtyard between the wings."
+      },
+      {
+        "label": "The Carrousel du Louvre",
+        "sub_locations": [
+          "carrousel-du-louvre",
+          "underground-entrance"
+        ],
+        "lat": 48.86105,
+        "lng": 2.33555,
+        "radius_m": 25.0,
+        "indoor": true,
+        "basis": "The underground mall runs beneath the courtyard; a person inside it stands under the inverted glass skylight where the corpus's fashion-show and entrance beats belong. Indoor: offered on the screen, the tap plays it — GPS decides nothing under the ground."
+      }
+    ]
   },
   {
     "name": "Paris Catacombs",

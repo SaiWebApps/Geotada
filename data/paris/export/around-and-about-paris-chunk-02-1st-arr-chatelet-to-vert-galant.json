@@ -409,7 +409,19 @@
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
     "queue_basis": "An open public square with no interior, door, or ticket, so there is no line to stand in.",
-    "anchors": null
+    "anchors": [
+      {
+        "label": "The obelisk",
+        "sub_locations": [
+          "obelisk"
+        ],
+        "lat": 48.8656,
+        "lng": 2.32122,
+        "radius_m": 60.0,
+        "indoor": false,
+        "basis": "The Luxor obelisk is the centre of the square and the corpus speaks of the very spot where Louis XVI was beheaded; a person stands on the traffic island around its pedestal to look up at the hieroglyphs and the gold pictures. Sixty metres covers the island and the crossings onto it and keeps the claim off the square's outer footways half a footprint away."
+      }
+    ]
   },
   {
     "name": "Pont Neuf",
@@ -473,6 +485,18 @@
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
     "queue_basis": "A public bridge with no door and no ticket; the whole value stands in the open and there is no line.",
-    "anchors": null
+    "anchors": [
+      {
+        "label": "Place Dauphine",
+        "sub_locations": [
+          "place-dauphine"
+        ],
+        "lat": 48.85641,
+        "lng": 2.34246,
+        "radius_m": 60.0,
+        "indoor": false,
+        "basis": "The triangular square opens off the bridge's mid-river terrace behind the Henri IV statue; a person steps off the bridge and stands inside the triangle to look at the brick-and-stone houses the corpus tells. Half the footprint reaches from the statue's steps into the square."
+      }
+    ]
   }
 ]

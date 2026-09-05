@@ -1403,6 +1403,18 @@
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
     "queue_basis": "A public bridge with no door and no ticket; the whole value stands in the open and there is no line.",
-    "anchors": null
+    "anchors": [
+      {
+        "label": "Place Dauphine",
+        "sub_locations": [
+          "place-dauphine"
+        ],
+        "lat": 48.85641,
+        "lng": 2.34246,
+        "radius_m": 60.0,
+        "indoor": false,
+        "basis": "The triangular square opens off the bridge's mid-river terrace behind the Henri IV statue; a person steps off the bridge and stands inside the triangle to look at the brick-and-stone houses the corpus tells. Half the footprint reaches from the statue's steps into the square."
+      }
+    ]
   }
 ]

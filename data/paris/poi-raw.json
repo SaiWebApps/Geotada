@@ -126,7 +126,20 @@
         "17:00"
       ]
     ],
-    "queue_basis": "Airport-style security screening at the base perimeter plus separate lift-ticket lines feed a small number of elevators, so even timed tickets leave a substantial wait that worsens in summer midday, dropping only near opening or late evening."
+    "queue_basis": "Airport-style security screening at the base perimeter plus separate lift-ticket lines feed a small number of elevators, so even timed tickets leave a substantial wait that worsens in summer midday, dropping only near opening or late evening.",
+    "anchors": [
+      {
+        "label": "The base",
+        "sub_locations": [
+          "base"
+        ],
+        "lat": 48.85809,
+        "lng": 2.29469,
+        "radius_m": 40.0,
+        "indoor": false,
+        "basis": "The esplanade under the four feet is where the queues form and where a person stands to look straight up through the lattice; the corpus's queue and security lines are about this esplanade. Half the footprint, as a place you look at demands."
+      }
+    ]
   },
   {
     "name": "Louvre Museum",
@@ -250,7 +263,33 @@
         "15:00"
       ]
     ],
-    "queue_basis": "Security into the glass pyramid, then ticket gates, produce a substantial line at midday; timed tickets shorten but do not remove it, and off-peak means opening or late afternoon."
+    "queue_basis": "Security into the glass pyramid, then ticket gates, produce a substantial line at midday; timed tickets shorten but do not remove it, and off-peak means opening or late afternoon.",
+    "anchors": [
+      {
+        "label": "The Pyramid courtyard",
+        "sub_locations": [
+          "pyramid-courtyard",
+          "cour-napoleon-pyramid"
+        ],
+        "lat": 48.8609,
+        "lng": 2.3358,
+        "radius_m": 60.0,
+        "indoor": false,
+        "basis": "Cour Napoleon is where a person stands back from the glass pyramid to take the palace's three wings in at once; the corpus's pyramid beats are told facing it. Half the footprint covers the courtyard between the wings."
+      },
+      {
+        "label": "The Carrousel du Louvre",
+        "sub_locations": [
+          "carrousel-du-louvre",
+          "underground-entrance"
+        ],
+        "lat": 48.86105,
+        "lng": 2.33555,
+        "radius_m": 25.0,
+        "indoor": true,
+        "basis": "The underground mall runs beneath the courtyard; a person inside it stands under the inverted glass skylight where the corpus's fashion-show and entrance beats belong. Indoor: offered on the screen, the tap plays it — GPS decides nothing under the ground."
+      }
+    ]
   },
   {
     "name": "Notre-Dame Cathedral",
@@ -1615,7 +1654,20 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An open public square with no interior, door, or ticket, so there is no line to stand in."
+    "queue_basis": "An open public square with no interior, door, or ticket, so there is no line to stand in.",
+    "anchors": [
+      {
+        "label": "The obelisk",
+        "sub_locations": [
+          "obelisk"
+        ],
+        "lat": 48.8656,
+        "lng": 2.32122,
+        "radius_m": 60.0,
+        "indoor": false,
+        "basis": "The Luxor obelisk is the centre of the square and the corpus speaks of the very spot where Louis XVI was beheaded; a person stands on the traffic island around its pedestal to look up at the hieroglyphs and the gold pictures. Sixty metres covers the island and the crossings onto it and keeps the claim off the square's outer footways half a footprint away."
+      }
+    ]
   },
   {
     "name": "Trocadero",
@@ -2106,7 +2158,21 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "The arcaded gardens are a public open space entered through open gateways with no ticket or screening, so visitors walk straight in."
+    "queue_basis": "The arcaded gardens are a public open space entered through open gateways with no ticket or screening, so visitors walk straight in.",
+    "anchors": [
+      {
+        "label": "The Cour d'Honneur",
+        "sub_locations": [
+          "cour-d-honneur",
+          "Cour d'Honneur"
+        ],
+        "lat": 48.8637,
+        "lng": 2.3372,
+        "radius_m": 50.0,
+        "indoor": false,
+        "basis": "The colonnaded court with the Buren columns is the palace's own forecourt; a person stands among the striped stumps to look back at the facades. Half the footprint covers the court and its gates and stops short of the garden galleries."
+      }
+    ]
   },
   {
     "name": "Place des Vosges",
@@ -2187,7 +2253,20 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An open public square entered from the street on all sides with no door or ticket, so there is nothing to queue for."
+    "queue_basis": "An open public square entered from the street on all sides with no door or ticket, so there is nothing to queue for.",
+    "anchors": [
+      {
+        "label": "The garden",
+        "sub_locations": [
+          "square-center-park"
+        ],
+        "lat": 48.8555,
+        "lng": 2.3656,
+        "radius_m": 30.0,
+        "indoor": false,
+        "basis": "The fenced garden inside the arcades is where the corpus sends a person to find a bench near the children's play area and watch; you stand or sit among the lawns and fountains, not under the arcades. Thirty metres round the centre covers the benches and fountains and stops short of the arcade walks."
+      }
+    ]
   },
   {
     "name": "Pont Neuf",
@@ -2266,7 +2345,20 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A public bridge with no door and no ticket; the whole value stands in the open and there is no line."
+    "queue_basis": "A public bridge with no door and no ticket; the whole value stands in the open and there is no line.",
+    "anchors": [
+      {
+        "label": "Place Dauphine",
+        "sub_locations": [
+          "place-dauphine"
+        ],
+        "lat": 48.85641,
+        "lng": 2.34246,
+        "radius_m": 60.0,
+        "indoor": false,
+        "basis": "The triangular square opens off the bridge's mid-river terrace behind the Henri IV statue; a person steps off the bridge and stands inside the triangle to look at the brick-and-stone houses the corpus tells. Half the footprint reaches from the statue's steps into the square."
+      }
+    ]
   },
   {
     "name": "Pont Alexandre III",
@@ -3410,6 +3502,17 @@
         "radius_m": 35.0,
         "indoor": false,
         "basis": "Epstein's winged figure stands alone on the avenue Carette in division 89, a quarter of a kilometre north of the Communards' wall — far enough that nobody at the wall hears it by accident, which is what Julien's ordering asks for. Thirty-five metres covers the avenue in front of the monument, where a person stands back far enough to see the whole of it, and the rows either side."
+      },
+      {
+        "label": "The columbarium",
+        "sub_locations": [
+          "columbarium"
+        ],
+        "lat": 48.8606,
+        "lng": 2.3942,
+        "radius_m": 40.0,
+        "indoor": false,
+        "basis": "The crematorium and its columbarium corridors sit just north-east of the main rond-point, and the corpus beat directs the visitor along the first corridor of the lower level; a person stands in the forecourt between the pavilions to take the building in before going down. Forty metres round the forecourt covers the entrances to the corridors and stops well short of the Piaf and Wilde anchors further east."
       }
     ]
   },
@@ -19747,7 +19850,20 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "An open public greensward with no gate or ticket; visitors walk on freely from any side."
+    "queue_basis": "An open public greensward with no gate or ticket; visitors walk on freely from any side.",
+    "anchors": [
+      {
+        "label": "The central lawn",
+        "sub_locations": [
+          "central-lawn"
+        ],
+        "lat": 48.8556,
+        "lng": 2.2986,
+        "radius_m": 75.0,
+        "indoor": false,
+        "basis": "The long axis of lawn between the tree lines is where the Revolution's festivals were staged and where a person stands back to look at the tower framed by the park. Half the footprint: you take the lawn in from anywhere along its middle, not from one blade of grass."
+      }
+    ]
   },
   {
     "name": "Parc Monceau",

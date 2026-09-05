@@ -1106,7 +1106,20 @@
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
     "queue_basis": "The arcaded gardens are a public open space entered through open gateways with no ticket or screening, so visitors walk straight in.",
-    "anchors": null
+    "anchors": [
+      {
+        "label": "The Cour d'Honneur",
+        "sub_locations": [
+          "cour-d-honneur",
+          "Cour d'Honneur"
+        ],
+        "lat": 48.8637,
+        "lng": 2.3372,
+        "radius_m": 50.0,
+        "indoor": false,
+        "basis": "The colonnaded court with the Buren columns is the palace's own forecourt; a person stands among the striped stumps to look back at the facades. Half the footprint covers the court and its gates and stops short of the garden galleries."
+      }
+    ]
   },
   {
     "name": "Saint-Germain-l'Auxerrois",

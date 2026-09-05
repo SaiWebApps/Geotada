@@ -379,7 +379,19 @@
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
     "queue_basis": "An open public square entered from the street on all sides with no door or ticket, so there is nothing to queue for.",
-    "anchors": null
+    "anchors": [
+      {
+        "label": "The garden",
+        "sub_locations": [
+          "square-center-park"
+        ],
+        "lat": 48.8555,
+        "lng": 2.3656,
+        "radius_m": 30.0,
+        "indoor": false,
+        "basis": "The fenced garden inside the arcades is where the corpus sends a person to find a bench near the children's play area and watch; you stand or sit among the lawns and fountains, not under the arcades. Thirty metres round the centre covers the benches and fountains and stops short of the arcade walks."
+      }
+    ]
   },
   {
     "name": "Musee Victor Hugo",

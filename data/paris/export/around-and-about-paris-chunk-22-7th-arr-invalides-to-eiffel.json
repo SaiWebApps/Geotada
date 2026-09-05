@@ -495,7 +495,19 @@
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
     "queue_basis": "An open public greensward with no gate or ticket; visitors walk on freely from any side.",
-    "anchors": null
+    "anchors": [
+      {
+        "label": "The central lawn",
+        "sub_locations": [
+          "central-lawn"
+        ],
+        "lat": 48.8556,
+        "lng": 2.2986,
+        "radius_m": 75.0,
+        "indoor": false,
+        "basis": "The long axis of lawn between the tree lines is where the Revolution's festivals were staged and where a person stands back to look at the tower framed by the park. Half the footprint: you take the lawn in from anywhere along its middle, not from one blade of grass."
+      }
+    ]
   },
   {
     "name": "Les Invalides",
@@ -1037,6 +1049,18 @@
       ]
     ],
     "queue_basis": "Airport-style security screening at the base perimeter plus separate lift-ticket lines feed a small number of elevators, so even timed tickets leave a substantial wait that worsens in summer midday, dropping only near opening or late evening.",
-    "anchors": null
+    "anchors": [
+      {
+        "label": "The base",
+        "sub_locations": [
+          "base"
+        ],
+        "lat": 48.85809,
+        "lng": 2.29469,
+        "radius_m": 40.0,
+        "indoor": false,
+        "basis": "The esplanade under the four feet is where the queues form and where a person stands to look straight up through the lattice; the corpus's queue and security lines are about this esplanade. Half the footprint, as a place you look at demands."
+      }
+    ]
   }
 ]

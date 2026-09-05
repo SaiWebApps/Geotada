@@ -996,6 +996,17 @@
         "radius_m": 35.0,
         "indoor": false,
         "basis": "Epstein's winged figure stands alone on the avenue Carette in division 89, a quarter of a kilometre north of the Communards' wall — far enough that nobody at the wall hears it by accident, which is what Julien's ordering asks for. Thirty-five metres covers the avenue in front of the monument, where a person stands back far enough to see the whole of it, and the rows either side."
+      },
+      {
+        "label": "The columbarium",
+        "sub_locations": [
+          "columbarium"
+        ],
+        "lat": 48.8606,
+        "lng": 2.3942,
+        "radius_m": 40.0,
+        "indoor": false,
+        "basis": "The crematorium and its columbarium corridors sit just north-east of the main rond-point, and the corpus beat directs the visitor along the first corridor of the lower level; a person stands in the forecourt between the pavilions to take the building in before going down. Forty metres round the forecourt covers the entrances to the corridors and stops well short of the Piaf and Wilde anchors further east."
       }
     ]
   },
