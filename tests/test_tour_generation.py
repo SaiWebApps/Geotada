@@ -2195,12 +2195,21 @@ def test_a_leg_line_keeps_its_own_floor_and_is_never_touched_here():
     text = "You're standing at the gate; walk on."
     sentences = [
         Sentence(text=text, source_id=GLUE_NAV, source_type="glue", stop_idx=0),
-        Sentence(text=text, source_id="b-leg", source_type="beat", stop_idx=0),
+        # Two units, so dropping the claim trims the beat rather than silencing it —
+        # a silenced beat is restored by the rule above and would mask the exemption.
+        Sentence(
+            text=f"{text} The columbarium holds Maria Callas.",
+            source_id="b-leg",
+            source_type="beat",
+            stop_idx=0,
+        ),
     ]
     kept = _drop_unplaceable_proximity_claims(
         sentences, _route((poi,)), _seq((beat,), poi)
     )
-    assert _said(kept) == [text], "the leg line stays, the stationary claim goes"
+    assert _said(kept) == [text, "The columbarium holds Maria Callas."], (
+        "the leg line is untouched; the stationary claim beside it goes"
+    )
 
 
 def test_a_transit_beat_that_speaks_a_bearing_is_never_picked_for_the_leg():
@@ -2229,3 +2238,35 @@ def test_a_transit_beat_is_only_reusable_when_a_name_can_vouch_for_its_direction
     )
     assert _find_directional_transit_beat(stop) is None
     assert _find_directional_transit_beat(stop, prev_name="the square") is plain
+
+
+def test_the_filter_trims_a_beat_and_never_silences_one():
+    """A beat left with nothing to say has been deleted from the day, and it takes its
+    facts with it. The filters compose — a beat whose other sentence was already dropped
+    at the shut door arrives here one clause from vanishing — and the sub-location is not
+    a precise enough signal to spend a whole beat on: "you're standing in the most
+    fashionable square in Paris" is tagged to the garden and true anywhere in the square.
+    """
+    poi = _big_poi("vosges", radius=70.0)
+    beat = _beat("b-garden", "vosges", body="x", sub="square-center-park")
+    only = "You're standing in the most fashionable square in Paris."
+    kept = _drop_unplaceable_proximity_claims(
+        [Sentence(text=only, source_id="b-garden", source_type="beat", stop_idx=0)],
+        _route((poi,)),
+        _seq((beat,), poi),
+    )
+    assert _said(kept) == [only], "its last words are its only words"
+
+    # The same claim beside anything else is still trimmed: the beat keeps speaking.
+    pair = [
+        Sentence(text=only, source_id="b-garden", source_type="beat", stop_idx=0),
+        Sentence(
+            text="The arcades run all the way round.",
+            source_id="b-garden",
+            source_type="beat",
+            stop_idx=0,
+        ),
+    ]
+    assert _said(_drop_unplaceable_proximity_claims(
+        pair, _route((poi,)), _seq((beat,), poi)
+    )) == ["The arcades run all the way round."]

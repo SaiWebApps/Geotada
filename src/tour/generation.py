@@ -1423,7 +1423,8 @@ def _drop_unplaceable_proximity_claims(
         for plan in beat_sequence.poi_beats
         for beat in plan.beats
     }
-    out: list[Sentence] = []
+    trimmed: list[Sentence | None] = []
+    survivors: dict[str, int] = {}
     for sentence in sentences:
         anchored = large.get(sentence.stop_idx)
         sub = (
@@ -1437,7 +1438,9 @@ def _drop_unplaceable_proximity_claims(
             or sub in anchored
             or is_walk_concurrent(sentence, vignette_beat_ids)
         ):
-            out.append(sentence)
+            trimmed.append(sentence)
+            if sentence.source_type == "beat":
+                survivors[sentence.source_id] = survivors.get(sentence.source_id, 0) + 1
             continue
         units = split_sentences(sentence.text) or [sentence.text]
         kept = [
@@ -1446,10 +1449,29 @@ def _drop_unplaceable_proximity_claims(
             if not any(pattern.search(unit) for pattern in _STANDING_POSITION_RES)
         ]
         if len(kept) == len(units):
-            out.append(sentence)
+            trimmed.append(sentence)
+            survivors[sentence.source_id] = survivors.get(sentence.source_id, 0) + 1
         elif kept:
-            out.append(sentence.model_copy(update={"text": " ".join(kept)}))
-    return out
+            trimmed.append(sentence.model_copy(update={"text": " ".join(kept)}))
+            survivors[sentence.source_id] = survivors.get(sentence.source_id, 0) + 1
+        else:
+            trimmed.append(None)
+
+    # THIS FILTER TRIMS; IT NEVER SILENCES A BEAT. A beat left with nothing to say has
+    # been deleted from the day, and it takes its facts with it — the door filter's own
+    # rule ("a fact is never lost to the filter") read at the beat's scale. It matters
+    # because the filters compose: a beat whose other sentence was already dropped
+    # elsewhere arrives here one clause from vanishing. And the signal is not precise
+    # enough to spend a whole beat on — a beat tagged to a named spot may still make a
+    # claim about the WHOLE place ("you're standing in the most fashionable square in
+    # Paris" is true anywhere in it), which the sub-location alone cannot tell apart
+    # from a claim about the spot. Where the claim is all the beat has, the composed
+    # lane's placement floor remains the backstop.
+    return [
+        sentence if sentence is not None else original
+        for sentence, original in zip(trimmed, sentences, strict=True)
+        if sentence is not None or not survivors.get(original.source_id)
+    ]
 
 
 # ---------------------------------------------------------------------------
