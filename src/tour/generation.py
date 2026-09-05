@@ -180,6 +180,14 @@ FORWARD_SIGHT_PHRASES: tuple[str, ...] = (
 _COMPASS_RE = re.compile(
     r"\b(?:north|south)(?:-?(?:east|west))?\b|\b(?:east|west)\b", re.IGNORECASE
 )
+
+#: The narrative functions whose beats describe a WALK rather than a place. Their
+#: text is the one corpus claim that can be wrong about this route while being
+#: perfectly true of the guidebook's own: a place's facts hold whoever walks up to
+#: it, a direction does not. ONE definition, read by the pick and by the scan.
+TRANSIT_NARRATIVE_FUNCTIONS: frozenset[str] = frozenset(
+    {"transition", "transit", "navigation"}
+)
 _MINUTE_WORDS: dict[str, int] = {
     "one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6, "seven": 7,
     "eight": 8, "nine": 9, "ten": 10, "eleven": 11, "twelve": 12, "thirteen": 13,
@@ -1159,26 +1167,30 @@ def _find_directional_transit_beat(
     ``script_body`` (case-insensitive substring). Otherwise the beat's
     encoded direction does not match the actual route segment and
     using it would produce a geographically wrong opener.
+
+    Two refusals, both because a direction this code cannot verify is a direction
+    it must not speak. A beat that speaks COMPASS carries the bearing of the walk
+    its guidebook took — "exit at the north-east corner" is an instruction about
+    another route, and no name match makes it true of this one. And a call with no
+    names to check against has nothing to vouch for the beat at all. Either way the
+    caller falls through to the deterministic nav template, which names both ends,
+    speaks the routed minutes and cannot say a compass point.
     """
     skip = consumed or set()
     needles = [s for s in (prev_name, dest_name) if s]
+    if not needles:
+        return None
     for beat in stop.beats:
         if beat.id in skip:
             continue
-        nf = (beat.narrative_function or "").lower()
-        if nf not in {"transition", "transit", "navigation"}:
+        if (beat.narrative_function or "").lower() not in TRANSIT_NARRATIVE_FUNCTIONS:
             continue
-        if not needles:
-            return beat  # caller didn't ask for direction-awareness
         haystack = (f"{beat.trigger_address or ''} {beat.script_body or ''}").lower()
+        if _COMPASS_RE.search(haystack):
+            continue
         if any(n.lower() in haystack for n in needles):
             return beat
     return None
-
-
-def _find_transit_beat(stop: POIBeats, consumed: set[str] | None = None) -> BeatRef | None:
-    """Phase 7 deprecated alias — kept for backward import compat."""
-    return _find_directional_transit_beat(stop, consumed=consumed)
 
 
 # ---------------------------------------------------------------------------

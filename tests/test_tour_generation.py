@@ -35,6 +35,7 @@ from src.tour.generation import (
     SYNTHESIZED_OPENER,
     _area_article,
     _drop_unplaceable_proximity_claims,
+    _find_directional_transit_beat,
     _nav_walk_minutes,
     _segment_leg_seconds,
     _sum_audio,
@@ -554,7 +555,12 @@ def test_phase7_transit_rejects_wrong_direction_beat():
 
 
 def test_phase7_transit_accepts_directionally_consistent_beat():
-    """Transit beat whose origin substring matches `previous` is accepted."""
+    """Transit beat whose origin substring matches `previous` is accepted.
+
+    The body names its endpoints and no bearing: a name match says the beat describes
+    THIS segment, and a compass word would be refused on its own terms (S1.M3) whatever
+    the names say, so a fixture carrying both could not tell the two rules apart.
+    """
     p1 = _poi("p1", "Place du Tertre")
     p2 = _poi("p2", "Saint-Pierre")
     orient = _beat("orient-1", p1.id, body="Stand by the easels.", nf="stop_orientation")
@@ -562,7 +568,7 @@ def test_phase7_transit_accepts_directionally_consistent_beat():
     p2_transit = _beat(
         "p2-transit",
         p2.id,
-        body="Leave Place du Tertre by the southwest corner and step into Saint-Pierre.",
+        body="Leave Place du Tertre by the far corner and step into Saint-Pierre.",
         nf="transition",
     )
     p2_body = _beat("p2-body", p2.id, body="The little church is older than Sacré-Cœur.")
@@ -2195,3 +2201,31 @@ def test_a_leg_line_keeps_its_own_floor_and_is_never_touched_here():
         sentences, _route((poi,)), _seq((beat,), poi)
     )
     assert _said(kept) == [text], "the leg line stays, the stationary claim goes"
+
+
+def test_a_transit_beat_that_speaks_a_bearing_is_never_picked_for_the_leg():
+    """S1.M3: the refusal happens at the PICK, not at the report. A beat whose encoded
+    bearing cannot be verified against this route's own direction is not used, and the
+    leg falls through to the deterministic template — which names both ends, speaks the
+    routed minutes and cannot say a compass point."""
+    bearing = _beat(
+        "t-compass",
+        "b",
+        body="Leave Notre-Dame by the north portal and turn right.",
+        nf="transition",
+    )
+    stop = POIBeats(
+        poi_id="b", poi_name="B", ordering_strategy="narrative_function", beats=(bearing,)
+    )
+    assert _find_directional_transit_beat(stop, prev_name="Notre-Dame") is None
+
+
+def test_a_transit_beat_is_only_reusable_when_a_name_can_vouch_for_its_direction():
+    """Called with no names there is nothing to check the beat's direction against, so
+    it cannot be shown to describe this segment. The old fail-open returned it anyway."""
+    plain = _beat("t-plain", "b", body="Walk on to the square.", nf="transition")
+    stop = POIBeats(
+        poi_id="b", poi_name="B", ordering_strategy="narrative_function", beats=(plain,)
+    )
+    assert _find_directional_transit_beat(stop) is None
+    assert _find_directional_transit_beat(stop, prev_name="the square") is plain

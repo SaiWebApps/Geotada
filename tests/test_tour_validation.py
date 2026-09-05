@@ -27,13 +27,16 @@ from src.tour.validation import validate_script
 # ---------------------------------------------------------------------------
 
 
-def _beat(bid: str, *, body: str, lenses: tuple[str, ...] = ()) -> BeatRef:
+def _beat(
+    bid: str, *, body: str, lenses: tuple[str, ...] = (), nf: str | None = None
+) -> BeatRef:
     return BeatRef(
         id=bid,
         poi_id="p1",
         word_count=len(body.split()),
         lenses=lenses,
         script_body=body,
+        narrative_function=nf,
     )
 
 
@@ -787,3 +790,56 @@ def test_placement_floor_flags_a_fusion_that_crosses_playback_contexts():
         assert not any(code == "fused_across_playback_contexts" for _, code in hits), (
             sentence.text, hits,
         )
+
+
+# ---------------------------------------------------------------------------
+# S1.M3 — a transit beat's bearing is checked where it plays. The corpus is
+# canonical about what a place IS; it is not canonical about which way THIS
+# route runs. A guidebook's walking directions encode the walk the guidebook
+# took, and reused on a different segment they point the other way.
+# ---------------------------------------------------------------------------
+
+
+def test_a_transit_beat_that_speaks_compass_is_refused_like_any_other_leg_line():
+    """The measured shape: 15 of the corpus's 99 transit beats carry an absolute
+    bearing ("exit the square at the northwest corner"). They reach the walker as stop
+    text, so the glue-only compass scan never saw them and the ban that protects every
+    other leg line did not apply."""
+    beat = _beat("t1", body="Leave the square by its north-east corner.", nf="transition")
+    sentence = Sentence(
+        text="Leave the square by its north-east corner.",
+        source_id="t1",
+        source_type="beat",
+        stop_idx=1,
+    )
+    report = validate_script(_script([sentence]), _seq([beat]))
+    assert any(
+        code.startswith("leg_voice_compass:") for _s, code in report.forbidden_phrase_hits
+    ), report.forbidden_phrase_hits
+
+
+def test_a_story_beat_may_still_say_north_because_the_corpus_owns_its_facts():
+    """The exemption narrows to bearings on transit beats and nothing else: a beat that
+    tells you the north portal is where the kings stand is a fact about the building,
+    checked by editorial review, and never a direction to walk in."""
+    beat = _beat("s1", body="The north portal carries the Virgin.", nf="deepen")
+    sentence = Sentence(
+        text="The north portal carries the Virgin.",
+        source_id="s1",
+        source_type="beat",
+        stop_idx=1,
+    )
+    report = validate_script(_script([sentence]), _seq([beat]))
+    assert report.forbidden_phrase_hits == ()
+
+
+def test_a_transit_beat_without_a_bearing_is_left_alone():
+    beat = _beat("t2", body="Cross the road and carry on past the church.", nf="transition")
+    sentence = Sentence(
+        text="Cross the road and carry on past the church.",
+        source_id="t2",
+        source_type="beat",
+        stop_idx=1,
+    )
+    report = validate_script(_script([sentence]), _seq([beat]))
+    assert report.forbidden_phrase_hits == ()

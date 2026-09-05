@@ -39,6 +39,7 @@ from .generation import (
     FORWARD_SIGHT_PHRASES,
     GLUE_LABELS,
     GLUE_NAV,
+    TRANSIT_NARRATIVE_FUNCTIONS,
     is_walk_concurrent,
     split_sentences,
     spoken_minute_counts,
@@ -229,9 +230,24 @@ def _forbidden_phrase_hits(
             if name
         )
 
+    # A transit beat's BEARING is the one corpus claim that can be false on this
+    # route while being true of the walk its guidebook took: a place's facts hold
+    # for whoever walks up to it, a direction does not. The pick refuses these
+    # beats; this is the backstop that names one arriving by any other path.
+    transit_beat_ids = {
+        beat.id
+        for plan in beat_sequence.poi_beats
+        for beat in plan.beats
+        if (beat.narrative_function or "").lower() in TRANSIT_NARRATIVE_FUNCTIONS
+    }
+
     for sentence in script.script:
         if sentence.source_type == "beat":
-            continue  # corpus is canonical; only scan glue
+            # Corpus is canonical about what a place IS — only the bearing is scanned.
+            if sentence.source_id in transit_beat_ids:
+                for match in _COMPASS_RE.finditer(sentence.text):
+                    out.append((sentence, f"leg_voice_compass:{match.group(0).lower()}"))
+            continue
         lower = sentence.text.lower()
         for phrase in FORBIDDEN_PHRASES:
             if phrase in lower:
