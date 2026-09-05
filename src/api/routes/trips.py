@@ -2009,7 +2009,9 @@ def _persist_releg_to_items(session, stops: list[GeneratedStop]) -> None:
     line rewritten only in the session json is un-dropped on the phone's very next
     fetch: the item still holds the OLD text's file and the overlay serves it under
     the new words. The hash is cleared with the url so the voicing pass treats the
-    corrected line as unmade rather than skipping it."""
+    corrected line as unmade rather than skipping it. Skipping this write leaves the
+    item on the OLD words — and the background voicing then faithfully re-voices the
+    old line, so the day keeps speaking the walk nobody is taking in a fresh file."""
     session.run(
         """
         UNWIND $rows AS row

@@ -1427,8 +1427,11 @@ class TestLivingSession:
         is not. A stop whose pair still holds keeps its item byte-untouched: its audio
         was paid for and its words are still true.
 
-        UNDO: skip the item write -> the overlay serves the stale file under the new
-        words -> RED here.
+        UNDO, measured: skip the item write and the ITEM keeps the old words — the
+        background voicing then re-voices THOSE, so it is the item-vs-wire assertion
+        at the end that goes red (the wire serves new words over an item that never
+        got them), not the stale-url check alone. Give the replan back the wholesale
+        copy instead and the premise assertion goes red: nothing is rewritten at all.
         """
         monkeypatch.setenv("AUDIO_STORAGE", "local")
         monkeypatch.setenv("AUDIO_STORAGE_PATH", str(tmp_path))
