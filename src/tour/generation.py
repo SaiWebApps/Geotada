@@ -491,19 +491,12 @@ def generate(
     # line and its writer rewrites the stop; the stitched lane ships corpus
     # text with no writer, so the invitation is dropped here — at the one place
     # the stitch still holds the Route — and the story around it is kept.
-    _vignette_ids = frozenset(
-        beat.id for beats in beat_sequence.vignette_beats.values() for beat in beats
-    )
     sentences = _drop_door_lines_at_doorless_stops(
-        sentences, route, vignette_beat_ids=_vignette_ids
-    )
-    # THE PROXIMITY FILTER: inside a place you walk around in, the arrival story plays
-    # from the footprint's edge, so a claim the corpus tied to a named spot within it —
-    # with no reviewed anchor to be told at — is spoken from wherever the walker came
-    # in. Dropped here, at the one place the stitch still holds the Route, and the
-    # composed lane writes from this script so both lanes are covered by the one filter.
-    sentences = _drop_unplaceable_proximity_claims(
-        sentences, route, beat_sequence, vignette_beat_ids=_vignette_ids
+        sentences,
+        route,
+        vignette_beat_ids=frozenset(
+            beat.id for beats in beat_sequence.vignette_beats.values() for beat in beats
+        ),
     )
     # NOTE: same-beat NEAR-verbatim de-dup (suppress_same_beat_near_duplicates) is
     # deliberately NOT run here. It is token-similarity only (not claim-aware), and
@@ -1370,108 +1363,6 @@ def _drop_door_lines_at_doorless_stops(
         elif kept:
             out.append(sentence.model_copy(update={"text": " ".join(kept)}))
     return out
-
-
-#: Above this, a footprint is a place you walk AROUND IN rather than stand at, so
-#: where inside it you are standing is a real question the words can get wrong. Sixty
-#: metres is the width of a square — the distance at which a person still says "I am
-#: at the Orsay" of its forecourt. Deliberately its own number: `OWN_PLACE_RADIUS_M`
-#: happens to share the value but answers a different question (how close counts as
-#: reaching the place you named), and one constant serving both would couple them.
-LARGE_FOOTPRINT_M: float = 60.0
-
-
-def _drop_unplaceable_proximity_claims(
-    sentences: list[Sentence],
-    route: Route,
-    beat_sequence: BeatSequence,
-    *,
-    vignette_beat_ids: frozenset[str] = frozenset(),
-) -> list[Sentence]:
-    """Remove standing claims that a large place's arrival story cannot support.
-
-    A stop's arrival story arms at the edge of its footprint, so every word in it must
-    be true anywhere inside. That is fine for a claim about the PLACE ("queues here can
-    be very long"), and false for one the corpus assigned to a named spot inside it: a
-    500 m cemetery telling you where to stand in a corridor is half a kilometre wrong.
-
-    The corpus already separates the two — a beat's ``sub_location`` names the spot it
-    belongs to. A beat that names one has a reviewed anchor or it does not: with one,
-    the placement rule cuts it into that anchor's own chapter and the claim is true
-    where it plays; without one, there is nowhere for it to be told, so the standing
-    claim goes and the fact around it stays. The remedy is a reviewed anchor.
-
-    The standing vocabulary is validation's ``_STANDING_POSITION_RES`` — the same
-    definition the leg floor refuses these words by, so the two rules cannot drift.
-    The referent half (``this``/``these``) is deliberately not read here: it points at
-    a subject and claims no position. Walk-concurrent sentences are exempt exactly as
-    the shut-door filter exempts them — the leg has its own floor. Identity defaults
-    throughout: no large stop, no anchors data, or a beat naming no spot, and nothing
-    is touched.
-    """
-    from .validation import _STANDING_POSITION_RES  # validation imports this module
-
-    large: dict[int, frozenset[str]] = {
-        idx: frozenset(sub for anchor in poi.anchors for sub in anchor.sub_locations)
-        for idx, poi in enumerate(route.pois)
-        if float(poi.trigger_radius or 0.0) > LARGE_FOOTPRINT_M
-    }
-    if not large:
-        return sentences
-    sub_location_of = {
-        beat.id: beat.sub_location
-        for plan in beat_sequence.poi_beats
-        for beat in plan.beats
-    }
-    trimmed: list[Sentence | None] = []
-    survivors: dict[str, int] = {}
-    for sentence in sentences:
-        anchored = large.get(sentence.stop_idx)
-        sub = (
-            sub_location_of.get(sentence.source_id)
-            if sentence.source_type == "beat"
-            else None
-        )
-        if (
-            anchored is None
-            or not sub
-            or sub in anchored
-            or is_walk_concurrent(sentence, vignette_beat_ids)
-        ):
-            trimmed.append(sentence)
-            if sentence.source_type == "beat":
-                survivors[sentence.source_id] = survivors.get(sentence.source_id, 0) + 1
-            continue
-        units = split_sentences(sentence.text) or [sentence.text]
-        kept = [
-            unit
-            for unit in units
-            if not any(pattern.search(unit) for pattern in _STANDING_POSITION_RES)
-        ]
-        if len(kept) == len(units):
-            trimmed.append(sentence)
-            survivors[sentence.source_id] = survivors.get(sentence.source_id, 0) + 1
-        elif kept:
-            trimmed.append(sentence.model_copy(update={"text": " ".join(kept)}))
-            survivors[sentence.source_id] = survivors.get(sentence.source_id, 0) + 1
-        else:
-            trimmed.append(None)
-
-    # THIS FILTER TRIMS; IT NEVER SILENCES A BEAT. A beat left with nothing to say has
-    # been deleted from the day, and it takes its facts with it — the door filter's own
-    # rule ("a fact is never lost to the filter") read at the beat's scale. It matters
-    # because the filters compose: a beat whose other sentence was already dropped
-    # elsewhere arrives here one clause from vanishing. And the signal is not precise
-    # enough to spend a whole beat on — a beat tagged to a named spot may still make a
-    # claim about the WHOLE place ("you're standing in the most fashionable square in
-    # Paris" is true anywhere in it), which the sub-location alone cannot tell apart
-    # from a claim about the spot. Where the claim is all the beat has, the composed
-    # lane's placement floor remains the backstop.
-    return [
-        sentence if sentence is not None else original
-        for sentence, original in zip(trimmed, sentences, strict=True)
-        if sentence is not None or not survivors.get(original.source_id)
-    ]
 
 
 # ---------------------------------------------------------------------------

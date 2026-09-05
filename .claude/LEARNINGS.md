@@ -187,3 +187,17 @@ Five commands. Ten seconds. Non-negotiable.
 **Incident:** Two tracker rows in one run could not be flipped for reasons that had nothing to do with whether the work was done. One carried `make test` as its verification command: the tracker re-runs that command to verify a completion claim, so the box sat unflippable for hours while a cloud database — infrastructure that milestone never touched — refused the full bar. The other named a test that had only ever been *planned*: the name went into the row at planning time and was never written into the repo, so no run could ever satisfy it, and the row stayed `pending` long after the feature that satisfied it had shipped under different test names. In both cases the board lied about work that was finished and committed.
 
 **Rule:** An `issue-add --test-command` names the NARROWEST command that proves that milestone and that already runs — one test file, or one pytest node id. Never `make test` / `make audit`: the full bar answers "is the repo green", which is a different question from "is this milestone done", and it drags unrelated infrastructure into a completion claim. If the milestone's test lands under a different name than the plan guessed, re-point the row with `issue-set --id M{n} --test-command "…"` before claiming the step.
+
+## 23 — A filter that drops a sentence from continuous prose orphans what follows it
+
+Beat text is continuous prose: later sentences bind pronouns and definite references to
+subjects that earlier ones introduce. Any pass that removes a sentence for a property of
+that sentence alone — a phrase, a word, a claim — can leave the ones after it referring
+to nothing, or to the wrong thing. The failure is silent, reads as fluent English, and
+can invert a fact rather than merely lose one.
+
+So a sentence-level drop is only safe where the unit is self-contained: glue, a nav
+line, a licensed template. Removing a unit from inside a corpus beat needs the whole
+beat re-read, not the unit judged alone — and where a claim is wrong in place, the
+remedy is to give it somewhere true to be told (a reviewed anchor) rather than to cut it
+out from between its neighbours.
