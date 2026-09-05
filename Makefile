@@ -76,7 +76,7 @@ INVARIANT_TEST_FILES := tests/test_tour_invariants_live.py
 # needs_db tag comes only from fixture NAMES matching conftest's auto-tagger set —
 # so they run as their own concurrent track while the DB workers keep 7688/90/91.
 DEVGRAPH_TEST_FILES := tests/test_trip_api.py tests/test_persona_traces.py \
-	tests/test_tour_authoring_gates.py
+	tests/test_tour_authoring_gates.py tests/test_poi_anchors.py
 DEVGRAPH_IGNORES := $(foreach f,$(DEVGRAPH_TEST_FILES),--ignore=$(f))
 # Set by the `test` orchestrator, which scrubs __pycache__ ONCE before launching
 # its concurrent tracks: a per-recipe scrub while a sibling track's pytest is
@@ -670,6 +670,10 @@ fix-area-radii: ## Correct reviewed trigger radii locally. ARGS="--apply" writes
 backfill-provenance: ## Backfill beat provenance on the local dev graph.
 	@$(PREFLIGHT) --label backfill-provenance uv python-deps db-dev
 	@$(LOCAL_EXEC) uv run python -m scripts.upload_paris --provenance-only
+
+backfill-anchors: ## Backfill reviewed POI anchors onto the local dev graph. ARGS="<city>".
+	@$(PREFLIGHT) --label backfill-anchors uv python-deps db-dev
+	@$(LOCAL_EXEC) uv run python -m scripts.upload_paris --anchors-only $(ARGS)
 
 backfill-poi-role: ## Apply reviewed POI roles. ARGS="--apply --neo4j" writes locally.
 	@$(PREFLIGHT) --label backfill-poi-role $(PRE_PY) db-dev

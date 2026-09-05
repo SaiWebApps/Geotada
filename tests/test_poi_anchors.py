@@ -15,9 +15,11 @@ from pathlib import Path
 import pytest
 
 from scripts.sync_poi_exports import SYNCED_FIELDS
+from src.api.models.nodes import canonical_name_key
 from src.tour.contract import Anchor
 from src.tour.routing import haversine_m
 from src.tour.selection import _decode_anchors
+from tests.live_graph import open_dev_driver
 
 ROOT = Path(__file__).resolve().parent.parent
 POI_RAW = ROOT / "data" / "paris" / "poi-raw.json"
@@ -52,6 +54,57 @@ def _beat_sub_locations(poi_name: str) -> set[str]:
         for b in json.loads(BEATS.read_text())
         if b.get("poi_name") == poi_name and b.get("sub_location")
     }
+
+
+@pytest.fixture(scope="module")
+def live_neo4j():
+    driver = open_dev_driver()
+    if driver is None:
+        pytest.skip(
+            "The local Paris dev graph (localhost:7687) is unreachable. The anchor "
+            "guard reads the graph the app reads; run it through "
+            "`make test-file FILE=tests/test_poi_anchors.py`."
+        )
+    yield driver
+    driver.close()
+
+
+@pytest.mark.parametrize("poi", _anchored_records(), ids=lambda p: p["name"])
+def test_the_graph_carries_every_reviewed_anchor(poi: dict, live_neo4j) -> None:
+    """The reviewed anchors reach the graph the app actually reads.
+
+    The rules above bind the reviewed file and the export chunks. Neither is what
+    a tour reads: `place_anchors` takes `POI.anchors` off the corpus snapshot, and a
+    POI whose graph record carries no anchors is silently uncut — every sentence
+    written for a named spot inside it joins the arrival story and plays at the edge
+    of the whole footprint, which for a 500 m cemetery is half a kilometre from the
+    thing. There is no error to read: absence is the safe default everywhere else in
+    this rule, so only a guard can tell absence-by-review from absence-by-omission.
+    """
+    name_key = canonical_name_key(poi["name"])
+    with live_neo4j.session() as session:
+        record = session.run(
+            "MATCH (p:POI {name_key: $name_key, city_name: $city}) RETURN p.anchors AS anchors",
+            name_key=name_key,
+            city="paris",
+        ).single()
+    assert record is not None, f"{poi['name']} ({name_key}) is not in the graph at all"
+
+    graph = _decode_anchors(record["anchors"])
+    reviewed = [Anchor.model_validate(a) for a in poi["anchors"]]
+    assert [a.label for a in graph] == [a.label for a in reviewed], (
+        f"{poi['name']}: the graph carries {[a.label for a in graph]}, the reviewed "
+        f"record carries {[a.label for a in reviewed]} — a chapter can only play at an "
+        "anchor the graph knows about"
+    )
+    for got, want in zip(graph, reviewed, strict=True):
+        assert (got.lat, got.lng, got.radius_m, got.indoor) == (
+            want.lat,
+            want.lng,
+            want.radius_m,
+            want.indoor,
+        ), f"{poi['name']}/{want.label}: the graph's placement is not the reviewed one"
+        assert got.sub_locations == want.sub_locations, f"{poi['name']}/{want.label}"
 
 
 def test_notre_dame_s_anchors_are_placed_reviewed_and_inside_its_footprint():

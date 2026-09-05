@@ -400,6 +400,40 @@ def _backfill_provenance(session, beats: list[dict]) -> dict[str, int]:
     return {"updated": updated, "candidates": len(params)}
 
 
+def _backfill_anchors(session, pois: list[dict], city_name: str) -> dict[str, int]:
+    """Set ONLY ``p.anchors`` on existing POIs (match by the canonical name key).
+
+    The reviewed anchors are what cuts a big place's story into chapters told where a
+    person placed them; a POI whose graph record carries none is silently uncut, and
+    every sentence written for a named spot inside it plays at the edge of the whole
+    footprint instead. The full upload path re-syncs the whole corpus and plain-SETs
+    live fields (``beat.audio_url = ''``), so bringing reviewed anchors to an
+    already-uploaded graph must never go through it — the ``--provenance-only``
+    precedent, applied to POI data.
+    """
+    params = [
+        {
+            "name_key": canonical_name_key(poi["name"]),
+            "city_name": city_name,
+            "anchors": json.dumps(poi["anchors"], ensure_ascii=False),
+        }
+        for poi in pois
+        if isinstance(poi.get("anchors"), list) and poi["anchors"]
+    ]
+    if not params:
+        return {"updated": 0, "candidates": 0}
+    result = session.run(
+        """
+        UNWIND $pois AS poi
+        MATCH (p:POI {name_key: poi.name_key, city_name: poi.city_name})
+        SET p.anchors = poi.anchors
+        RETURN count(p) AS updated
+        """,
+        pois=params,
+    )
+    return {"updated": result.single()["updated"], "candidates": len(params)}
+
+
 def _upload_beats(session, beats: list[dict], city_name: str) -> dict[str, int]:
     """Upload NarrativeBeat nodes and link to POIs + Lenses via batched UNWIND.
 
@@ -548,8 +582,8 @@ def main() -> None:
     # must not reach create_driver() (protects even when Aura is paused).
     _assert_upload_target_allowed(allow_cloud)
 
-    # First non-flag arg is the city slug (flags like --allow-cloud/--provenance-only
-    # must never be misread as a city).
+    # First non-flag arg is the city slug (flags like --allow-cloud/--provenance-only/
+    # --anchors-only must never be misread as a city).
     positional = [a for a in sys.argv[1:] if not a.startswith("--")]
     city_slug = positional[0] if positional else "paris"
     if city_slug not in CITY_BBOX:
@@ -564,10 +598,32 @@ def main() -> None:
     db = get_database()
     db_label = f"cloud ({db})" if db else "local"
     provenance_only = "--provenance-only" in sys.argv
-    mode = "PROVENANCE BACKFILL" if provenance_only else f"{city_slug.upper()} DATA UPLOAD"
+    anchors_only = "--anchors-only" in sys.argv
+    if provenance_only:
+        mode = "PROVENANCE BACKFILL"
+    elif anchors_only:
+        mode = "ANCHOR BACKFILL"
+    else:
+        mode = f"{city_slug.upper()} DATA UPLOAD"
     print(f"\n{'='*60}")
     print(f"  {mode} → Neo4j [{db_label}]")
     print(f"{'='*60}\n")
+
+    if anchors_only:
+        # POI data: the beats gate below has nothing to say about it, and coupling
+        # the two would let an unrelated beats defect block an anchor backfill.
+        pois = _load_json(poi_file)
+        driver = create_driver()
+        try:
+            with driver.session(database=db) as session:
+                stats = _backfill_anchors(session, pois, city_slug)
+            print(
+                f"  {stats['updated']} of {stats['candidates']} reviewed places now carry "
+                f"their anchors in the graph"
+            )
+        finally:
+            driver.close()
+        return
 
     # AC-9: every integrity gate (grounding, verification-freshness, uniqueness,
     # status vocab) must pass before we touch the database. Fail fast, pre-connect.
