@@ -26,6 +26,7 @@ ItineraryStop _makeStop({
   double? audioDurationSec,
   String? closeText,
   String? legAudioUrl,
+  String? legNarration,
   List<StopSegment> segments = const [],
 }) {
   return ItineraryStop(
@@ -46,6 +47,7 @@ ItineraryStop _makeStop({
     audioDurationSec: audioDurationSec,
     closeText: closeText,
     legAudioUrl: legAudioUrl,
+    legNarration: legNarration,
     segments: segments,
     trigger: radiusM == null
         ? null
@@ -1137,6 +1139,58 @@ void main() {
       audio.simulateComplete();
       service.tick();
       expect(audio.currentBeatId, 'b2', reason: 'then the story starts');
+    });
+
+    // S1.M7 — ADR: silence over wrongness, and the corrected words on the
+    // SCREEN while the audio catches up. A replan rewrites a stale leg line and
+    // clears its file; until the voicing pass lands the new one, the leg piece
+    // is text with no url. The walk must not lose the direction to the gap: the
+    // words ride the screen for the whole leg, and go away on arrival. A leg
+    // whose file exists keeps today's behaviour: the file plays, no extra line.
+    test("a leg with words and no file shows the words on the screen for the "
+        "whole leg, and arrival clears them", () async {
+      final stops = [
+        _makeStop(sortOrder: 1, beatId: 'b1', lat: base, lng: 2.35, audioUrl: url,
+            radiusM: 20),
+        _makeStop(sortOrder: 2, beatId: 'b2', lat: base + 400 * degPerMeterLat, lng: 2.35,
+            audioUrl: url, radiusM: 20,
+            legNarration: 'Leaving Stop 1 behind, head for Stop 2, '
+                'about a 4-minute walk away.'),
+      ];
+      await service.startTour(stops);
+      gps.simulatePosition(base, 2.35); // arrive at stop 1: its story plays
+      audio.simulateComplete();
+      expect(service.currentStopIndex, 1);
+      expect(service.legTextLine, isNull,
+          reason: 'still inside stop 1: the walk has not begun');
+      gps.simulatePosition(base + 60 * degPerMeterLat, 2.35); // out: the leg
+      expect(audio.isPlaying, isFalse,
+          reason: 'no file: nothing plays, and nothing wrong plays');
+      expect(service.legTextLine,
+          'Leaving Stop 1 behind, head for Stop 2, about a 4-minute walk away.');
+      gps.simulatePosition(base + 200 * degPerMeterLat, 2.35);
+      expect(service.legTextLine, isNotNull,
+          reason: 'the words ride the screen for the whole leg');
+      gps.simulatePosition(base + 400 * degPerMeterLat, 2.35); // arrive
+      expect(service.legTextLine, isNull, reason: 'arrival clears the line');
+    });
+
+    test('a leg whose file exists plays it and shows no extra line', () async {
+      final stops = [
+        _makeStop(sortOrder: 1, beatId: 'b1', lat: base, lng: 2.35, audioUrl: url,
+            radiusM: 20),
+        _makeStop(sortOrder: 2, beatId: 'b2', lat: base + 400 * degPerMeterLat, lng: 2.35,
+            audioUrl: url, radiusM: 20,
+            legAudioUrl: 'https://cdn.ondoway.com/leg2.mp3',
+            legNarration: 'From Stop 1, make your way on to Stop 2.'),
+      ];
+      await service.startTour(stops);
+      gps.simulatePosition(base, 2.35);
+      audio.simulateComplete();
+      gps.simulatePosition(base + 60 * degPerMeterLat, 2.35);
+      expect(audio.currentBeatId, 'b2-leg');
+      expect(service.legTextLine, isNull,
+          reason: 'the file speaks for itself; the screen line is the fallback');
     });
 
     // Phase 7 S7.7 (B) — THE CHAPTERS (design §5.6 "segments"; W7.2 R4): a

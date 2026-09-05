@@ -634,6 +634,14 @@ class TourPlaybackService extends ChangeNotifier {
   /// sentence, on screen through the leg, spoken once at a standing seam.
   String? get threadLine => _threadLine;
 
+  /// The walking line of a leg whose FILE is absent, on the SCREEN for the
+  /// whole leg (ADR: a replan drops a stale line and rewrites its words; the
+  /// audio catches up in the background, and until it does the leg is silent
+  /// rather than wrong — but the person still gets the direction, in text).
+  /// Null while at a stop, and the moment the target's footprint is reached.
+  String? get legTextLine => _legTextLine;
+  String? _legTextLine;
+
   /// S6.6 (design §5.5; W6.2 R3, 9/11 by name): THE LINGER RULE — a linger
   /// OFFERS the full telling on the screen, silently; a TAP plays it. Never
   /// auto-play on stillness. The offer shows only at a standing seam INSIDE the
@@ -844,6 +852,7 @@ class TourPlaybackService extends ChangeNotifier {
     _clockNotices.clear();
     _closeLine = null;
     _threadLine = null;
+    _legTextLine = null;
     _closesPlayed.clear();
     _sentenceEndTimer?.cancel();
     _sentenceEndTimer = null;
@@ -943,6 +952,7 @@ class TourPlaybackService extends ChangeNotifier {
     _pieceStartedKey = null;
     _doorCutStop = null;
     _doorAdvance = false;
+    _legTextLine = null;
     _state = TourState.idle;
     _distanceToNext = null;
     _startedAt = null;
@@ -2038,15 +2048,32 @@ class TourPlaybackService extends ChangeNotifier {
   /// arms), never while anything plays, told once (a played key never replays).
   /// A leg piece completing advances nothing — its key is not the stop's.
   void _maybeStartLeg(ItineraryStop target, double lat, double lng) {
-    final url = target.legAudioUrl;
     final stopKey = _audioKeyOf(target);
-    if (url == null || stopKey == null) return;
+    if (stopKey == null) return;
     final legKey = '$stopKey-leg';
-    if (_played.contains(legKey) || _audioService.isPlaying) return;
-    if (_atPlace(target, lat, lng)) return;
+    if (_atPlace(target, lat, lng)) {
+      if (_legTextLine != null) {
+        _legTextLine = null; // arrived: the walking line's moment is over
+        notifyListeners();
+      }
+      return;
+    }
     if (_currentStopIndex > 0 && _atPlace(_stops[_currentStopIndex - 1], lat, lng)) {
       return; // still at the previous stop: its story, not the next walk
     }
+    final url = target.legAudioUrl;
+    if (url == null) {
+      // A leg with WORDS and no FILE — a replan rewrote the line and its audio
+      // has not caught up (or failed): the words ride the screen for the whole
+      // leg, and nothing plays. Silence over wrongness, direction over silence.
+      final text = target.legNarration;
+      if (text != null && text.isNotEmpty && _legTextLine != text) {
+        _legTextLine = text;
+        notifyListeners();
+      }
+      return;
+    }
+    if (_played.contains(legKey) || _audioService.isPlaying) return;
     _startTourClockIfNeeded(); // the first play starts the tour clock (R1.3)
     _audioService.play(legKey, url, title: target.poiName);
     notifyListeners();
@@ -2145,6 +2172,7 @@ class TourPlaybackService extends ChangeNotifier {
     if (stop.audioUrl != null) {
       _startTourClockIfNeeded(); // the first play starts the tour clock (R1.3)
       _threadLine = null; // the leg is over: the next story begins (S6.5)
+      _legTextLine = null;
       _doorCutStop = null; // a new piece: the old door's offer is spent (S7.6)
       _audioService.play(_audioKeyOf(stop)!, stop.audioUrl!, title: stop.poiName);
       _pieceStartedAt = _now(); // the outside seconds count from here (S7.6)

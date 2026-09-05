@@ -350,6 +350,16 @@ class _SessionLines extends StatelessWidget {
               key: const Key('session-close-line'),
               style: TextStyle(color: c.ink, fontSize: 15)),
         ),
+      // S1.M7: a leg whose words have no file yet — a replan rewrote the line
+      // and the audio is catching up — shows its walking line here instead of
+      // playing anything. The direction is never lost to the gap.
+      if (engine.legTextLine != null)
+        Padding(
+          padding: const EdgeInsets.only(top: 10),
+          child: Text(engine.legTextLine!,
+              key: const Key('session-leg-text-line'),
+              style: TextStyle(color: c.ink, fontSize: 15)),
+        ),
       // S6.5: the thread of the pair the session just made — on screen for the
       // whole leg, so the one lost on the move is waiting at the standstill.
       if (engine.threadLine != null)
