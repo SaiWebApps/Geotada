@@ -254,6 +254,13 @@ class GeneratedStop(BaseModel):
     #: stop's at the start, every later stop's once the walker leaves the previous
     #: footprint. None when the leg carries nothing; the file fields null until voiced.
     leg_narration: str | None = None
+    #: The stop this leg piece was written FROM — its line names both ends, so it is
+    #: true of ONE pair. A replan keeps the day's stops and re-orders them; a line
+    #: whose recorded predecessor is no longer the stop before this one describes a
+    #: walk nobody is taking, and is dropped rather than spoken. None on the first
+    #: stop (walked to from nowhere) and on an item written before the field existed,
+    #: where provenance is unknown rather than known-stale.
+    leg_from_poi_id: str | None = None
     leg_audio_url: str | None = None
     leg_audio_duration_sec: float | None = None
     #: Phase 7 S7.7 (B) (design §5.6 "segments"; W7.2 R4): a marquee's CHAPTERS — its

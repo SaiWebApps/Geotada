@@ -187,3 +187,36 @@ def test_stops_extra_beat_ids_default_empty_without_map():
     pois = [_poi("p1", "Eiffel Tower", tier=5, beat_ids=("b1",), dwell=600)]
     stops = route_script_to_stops(pois, {}, {})
     assert stops[0]["extra_beat_ids"] == []
+
+
+def test_a_leg_line_records_the_stop_it_was_written_from():
+    """S1.M4: a leg line names both its ends — "From X, make your way on to Y" — so it is
+    true of ONE pair and no other. A replan keeps the day's stops and re-orders them, and
+    without knowing which stop a line was written from there is no way to tell a line that
+    still fits from one now describing a walk nobody is taking.
+
+    The `thread_lines` precedent, applied to the leg: the adapter already walks the stops
+    in route order, so the predecessor is the previous ScriptPOI. The first stop has none.
+    """
+    pois = [
+        _poi("p1", "Eiffel Tower", tier=5, beat_ids=("b1",), dwell=600),
+        _poi("p2", "Notre-Dame", tier=4, beat_ids=("b2",), dwell=300),
+        _poi("p3", "Pont Neuf", tier=4, beat_ids=("b3",), dwell=300),
+    ]
+    script = _script(
+        pois,
+        [
+            Sentence(text="Settle in.", source_id="GLUE_PACING", source_type="glue", stop_idx=0),
+            Sentence(text="From the Eiffel Tower, make your way on to Notre-Dame.",
+                     source_id="GLUE_NAV", source_type="glue", stop_idx=1),
+            Sentence(text="The cathedral began in 1160.", source_id="b2", source_type="beat",
+                     stop_idx=1),
+        ],
+    )
+    stops = route_script_to_stops(pois, {}, {}, script=script)
+    assert stops[0]["leg_from_poi_id"] is None, "the first stop is walked to from nowhere"
+    assert stops[1]["leg_from_poi_id"] == "p1"
+    assert stops[2]["leg_from_poi_id"] == "p2", (
+        "recorded for every stop, not only the ones whose leg happens to carry words — "
+        "a stop that gains a line later still knows which walk it describes"
+    )

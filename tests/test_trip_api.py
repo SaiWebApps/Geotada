@@ -27,7 +27,9 @@ from fastapi.testclient import TestClient
 from src.api.app import create_app
 from src.api.auth.tokens import create_access_token
 from src.api.dependencies import get_driver, get_session
+from src.api.models.trips import GeneratedStop
 from src.api.routes import trips
+from src.api.routes.trips import _releg_kept_stops
 from src.tour.authoring import COMPOSE_MODEL
 from src.tour.certification_provider import PhysicalProviderResponse
 from src.tour.contract import TourInput
@@ -1465,3 +1467,135 @@ class TestLivingSession:
             f"compose routed {sum(o != expected for o in seen)} of {len(seen)} legs under a "
             f"costing other than the step-free one the day was planned with: {seen[:4]}"
         )
+
+
+# ---------------------------------------------------------------------------
+# S1.M4 — no leg line survives a walk it was not written for.
+# ---------------------------------------------------------------------------
+
+
+def _legged(poi_id: str, name: str, *, from_id: str | None, line: str | None) -> GeneratedStop:
+    return GeneratedStop(
+        sort_order=1,
+        poi_id=poi_id,
+        poi_name=name,
+        lat=48.85,
+        lng=2.35,
+        duration_min=10,
+        importance_tier=4,
+        start_time="10:00",
+        leg_narration=line,
+        leg_from_poi_id=from_id,
+        leg_audio_url=f"https://audio.example/{poi_id}-leg.mp3" if line else None,
+        leg_audio_duration_sec=9.0 if line else None,
+    )
+
+
+def _replan_route(pois: list[tuple[str, str]]):
+    from src.tour.contract import POI, Route, TransitSegment
+
+    nodes = tuple(
+        POI(id=pid, name=name, tier=4, poi_role="stop", lat=48.85, lng=2.35)
+        for pid, name in pois
+    )
+    transits = tuple(
+        TransitSegment(
+            from_poi_id=None if i == 0 else nodes[i - 1].id,
+            to_poi_id=p.id,
+            distance_m=300.0,
+            walk_seconds=240,
+        )
+        for i, p in enumerate(nodes)
+    )
+    return Route(
+        pois=nodes,
+        transits=transits,
+        total_walk_distance_m=300.0 * len(nodes),
+        total_walk_seconds=240 * len(nodes),
+        spine_area="Les Halles",
+        target_dwell_seconds=1800,
+        err_short_total_seconds=1800,
+    )
+
+
+def test_a_replan_drops_and_rewrites_a_leg_line_whose_walk_no_longer_happens():
+    """Sofia's day re-cuts around the dark and the Bourse now comes before the Tour
+    Saint-Jacques. The line written for the walk from Saint-Eustache described nine
+    minutes from a place she is no longer coming from, and the phone plays a leg file
+    against whichever stop is currently before it — so the old words must not survive.
+
+    The replacement names the new pair and the new routed length, and its audio fields
+    are cleared so the voicing pass re-voices it rather than replaying the old file.
+    """
+    stops = [
+        _legged("bourse", "Bourse de Commerce", from_id="eustache", line=None),
+        _legged(
+            "saint-jacques",
+            "Tour Saint-Jacques",
+            from_id="eustache",
+            line="From Saint-Eustache, make your way on to Tour Saint-Jacques, "
+            "about a nine-minute walk away.",
+        ),
+    ]
+    out = _releg_kept_stops(
+        stops,
+        _replan_route([("bourse", "Bourse de Commerce"), ("saint-jacques", "Tour Saint-Jacques")]),
+        walked_in_from=None,
+    )
+    stale = out[1]
+    assert "Saint-Eustache" not in (stale.leg_narration or "")
+    assert stale.leg_from_poi_id == "bourse"
+    assert "Bourse de Commerce" in stale.leg_narration
+    assert "Tour Saint-Jacques" in stale.leg_narration
+    assert "4-minute" in stale.leg_narration, "the routed length of the walk she takes"
+    assert stale.leg_audio_url is None and stale.leg_audio_duration_sec is None
+
+
+def test_a_replan_leaves_a_line_and_its_audio_alone_when_the_pair_still_holds():
+    """A correct line is never re-voiced: the audio was already paid for and the words
+    are still true, so nothing about that leg moves."""
+    line = "From the Bourse de Commerce, make your way on to Tour Saint-Jacques."
+    stops = [
+        _legged("bourse", "Bourse de Commerce", from_id=None, line=None),
+        _legged("saint-jacques", "Tour Saint-Jacques", from_id="bourse", line=line),
+    ]
+    out = _releg_kept_stops(
+        stops,
+        _replan_route([("bourse", "Bourse de Commerce"), ("saint-jacques", "Tour Saint-Jacques")]),
+        walked_in_from=None,
+    )
+    assert out[1].leg_narration == line
+    assert out[1].leg_audio_url == "https://audio.example/saint-jacques-leg.mp3"
+
+
+def test_the_leg_under_way_is_judged_against_the_stop_the_walker_has_already_left():
+    """The first stop still ahead has no predecessor inside the replanned tail, but the
+    walker is mid-walk toward it from the stop they just left. That walk is really
+    happening, so its line stands."""
+    line = "From the Bourse de Commerce, make your way on to Tour Saint-Jacques."
+    ahead = [_legged("saint-jacques", "Tour Saint-Jacques", from_id="bourse", line=line)]
+    out = _releg_kept_stops(
+        ahead,
+        _replan_route([("saint-jacques", "Tour Saint-Jacques")]),
+        walked_in_from=_legged("bourse", "Bourse de Commerce", from_id=None, line=None),
+    )
+    assert out[0].leg_narration == line, "the walk under way is not re-written"
+    assert out[0].leg_audio_url is not None
+
+
+def test_a_line_with_no_recorded_pair_is_left_alone_rather_than_assumed_stale():
+    """An item written before the leg carried its provenance says nothing about which
+    walk it describes. Unknown is not known-stale: rewriting them all would re-voice
+    every leg of every older day for a fault that may not be there."""
+    line = "From somewhere, make your way on."
+    stops = [
+        _legged("bourse", "Bourse de Commerce", from_id=None, line=None),
+        _legged("saint-jacques", "Tour Saint-Jacques", from_id=None, line=line),
+    ]
+    out = _releg_kept_stops(
+        stops,
+        _replan_route([("bourse", "Bourse de Commerce"), ("saint-jacques", "Tour Saint-Jacques")]),
+        walked_in_from=None,
+    )
+    assert out[1].leg_narration == line
+    assert out[1].leg_audio_url is not None

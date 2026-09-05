@@ -106,6 +106,12 @@ def route_script_to_stops(
                 "narration": narration_by_stop.get(idx, ""),
                 "close_text": close_by_stop.get(idx),
                 "leg_narration": leg_by_stop.get(idx),
+                # S1.M4: the stop this leg was written FROM. A leg line names both its
+                # ends, so it is true of one pair only; a replan re-orders the same
+                # stops, and this is what lets it tell a line that still fits from one
+                # describing a walk nobody is taking. Recorded for every stop, whether
+                # or not its leg carries words today.
+                "leg_from_poi_id": selected_pois[idx - 1].id if idx else None,
                 "trigger": placed[sp.id].model_dump() if sp.id in placed else None,
                 "segments": (
                     [seg.model_dump() for seg in segments_by_stop[idx]]
@@ -230,6 +236,7 @@ def _create_itinerary_items(
             full_close_text: $full_close_text,
             trigger_json: $trigger_json,
             leg_narration: $leg_narration,
+            leg_from_poi_id: $leg_from_poi_id,
             segments_json: $segments_json,
             created_at: datetime()
         })
@@ -281,6 +288,7 @@ def _create_itinerary_items(
             # Phase 7 S7.7: the stop's leg piece text; its file lands on the item when
             # the voicing pass runs (leg_audio_url / leg_audio_duration_sec).
             leg_narration=stop.get("leg_narration"),
+            leg_from_poi_id=stop.get("leg_from_poi_id"),
             # Phase 7 S7.7 (B): the chapters as a JSON list (the thread_lines precedent);
             # the voicing pass writes each chapter's file back INTO this list.
             segments_json=(
@@ -474,6 +482,7 @@ def list_trips_for_profile(
                    item.full_close_audio_url AS full_close_audio_url,
                    item.trigger_json AS trigger_json,
                    item.leg_narration AS leg_narration,
+                   item.leg_from_poi_id AS leg_from_poi_id,
                    item.leg_audio_url AS leg_audio_url,
                    item.leg_audio_duration_sec AS leg_audio_duration_sec,
                    item.segments_json AS segments_json,

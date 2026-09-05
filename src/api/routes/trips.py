@@ -86,7 +86,7 @@ from src.tour.contract import (
 )
 from src.tour.degradations import degradation_scope, record, summarize
 from src.tour.density import TourabilityRefusedError
-from src.tour.generation import generate
+from src.tour.generation import _template_nav, generate
 from src.tour.narration_quality import score_narration
 from src.tour.options import build_route_option, option_eta_seconds
 from src.tour.placement import StopSegment, place_anchors, place_day, place_stops
@@ -111,7 +111,13 @@ from src.tour.premium_tour import (
     resolve_routing_version,
 )
 from src.tour.quality_rubric import RubricReport, StopMaterial, compose_fixable, score_tour
-from src.tour.routing import PACE_KMH, haversine_m, longest_walk_minutes, summarise_route
+from src.tour.routing import (
+    PACE_KMH,
+    haversine_m,
+    leg_walk_seconds,
+    longest_walk_minutes,
+    summarise_route,
+)
 from src.tour.routing_client import ROUTE_SURFACE_COSTING_OVERRIDES, RoutingClient
 from src.tour.selection import (
     AVOID_QUEUES_EXCLUDE_PEAK_MINUTES,
@@ -798,6 +804,7 @@ def generate_trip(
             close_text=s.get("close_text"),
             trigger=s.get("trigger"),
             leg_narration=s.get("leg_narration"),
+            leg_from_poi_id=s.get("leg_from_poi_id"),
             segments=s.get("segments") or [],
             transit_polyline=polyline_by_poi.get(s["poi_id"]),
             **audio_by_beat.get(s["primary_beat_id"], {}),
@@ -1467,6 +1474,7 @@ def compose_trip(
             dwell_seconds=s["dwell_seconds"],
             trigger=s.get("trigger"),
             leg_narration=s.get("leg_narration"),
+            leg_from_poi_id=s.get("leg_from_poi_id"),
             segments=s.get("segments") or [],
         )
         for i, s in enumerate(stops)
@@ -1935,6 +1943,66 @@ def _with_live_audio(session: Session, plan: SessionPlan) -> SessionPlan:
     return plan.model_copy(update={"stops": stops})
 
 
+def _releg_kept_stops(
+    stops: list[GeneratedStop], route, *, walked_in_from: GeneratedStop | None
+) -> list[GeneratedStop]:
+    """Re-leg the kept stops of a replanned day: no line survives a walk it was not
+    written for.
+
+    A leg line names both its ends — "From X, make your way on to Y, about a
+    nine-minute walk away" — so it is true of one pair and one routed length. A replan
+    keeps the day's places and re-orders them, which silently re-points those lines: a
+    line written for the walk from Saint-Eustache plays on the walk from the Bourse de
+    Commerce, and the phone plays it against whichever stop now comes before.
+
+    Where the pair still holds, the line and its audio are left exactly alone — a
+    correct line is never re-voiced and never re-spent. Where it does not, the stale
+    words are dropped at once (silence, never the wrong direction) and the line is
+    re-derived for the new pair from the deterministic template, which names both ends,
+    speaks the routed minutes and cannot say a bearing. Its audio fields are cleared
+    with it, so the voicing pass — which skips a line whose text still matches its
+    stored hash — re-voices this one on its next run, and until then the leg is quiet.
+
+    ``walked_in_from`` is the stop the walker has already left, so the first kept stop
+    is judged against the walk actually under way rather than treated as a fresh start.
+    A stop whose ``leg_from_poi_id`` is None carries no provenance — an item written
+    before the field existed — and is left untouched: unknown is not the same as
+    known-stale, and regenerating every leg of every older day would re-voice the lot.
+    """
+    seconds_by_stop = {
+        transit.to_poi_id: leg_walk_seconds(transit) for transit in route.transits
+    }
+    out: list[GeneratedStop] = []
+    previous_name = walked_in_from.poi_name if walked_in_from else None
+    previous_id = walked_in_from.poi_id if walked_in_from else None
+    for idx, stop in enumerate(stops):
+        written_from = stop.leg_from_poi_id
+        if written_from is not None and written_from != previous_id:
+            out.append(
+                stop.model_copy(
+                    update={
+                        "leg_narration": (
+                            _template_nav(
+                                previous_name,
+                                stop.poi_name,
+                                int(seconds_by_stop.get(stop.poi_id, 0)),
+                                idx,
+                            )
+                            if previous_name
+                            else None
+                        ),
+                        "leg_from_poi_id": previous_id,
+                        "leg_audio_url": None,
+                        "leg_audio_duration_sec": None,
+                    }
+                )
+            )
+        else:
+            out.append(stop)
+        previous_name, previous_id = stop.poi_name, stop.poi_id
+    return out
+
+
 @router.post("/trips/{trip_id}/session/replan", response_model=SessionPlan)
 @_reports_degradations
 def replan_trip_session(
@@ -2026,11 +2094,15 @@ def replan_trip_session(
         record_routing_degradations(route, component="trips.replan_trip_session")
 
     by_poi = {st.poi_id: st for st in current.stops}
-    new_stops = [
-        by_poi[p.id].model_copy(update={"sort_order": i + 1})
-        for i, p in enumerate(route.pois)
-        if p.id in by_poi
-    ]
+    new_stops = _releg_kept_stops(
+        [
+            by_poi[p.id].model_copy(update={"sort_order": i + 1})
+            for i, p in enumerate(route.pois)
+            if p.id in by_poi
+        ],
+        route,
+        walked_in_from=visited[-1] if visited else None,
+    )
     plan_version = int(inputs["plan_version"] or 0) + 1
     # THE LIVE PATH IS THE DAY (W5.12, measured: the set is ~0.4 s per entry and the
     # planner ~1 s — the design's remedy is to narrow the live path). The reply
