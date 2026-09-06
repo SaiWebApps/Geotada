@@ -305,10 +305,17 @@ def test_every_drop_rechecks_the_longest_leg_cap(served):
     stops because their insertion legs breach the 17-minute ceiling and hands back
     the Arc straight to Notre-Dame as ONE THIRTY-NINE MINUTE WALK — longer than
     anything it rejected. The ceiling bounds what may be INSERTED; it cannot bound
-    the walk that is left when nothing is. Honouring §4.5.3 here needs the planner
-    to prefer keeping a stop over minting a longer leg — planner work, carried to
-    W8.6. Today this test passes on the corridor's geometry rather than on a rule,
-    and it bites the moment a capped, multi-stop day serves.
+    the walk that is left when nothing is.
+
+    THE RULE NOW EXISTS (P9R-S4.M1): `_prefer_keeping_over_a_longer_leg` on
+    the live replan detects a breach after a drop and retries ONCE with the
+    dropped stops PROTECTED (force-seat is the compel lever the ceiling never
+    had) plus the base ceiling, then serves whichever day has the shorter
+    longest leg. It is a preference with honest fallbacks — a retry that
+    refuses, or improves nothing, ships the lesser evil — so this test is the
+    behavioural bar it must clear on every served day, and QA's undo proved
+    it discriminating (the helper stubbed to a pass-through goes RED here on
+    paulo's day).
     """
     drops_checked = 0
     days_with_legs = 0
@@ -625,6 +632,10 @@ def test_no_leg_line_outlives_its_pair_and_every_reviewed_anchor_gets_its_chapte
                 "chapter — its named spots are being told from the footprint's edge"
             )
 
+    assert anchored_checked, (
+        "no served day voiced a named spot at an anchored place, so the chapter "
+        "ratchet measured nothing — the sub_location field is not reaching the wire"
+    )
     assert versions_checked, "no served day to check"
     assert legs_checked, (
         "no leg line carried a recorded pair on any served day — the check would pass "

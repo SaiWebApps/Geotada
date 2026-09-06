@@ -29965,7 +29965,7 @@
     "latitude": 48.86475,
     "longitude": 2.32892,
     "trigger_radius": 270,
-    "poi_role": "stop",
+    "poi_role": "setting",
     "_poi_role_reasoning": "Sub-POI within Jardin des Tuileries; discrete enough to stand and listen",
     "city_name": "paris",
     "typical_duration_min": 12,
@@ -29983,7 +29983,20 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A wide open pathway along the Tuileries with no door or admission, so no line exists at any hour."
+    "queue_basis": "A wide open pathway along the Tuileries with no door or admission, so no line exists at any hour.",
+    "anchors": [
+      {
+        "label": "The site of the Manège",
+        "sub_locations": [
+          "manege-des-tuileries"
+        ],
+        "lat": 48.86512,
+        "lng": 2.32815,
+        "radius_m": 30.0,
+        "indoor": false,
+        "basis": "The riding school stood on this terrace opposite no. 230 rue de Rivoli — the corpus's own Le Meurice (228) and Galignani (224) records calibrate the doorway one west — and a person stands on the pavement there to be told the Republic was proclaimed on this exact site."
+      }
+    ]
   },
   {
     "name": "Memorial des Martyrs de la Deportation",

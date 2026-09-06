@@ -1043,12 +1043,14 @@ def _build_transit(
     - Tour 3 stop 3 opened "Leave the Sacré-Cœur…" before the user had
       visited Sacré-Cœur.
 
-    Phase 7 only accepts a corpus transit beat when the previous stop
-    appears in its trigger_address or body (the beat "knows" we're
-    coming from there). When no directional match exists, falls through
-    to GLUE_NAV with explicit ``from X, walk to Y, distance approx Nm``
-    context so the runtime can synthesize a coherent navigation
-    instruction without inventing facts.
+    A corpus transit beat is accepted only when the pick can VERIFY its
+    direction (``_find_directional_transit_beat``): the previous stop as
+    an origin the beat names in its ``trigger_address`` or opening origin
+    clause, or the destination named by a beat at the departure stop in
+    its ``trigger_address`` or opening sentence. When no verified match
+    exists, falls through to GLUE_NAV with explicit ``from X, walk to Y,
+    distance approx Nm`` context so the runtime can synthesize a coherent
+    navigation instruction without inventing facts.
 
     ``consumed_beat_ids`` filters transit candidates so a beat already
     emitted earlier in the script (e.g. by `current`'s prior anchor
@@ -1198,8 +1200,13 @@ def _find_directional_transit_beat(
     name that merely appears somewhere in the body is where the beat is GOING,
     and a destination-street match once picked Frommer's Châtelet approach for
     a walker arriving along the very street the beat turns into.
-    ``dest_name`` (a beat at the DEPARTURE stop) keeps the substring check:
-    the walker stands at the beat's own POI, so its origin is where they are.
+    ``dest_name`` (a beat at the DEPARTURE stop) vouches only as a verified
+    DESTINATION: named in the beat's ``trigger_address`` or its OPENING
+    sentence — a departure beat says where it is going up front ("Leave X and
+    walk to Y…"). A destination mentioned only in passing later ("you will
+    pass Y on your right") is scenery on the way to somewhere else, and a
+    substring over the whole body once let a walk-to-Les-Halles beat narrate
+    the leg to the tower it merely passes.
 
     Three refusals, each because a direction this code cannot verify is a
     direction it must not speak. A beat that speaks COMPASS carries the bearing
@@ -1224,9 +1231,22 @@ def _find_directional_transit_beat(
             continue
         if prev_name and _is_verified_origin(prev_name, beat):
             return beat
-        if dest_name and dest_name.lower() in haystack:
+        if dest_name and _is_verified_destination(dest_name, beat):
             return beat
     return None
+
+
+def _is_verified_destination(dest_name: str, beat: BeatRef) -> bool:
+    """Does ``beat`` verifiably describe walking TO ``dest_name``?
+
+    Yes only when the name is in ``trigger_address``, or in the body's FIRST
+    sentence — a departure beat names its destination up front.
+    """
+    dest = dest_name.lower()
+    if dest in (beat.trigger_address or "").lower():
+        return True
+    sents = split_sentences(beat.script_body or "")
+    return bool(sents) and dest in sents[0].lower()
 
 
 def _is_verified_origin(prev_name: str, beat: BeatRef) -> bool:

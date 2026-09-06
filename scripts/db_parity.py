@@ -7,7 +7,9 @@ this is the gate that makes drift LOUD instead of discovered-by-accident.
 
 For every city it compares, against the profile injected by Make:
   - POIs        : name_key set (in-bbox, from poi-raw.json) vs POI nodes
+  - footprints  : (name_key, trigger_radius, poi_role) vs the POI nodes' own
   - beats       : beat_id set (uploadable AND linkable) vs POI-reachable beats
+  - beat bodies : (beat_id, sha256 of normalized script_body) vs the graph's text
   - areas       : name set (areas.json) vs Area nodes
   - POI->Area   : resolvable within_edges vs WITHIN edges
 
@@ -36,7 +38,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from scripts.upload_paris import CITY_BBOX, _beat_blocked, _in_city_bounds
-from src.api.models.nodes import canonical_name_key
+from src.api.models.nodes import _normalized_script_body_hash, canonical_name_key
 from src.city_registry import load_registry, onboard_data_root
 from src.connection import create_driver, get_database
 
@@ -91,9 +93,22 @@ def _expected(slug: str) -> dict:
         for e in (within.get("poi_to_area", []) if isinstance(within, dict) else [])
         if e["poi_name"] in poi_names and e["area_name"] in area_names
     }
+    # The fields the graph decides ARRIVAL and PLACEMENT from, and the words it
+    # voices: id-set parity alone let a footprint or a body drift silently.
+    footprints = {
+        (canonical_name_key(p["name"]), p.get("trigger_radius", 10), p.get("poi_role"))
+        for p in in_poi
+    }
+    body_hashes = {
+        (b["beat_id"], _normalized_script_body_hash(b.get("script_body") or ""))
+        for b in uploadable
+        if b.get("poi_name") in poi_names
+    }
     return {
         "poi_keys": poi_keys,
+        "footprints": footprints,
         "beat_ids": linkable,
+        "body_hashes": body_hashes,
         "area_names": area_names,
         "p2a": p2a,
         "unlinkable": unlinkable,
@@ -125,6 +140,23 @@ def _actual(session, slug: str) -> dict:
             "WHERE b.beat_id IS NOT NULL RETURN DISTINCT b.beat_id AS b"
         )
     }
+    footprints = {
+        (r["k"], r["r"], r["role"])
+        for r in q(
+            "MATCH (p:POI {city_name:$city}) "
+            "WHERE p.poi_role IS NULL OR p.poi_role <> 'body' "
+            "RETURN p.name_key AS k, p.trigger_radius AS r, p.poi_role AS role"
+        )
+        if r["k"]
+    }
+    body_hashes = {
+        (r["b"], _normalized_script_body_hash(r["body"] or ""))
+        for r in q(
+            "MATCH (:POI {city_name:$city})-[:HAS_BEAT]->(b:NarrativeBeat) "
+            "WHERE b.beat_id IS NOT NULL "
+            "RETURN DISTINCT b.beat_id AS b, b.script_body AS body"
+        )
+    }
     area_names = {r["n"] for r in q("MATCH (a:Area {city_name:$city}) RETURN a.name AS n")}
     p2a = {
         (r["p"], r["a"])
@@ -133,7 +165,14 @@ def _actual(session, slug: str) -> dict:
             "RETURN p.name AS p, a.name AS a"
         )
     }
-    return {"poi_keys": poi_keys, "beat_ids": beat_ids, "area_names": area_names, "p2a": p2a}
+    return {
+        "poi_keys": poi_keys,
+        "footprints": footprints,
+        "beat_ids": beat_ids,
+        "body_hashes": body_hashes,
+        "area_names": area_names,
+        "p2a": p2a,
+    }
 
 
 def _cmp(label: str, exp: set, act: set, drift: list, sample=lambda x: x) -> None:
@@ -184,7 +223,21 @@ def main() -> int:
             print(f"\n  {slug}:")
             drift: list = []
             _cmp("POIs (name_key)", exp["poi_keys"], act["poi_keys"], drift)
+            _cmp(
+                "footprints (key, radius, role)",
+                exp["footprints"],
+                act["footprints"],
+                drift,
+                sample=lambda t: f"{t[0]} r={t[1]} role={t[2]}",
+            )
             _cmp("beats (beat_id)", exp["beat_ids"], act["beat_ids"], drift)
+            _cmp(
+                "beat bodies (id, body hash)",
+                exp["body_hashes"],
+                act["body_hashes"],
+                drift,
+                sample=lambda t: t[0],
+            )
             _cmp("areas (name)", exp["area_names"], act["area_names"], drift)
             _cmp(
                 "POI->Area edges",

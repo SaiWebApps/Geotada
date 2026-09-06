@@ -443,16 +443,18 @@ def _backfill_anchors(session, pois: list[dict], city_name: str) -> dict[str, in
 
 
 def _backfill_beat_texts(session, beats: list[dict], city_name: str) -> dict[str, int]:
-    """Re-sync ONLY the beats whose words changed (match by beat_id), and clear
-    exactly their audio.
+    """Re-sync the beats whose WORDS or PLACEMENT changed (match by beat_id),
+    clear audio for exactly the word changes, and move a re-homed beat's link.
 
     A beat whose graph text differs from the repo's is a beat whose recorded
     audio says the OLD words — serving that file under the new text is the
     stale-line class S1 exists to kill — so ``audio_url`` is cleared for the
-    changed beats alone and the voicing pass re-voices them. Every other beat
-    keeps its paid audio byte-untouched. The full upload path re-syncs the
-    whole corpus; a text fix must never go through it — the
-    ``--provenance-only`` / ``--anchors-only`` precedent, applied to words.
+    word-changed beats alone; a placement-only change keeps its paid audio.
+    The link pass below touches ONLY beats whose graph home differs from the
+    repo's ``poi_name`` (its WHERE), and refuses a ``poi_name`` matching more
+    than one POI rather than double-linking. The full upload path re-syncs the
+    whole corpus; a targeted fix must never go through it — the
+    ``--provenance-only`` / ``--anchors-only`` precedent.
     """
     params = []
     for beat in beats:
@@ -502,6 +504,10 @@ def _backfill_beat_texts(session, beats: list[dict], city_name: str) -> dict[str
         UNWIND $beats AS b
         MATCH (beat:NarrativeBeat {beat_id: b.beat_id})
         MATCH (new:POI {name: b.poi_name, city_name: $city})
+        WITH beat, collect(new) AS homes
+        // A poi_name matching two POIs would double-link; refuse, never guess.
+        WHERE size(homes) = 1
+        WITH beat, homes[0] AS new
         OPTIONAL MATCH (old:POI)-[r:HAS_BEAT]->(beat)
         WITH beat, new, old, r WHERE old IS NULL OR old.id <> new.id
         DELETE r
@@ -512,6 +518,38 @@ def _backfill_beat_texts(session, beats: list[dict], city_name: str) -> dict[str
         city=city_name,
     ).single()["rehomed"]
     return {"updated": updated, "rehomed": rehomed, "candidates": len(params)}
+
+
+def _backfill_footprints(session, pois: list[dict], city_name: str, bbox: tuple) -> dict[str, int]:
+    """Set ONLY ``trigger_radius`` and ``poi_role`` on existing POIs (match by the
+    canonical name key). The footprint pass and the role review write poi-raw.json;
+    a value changed there without a full upload leaves the graph deciding arrival
+    from a footprint nobody reviewed — the drift class ``make db-parity`` names.
+    """
+    params = [
+        {
+            "name_key": canonical_name_key(poi["name"]),
+            "city_name": city_name,
+            "trigger_radius": poi.get("trigger_radius", 10),
+            "poi_role": poi.get("poi_role"),
+        }
+        for poi in pois
+        if poi.get("latitude") is not None
+        and _in_city_bounds(float(poi["latitude"]), float(poi["longitude"]), bbox)
+    ]
+    result = session.run(
+        """
+        UNWIND $pois AS poi
+        MATCH (p:POI {name_key: poi.name_key, city_name: poi.city_name})
+        WHERE p.trigger_radius <> poi.trigger_radius
+           OR coalesce(p.poi_role, '') <> coalesce(poi.poi_role, '')
+        SET p.trigger_radius = poi.trigger_radius,
+            p.poi_role       = poi.poi_role
+        RETURN count(p) AS updated
+        """,
+        pois=params,
+    )
+    return {"updated": result.single()["updated"], "candidates": len(params)}
 
 
 def _upload_beats(session, beats: list[dict], city_name: str) -> dict[str, int]:
@@ -684,17 +722,34 @@ def main() -> None:
     provenance_only = "--provenance-only" in sys.argv
     anchors_only = "--anchors-only" in sys.argv
     beats_only = "--beats-only" in sys.argv
+    footprints_only = "--footprints-only" in sys.argv
     if provenance_only:
         mode = "PROVENANCE BACKFILL"
     elif anchors_only:
         mode = "ANCHOR BACKFILL"
     elif beats_only:
         mode = "BEAT TEXT BACKFILL"
+    elif footprints_only:
+        mode = "FOOTPRINT BACKFILL"
     else:
         mode = f"{city_slug.upper()} DATA UPLOAD"
     print(f"\n{'='*60}")
     print(f"  {mode} → Neo4j [{db_label}]")
     print(f"{'='*60}\n")
+
+    if footprints_only:
+        pois = _load_json(poi_file)
+        driver = create_driver()
+        try:
+            with driver.session(database=db) as session:
+                stats = _backfill_footprints(session, pois, city_slug, bbox)
+            print(
+                f"  {stats['updated']} of {stats['candidates']} places re-synced their "
+                f"footprint and role"
+            )
+        finally:
+            driver.close()
+        return
 
     if anchors_only:
         # POI data: the beats gate below has nothing to say about it, and coupling

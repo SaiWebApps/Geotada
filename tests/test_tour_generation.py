@@ -2181,6 +2181,31 @@ def test_transit_class_beat_ids_reads_the_one_function_set():
     assert transit_class_beat_ids([walk, story]) == frozenset({"t-w"})
 
 
+def test_a_destination_mentioned_in_passing_never_vouches_either():
+    """P9R exit-panel finding: the departure lane kept a whole-body substring,
+    so a beat at the departure stop walking to Les Halles — which merely says
+    "you will pass the Tour Saint-Jacques on your right" — was pickable for
+    the leg TO the tower. A departure beat names its destination up front
+    (trigger_address or the first sentence); scenery in a later sentence
+    vouches for nothing. UNDO: restore the haystack substring for dest_name
+    -> the pass-by beat is picked -> RED."""
+    passing = _beat(
+        "t-lh",
+        "chatelet",
+        body="Leave the Place du Chatelet and walk up boulevard de Sebastopol "
+        "to Les Halles. You will pass the Tour Saint-Jacques on your right.",
+        nf="transition",
+    )
+    stop = POIBeats(
+        poi_id="chatelet", poi_name="Place du Châtelet",
+        ordering_strategy="narrative_function", beats=(passing,),
+    )
+    assert _find_directional_transit_beat(stop, dest_name="Tour Saint-Jacques") is None
+    assert _find_directional_transit_beat(stop, dest_name="Les Halles") is passing, (
+        "the destination the first sentence names still vouches"
+    )
+
+
 def test_an_itinerary_phrase_is_refused_at_the_pick_like_a_compass_point():
     """A guidebook's own itinerary ("where the walk ends", "our next stop") is
     true of its route and never of this one — the same class as compass, refused
