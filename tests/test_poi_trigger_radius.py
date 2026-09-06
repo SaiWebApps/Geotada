@@ -55,7 +55,14 @@ PANEL_PRECEDENTS: dict[str, int] = {
     "Notre-Dame Cathedral": 100,  # the parvis west of the façade; Camille's pin check
     "Louvre Museum": 120,  # Greta/Aiko: the Cour Napoléon and the Cour Carrée
     "Musee d'Orsay": 60,  # Rosemary: the forecourt and her bench
-    "Palais-Royal": 100,  # Greta: the garden, the columns, no. 177
+    # Greta: the garden, the columns, no. 177 — the W7.2 row said 100, but the pin
+    # sits at the palace forecourt and the garden the panel itself named runs 275 m
+    # behind it, so 100 never actually reached her garden. Re-ruled 300 with the
+    # reviewed anchors carrying "right here" (Phase 9 decisions: "'right here' is
+    # earned by standing near the thing, never by crossing the edge of a
+    # five-hundred-metre disc" — the footprint places arrival, the anchors place
+    # the words; the Père-Lachaise 500 is the precedent).
+    "Palais-Royal": 300,
     "Place de la Concorde": 120,  # Théo: three positions on a 360 m square
     "Pont Neuf": 120,  # Théo/F&D/Sofia: the bridge's half-length from the Vert-Galant
     "Pere Lachaise Cemetery": 500,  # Julien: the walls, kept

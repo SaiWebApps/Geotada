@@ -116,9 +116,11 @@ REVIEWED: dict[str, tuple[int, str]] = {
         "Rosemary's bench sits on it.",
     ),
     "Palais-Royal": (
-        100,
-        "The garden is 275 m by 100 m behind the Cour d'Honneur; Greta's columns, "
-        "Aiko's no. 177 and the three galleries are all inside that footprint.",
+        300,
+        "The garden runs 275 m by 100 m behind the Cour d'Honneur, and the pin sits at "
+        "the palace forecourt — so the far Beaujolais gallery is 295 m out. 300 covers "
+        "the whole walk-in complex (the Tuileries precedent); the reviewed anchors, not "
+        "the footprint edge, are what say 'right here' inside it.",
     ),
     "Place de la Concorde": (
         120,
