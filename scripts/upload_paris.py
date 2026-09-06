@@ -635,7 +635,14 @@ def _upload_beats(session, beats: list[dict], city_name: str) -> dict[str, int]:
         """
         UNWIND $beats AS b
         OPTIONAL MATCH (p:POI {name: b.poi_name, city_name: $city})
-        WITH b, p WHERE p IS NOT NULL
+        // The same two guards as the re-home pass: a beat never homes on a
+        // body place (they legitimately share names), and a poi_name matching
+        // more than one POI is refused rather than fanned out.
+        WHERE p IS NULL OR p.poi_role IS NULL OR p.poi_role <> 'body'
+        WITH b, collect(p) AS homes
+        WITH b, [h IN homes WHERE h IS NOT NULL] AS homes
+        WITH b, homes WHERE size(homes) = 1
+        WITH b, homes[0] AS p
         MERGE (beat:NarrativeBeat {beat_id: b.beat_id})
         // audio_url is stamped ONCE on create; a re-deploy must never wipe live
         // audio (expensive TTS output). All other fields re-sync from the repo.
