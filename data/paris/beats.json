@@ -36440,7 +36440,7 @@
   {
     "beat_id": "paris_rue_de_rivoli_hidden_history_around_and_about_paris_manege_230_republic_proclaimed",
     "city_name": "paris",
-    "poi_name": "Rue de Rivoli",
+    "poi_name": "Esplanade des Feuillants",
     "lens": "hidden_history",
     "topic_slug": "manege_230_republic_proclaimed",
     "sub_location": null,
@@ -54240,7 +54240,7 @@
     "sub_location": null,
     "trigger_address": null,
     "beat_length_class": "mid",
-    "script_body": "During the Revolution, this was the Place de la Révolution. The guillotine sat on this square, and 2,780 people were beheaded here during the Reign of Terror. A bronze plaque in the ground in front of the obelisk memorializes the spot where Louis XVI, Marie-Antoinette, Georges Danton, Charlotte Corday, and Maximilien de Robespierre, among about 1,200 others, were made \"a foot shorter on top.\" Three people worked the guillotine: one managed the blade, one held the blood bucket, and one caught the head, raising it high to the roaring crowd. France abolished the death penalty in 1981 — one of many preconditions for membership in today's European Union.",
+    "script_body": "During the Revolution, this was the Place de la Révolution. The guillotine sat on this square, and many of the 2,780 people beheaded during the Revolution died here in the Reign of Terror. A bronze plaque in the ground in front of the obelisk memorializes the spot where Louis XVI, Marie-Antoinette, Georges Danton, Charlotte Corday, and Maximilien de Robespierre, among about 1,200 others, were made \"a foot shorter on top.\" Three people worked the guillotine: one managed the blade, one held the blood bucket, and one caught the head, raising it high to the roaring crowd. France abolished the death penalty in 1981 — one of many preconditions for membership in today's European Union.",
     "duration_sec": 90,
     "kid_friendly": "no",
     "entities": [
@@ -54266,7 +54266,7 @@
     "pronunciation": null,
     "key_claims": [
       "Place de la Concorde was Place de la Révolution during the Revolution",
-      "2,780 people beheaded here during the Reign of Terror",
+      "Many of the 2,780 people beheaded during the Revolution died here in the Reign of Terror",
       "Louis XVI, Marie-Antoinette, Danton, Charlotte Corday, Robespierre were among those executed here",
       "Three-person guillotine crew: blade operator, blood-bucket holder, head-catcher",
       "France abolished death penalty in 1981"
@@ -54283,7 +54283,7 @@
       "generated_at": "2026-04-25T00:00:00Z",
       "city_name": "paris"
     },
-    "script_body_hash": "9f52f42a619928acfb9ad76b33c8940d20e698b5b448313b242068ef05d993d5",
+    "script_body_hash": "9f94e6aaec298c2f209479d9dee17083172c5a0af4184a3b4fabb0e3634fda31",
     "_fixup_notes": [
       "subject_tag: kebab-hyphenated tail (was 4 words)"
     ]

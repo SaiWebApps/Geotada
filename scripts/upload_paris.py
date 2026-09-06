@@ -442,7 +442,7 @@ def _backfill_anchors(session, pois: list[dict], city_name: str) -> dict[str, in
     return {"updated": result.single()["updated"], "candidates": len(params)}
 
 
-def _backfill_beat_texts(session, beats: list[dict]) -> dict[str, int]:
+def _backfill_beat_texts(session, beats: list[dict], city_name: str) -> dict[str, int]:
     """Re-sync ONLY the beats whose words changed (match by beat_id), and clear
     exactly their audio.
 
@@ -463,24 +463,55 @@ def _backfill_beat_texts(session, beats: list[dict]) -> dict[str, int]:
         word_count = len(script_body.split())
         params.append({
             "beat_id": beat_id,
+            "poi_name": beat.get("poi_name"),
             "script_body": script_body,
             "duration_sec": beat.get("duration_sec") or max(30, int(word_count / 2.5)),
             "est_spoken_seconds": beat.get("est_spoken_seconds"),
+            "sub_location": beat.get("sub_location"),
+            "trigger_address": beat.get("trigger_address"),
         })
     result = session.run(
         """
         UNWIND $beats AS b
         MATCH (beat:NarrativeBeat {beat_id: b.beat_id})
-        WHERE beat.script_body <> b.script_body
+        WITH b, beat,
+             beat.script_body <> b.script_body AS words_changed,
+             coalesce(beat.sub_location, '') <> coalesce(b.sub_location, '')
+               OR coalesce(beat.trigger_address, '') <> coalesce(b.trigger_address, '')
+               AS placement_changed
+        WHERE words_changed OR placement_changed
         SET beat.script_body        = b.script_body,
             beat.duration_sec       = b.duration_sec,
             beat.est_spoken_seconds = b.est_spoken_seconds,
-            beat.audio_url          = ''
+            beat.sub_location       = b.sub_location,
+            beat.trigger_address    = b.trigger_address
+        // The words are what the audio says: cleared ONLY when they changed.
+        // A placement fix keeps the paid file — the sentence is still true.
+        FOREACH (_ IN CASE WHEN words_changed THEN [1] ELSE [] END |
+            SET beat.audio_url = '')
         RETURN count(beat) AS updated
         """,
         beats=params,
     )
-    return {"updated": result.single()["updated"], "candidates": len(params)}
+    updated = result.single()["updated"]
+    # A beat whose reviewed HOME changed moves its HAS_BEAT link — the story is
+    # told at the place it is ABOUT, and a link left behind narrates it from the
+    # wrong pin. Same-city only, matched by the beat's own recorded poi_name.
+    rehomed = session.run(
+        """
+        UNWIND $beats AS b
+        MATCH (beat:NarrativeBeat {beat_id: b.beat_id})
+        MATCH (new:POI {name: b.poi_name, city_name: $city})
+        OPTIONAL MATCH (old:POI)-[r:HAS_BEAT]->(beat)
+        WITH beat, new, old, r WHERE old IS NULL OR old.id <> new.id
+        DELETE r
+        MERGE (new)-[:HAS_BEAT]->(beat)
+        RETURN count(beat) AS rehomed
+        """,
+        beats=params,
+        city=city_name,
+    ).single()["rehomed"]
+    return {"updated": updated, "rehomed": rehomed, "candidates": len(params)}
 
 
 def _upload_beats(session, beats: list[dict], city_name: str) -> dict[str, int]:
@@ -694,10 +725,11 @@ def main() -> None:
         driver = create_driver()
         try:
             with driver.session(database=db) as session:
-                stats = _backfill_beat_texts(session, beats)
+                stats = _backfill_beat_texts(session, beats, city_slug)
             print(
                 f"  {stats['updated']} beat(s) re-synced (of {stats['candidates']} "
-                f"uploadable); their audio is cleared for re-voicing"
+                f"uploadable), {stats['rehomed']} re-homed; changed words' audio is "
+                f"cleared for re-voicing"
             )
         finally:
             driver.close()
