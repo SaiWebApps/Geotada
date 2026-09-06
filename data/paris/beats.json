@@ -47303,7 +47303,7 @@
     "sub_location": null,
     "trigger_address": null,
     "beat_length_class": "seasoning",
-    "script_body": "In the middle of the square is a column to the memory of the Revolution of 1830 — the Revolution that saw a king put back on the throne. You can see the dates on the base: July 27–29. On the top is a statue of the Spirit of Liberty holding broken chains. This was an area quick to participate in uprisings due to the large working class population.",
+    "script_body": "The column in the middle of the square is the July Column — the Colonne de Juillet. It remembers the Revolution of 1830, the revolution that saw a king put back on the throne; you can see the dates on the base: July 27–29. This was an area quick to join uprisings, with its large working-class population.",
     "duration_sec": 60,
     "kid_friendly": "yes",
     "entities": [],
@@ -47329,7 +47329,6 @@
     "key_claims": [
       "Column commemorates Revolution of 1830, which put a king back on the throne",
       "Dates on base: July 27–29",
-      "Spirit of Liberty statue on top holds broken chains",
       "Area quick to participate in uprisings due to large working class population"
     ],
     "source_passage": "In the middle of the square is a column to the memory of the Revolution of 1830; the Revolution that saw a king put back on the throne. You can see the dates on the base: July 27-29. On the top is a statue of the Spirit of Liberty holding broken chains. This was an area quick to participate in uprisings due to the large working class population.",
@@ -47344,7 +47343,7 @@
       "generated_at": "2026-04-25T00:00:00Z",
       "city_name": "paris"
     },
-    "script_body_hash": "6cc8eacb17d7ceb9fa0e03e0f0a3e88ba742099a4cab82f486c771548a83e76c",
+    "script_body_hash": "4e04c4e17b6628f4bf73ef010b149111b123e3c3b349fe86ba32a17110a92dbe",
     "_fixup_notes": [
       "beat_length_class: re-classed from 'mid' to 'seasoning' (word_count=69)"
     ]
@@ -86436,8 +86435,8 @@
     "source_chunk_slug": "colonne_de_juillet-rev-1351698150",
     "sub_location": null,
     "trigger_address": null,
-    "script_body": "The tall column at the centre of the Place de la Bastille is the July Column, the Colonne de Juillet. It commemorates the Revolution of 1830 — the Trois Glorieuses, the 'three glorious days' of 27 to 29 July 1830 that toppled Charles X, King of France, and brought in the July Monarchy of Louis-Philippe. It was built between 1835 and 1840.",
-    "script_body_hash": "59c633892fd3040813dda24764faf6200d9a93a4b9dad6ac5d87184b339e8a0a",
+    "script_body": "The tall column at the centre of the Place de la Bastille is the July Column, the Colonne de Juillet. It commemorates the Revolution of 1830 — the Trois Glorieuses, the 'three glorious days' of 27 to 29 July. Those three days toppled King Charles X and brought in the July Monarchy of Louis-Philippe. The column went up between 1835 and 1840.",
+    "script_body_hash": "2127e6550235d7a52739b132f6ff40ed4a9523ffd7ace17d5422edf108acccb2",
     "beat_length_class": "seasoning",
     "duration_sec": 25,
     "kid_friendly": "yes",
@@ -86485,8 +86484,8 @@
       "flagged_claims": [],
       "status": "verified",
       "extractor_state": "clean",
-      "notes": "",
-      "checked_at": "2026-05-29T04:13:51+00:00",
+      "notes": "Re-verified 2026-09-06: Density rewrite audited claim-by-claim against the prior verified body: the nine-name sentence split in two; 'King Charles X' for 'Charles X, King of France'; 'went up' for 'built'. No claim added, removed, or strengthened.",
+      "checked_at": "2026-09-06T06:53:12+00:00",
       "claims_checked": 4,
       "source_passage_verified": true,
       "physical_cues_verified": true,
@@ -86499,7 +86498,7 @@
         "https://en.wikipedia.org/wiki/July_Column (reference)",
         "https://www.culture.gouv.fr/en/documentation-area/Inventory-of-Information-Resources/Monuments-nationaux/July-Column-Place-de-la-Bastille (government)"
       ],
-      "verified_body_hash": "59c633892fd3040813dda24764faf6200d9a93a4b9dad6ac5d87184b339e8a0a"
+      "verified_body_hash": "2127e6550235d7a52739b132f6ff40ed4a9523ffd7ace17d5422edf108acccb2"
     },
     "new_poi": false,
     "_meta": {
@@ -86519,8 +86518,8 @@
     "source_chunk_slug": "colonne_de_juillet-rev-1351698150",
     "sub_location": null,
     "trigger_address": null,
-    "script_body": "This spot has carried monuments that never quite happened. As early as 1792, a column to commemorate the Fall of the Bastille was planned, and a foundation stone was laid on 14 July 1792 — but the project went no further. Under the Empire, the circular basin the column now stands in was built as part of the Elephant of the Bastille: a fountain with an elephant at its centre, completed in semi-permanent stucco to designs by the architect Jean-Antoine Alavoine — who would himself later design the July Column. The permanent bronze version was never commissioned, the Empire's finances having run thin in its last days. The elephant's low base, however, was kept — and it still supports the socle of the column.",
-    "script_body_hash": "b1d9389b56ca444356211ff5bed5ede44b59a90c15cca03b70be78b13cb67cef",
+    "script_body": "This spot has carried monuments that never quite happened. As early as 1792, a column to commemorate the Fall of the Bastille was planned, and a foundation stone was laid on 14 July 1792 — but the project went no further. Under the Empire, the circular basin the column now stands in was built as part of the Elephant of the Bastille — a fountain with an elephant at its centre, finished in semi-permanent stucco. Its designer, the architect Jean-Antoine Alavoine, would himself later design the July Column. The permanent bronze version was never commissioned, the Empire's finances having run thin in its last days. The elephant's low base, however, was kept — and it still supports the socle — the column's footing.",
+    "script_body_hash": "7e128a0f6331757b58f6aeccea5b19c5dc61144a2cebadb5df1cd9fda16293a2",
     "beat_length_class": "mid",
     "duration_sec": 50,
     "kid_friendly": "yes",
@@ -86668,8 +86667,8 @@
     "source_chunk_slug": "colonne_de_juillet-rev-1351698150",
     "sub_location": null,
     "trigger_address": null,
-    "script_body": "The column is also a tomb. In its foundation, a columbarium holds the remains of 615 people killed in the July Revolution of 1830. Later, 200 victims of the Revolution of 1848 were laid there too — and in July 1848 the throne of Louis-Philippe, the very king who had raised the column, was symbolically burned in the square below it.",
-    "script_body_hash": "8b15b8df3dcab5ff8770caa1fad86fdf9b241fa401a3fdf030cf2aea143d17a4",
+    "script_body": "The column is also a tomb. In its foundation, a columbarium — a vault of burial niches — holds the remains of 615 people killed in the July Revolution of 1830. Later, 200 victims of the Revolution of 1848 were laid there too — and in July 1848 the throne of Louis-Philippe, the very king who had raised the column, was symbolically burned in the square below it.",
+    "script_body_hash": "d1d46d651c7e1c1ac6a7577d49a407a1563819dad0c6b64094c93bc2f44665b7",
     "beat_length_class": "seasoning",
     "duration_sec": 24,
     "kid_friendly": "yes",
@@ -86701,8 +86700,8 @@
       "flagged_claims": [],
       "status": "verified",
       "extractor_state": "clean",
-      "notes": "",
-      "checked_at": "2026-05-29T04:13:51+00:00",
+      "notes": "Re-verified 2026-09-06: Density rewrite audited against the prior verified body: one definitional gloss added ('a columbarium — a vault of burial niches'). No claim added, removed, or strengthened.",
+      "checked_at": "2026-09-06T06:53:12+00:00",
       "claims_checked": 3,
       "source_passage_verified": true,
       "physical_cues_verified": null,
@@ -86715,7 +86714,7 @@
         "https://en.wikipedia.org/wiki/July_Column (reference)",
         "https://visitingparisbyyourself.com/listing/column-of-la-bastille-memorial-july-revolution-1830-and-tomb-for-revolutionaries/ (reference)"
       ],
-      "verified_body_hash": "8b15b8df3dcab5ff8770caa1fad86fdf9b241fa401a3fdf030cf2aea143d17a4"
+      "verified_body_hash": "d1d46d651c7e1c1ac6a7577d49a407a1563819dad0c6b64094c93bc2f44665b7"
     },
     "new_poi": false,
     "_meta": {
@@ -86735,8 +86734,8 @@
     "source_chunk_slug": "colonne_de_juillet-rev-1351698150",
     "sub_location": null,
     "trigger_address": null,
-    "script_body": "The column itself is built from twenty-one cast-bronze drums, weighing more than 74 tonnes and rising 47 metres high, with a spiral staircase hidden inside. It rests on a base of white marble ornamented with bronze bas-reliefs — the most celebrated being the lion by the sculptor Antoine-Louis Barye, who also made the roosters at the corners. And around the shaft, engraved in gold, run the names of those who died in the July 1830 revolution — the dead the column was raised to honour.",
-    "script_body_hash": "c74fb427c840e4fccd231d8709b36f8d6823690c61d1ef17d54c97a02e806c2a",
+    "script_body": "The column itself is built from twenty-one cast-bronze drums, weighing more than 74 tonnes and rising 47 metres high, with a spiral staircase hidden inside. It rests on a base of white marble ornamented with bronze bas-reliefs — carved panels — the most celebrated being the lion by the sculptor Antoine-Louis Barye, who also made the roosters at the corners. And around the shaft, engraved in gold, run the names of those who died in the July 1830 revolution.",
+    "script_body_hash": "aa0916495e9798149714f34abb789ab30fbdedb5b0a58101f97645c031c296cd",
     "beat_length_class": "mid",
     "duration_sec": 34,
     "kid_friendly": "yes",
@@ -86772,8 +86771,8 @@
       "flagged_claims": [],
       "status": "verified",
       "extractor_state": "clean",
-      "notes": "",
-      "checked_at": "2026-05-29T04:13:51+00:00",
+      "notes": "Re-verified 2026-09-06: Density rewrite audited against the prior verified body: one definitional gloss ('bas-reliefs — carved panels'); the trailing restatement of the commemoration ('the dead the column was raised to honour') removed — that fact stays voiced by the identity beat. No claim added or strengthened.",
+      "checked_at": "2026-09-06T06:53:12+00:00",
       "claims_checked": 4,
       "source_passage_verified": true,
       "physical_cues_verified": true,
@@ -86786,7 +86785,7 @@
         "https://en.wikipedia.org/wiki/July_Column (reference)",
         "https://structurae.net/en/structures/july-column (reference)"
       ],
-      "verified_body_hash": "c74fb427c840e4fccd231d8709b36f8d6823690c61d1ef17d54c97a02e806c2a"
+      "verified_body_hash": "aa0916495e9798149714f34abb789ab30fbdedb5b0a58101f97645c031c296cd"
     },
     "new_poi": false,
     "_meta": {
