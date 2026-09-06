@@ -3803,3 +3803,50 @@ def test_the_refusal_tells_one_true_story_whether_or_not_a_route_was_priced():
     # is derived from what the best route costs, and there was no best route.
     assert nothing.value.alternatives == ()
     assert nothing.value.gap_minutes is None
+
+
+# ---------------------------------------------------------------------------
+# S3.M1 — the parent lens counts for its children at the beat matcher.
+# ---------------------------------------------------------------------------
+
+
+def test_a_parent_lens_counts_for_its_children_at_the_beat_matcher():
+    """Beats carry leaf lenses only, so a request for a parent ('history') matched
+    nothing at the beat level and the ordering went lens-blind — three of the eleven
+    people ask exactly that way. The expansion is the SAME one-hop family the POI
+    classifier (`_lens_relation`) already reads off `snapshot.lens_neighbors`,
+    spelled once and handed to the beat matcher: the parent stands for its children.
+    """
+    poi = _poi("p1", tier=5, lat=48.8555, lng=2.3656, beat_count=0)
+    dark = BeatRef(
+        id="b-dark", poi_id="p1", lenses=("dark_history",), narrative_function="deepen",
+        word_count=40, est_spoken_seconds=60, active_status="active", script_body="x",
+    )
+    views = BeatRef(
+        id="b-views", poi_id="p1", lenses=("waterways_views",), narrative_function="deepen",
+        word_count=90, est_spoken_seconds=60, active_status="active", script_body="y",
+    )
+    snap = _snap(
+        [poi],
+        beats_by_poi={"p1": [views, dark]},
+        lens_neighbors={
+            "history": frozenset({"dark_history", "hidden_history"}),
+            "dark_history": frozenset({"history"}),
+        },
+    )
+    from src.tour.routing import summarise_route
+
+    route = summarise_route(
+        [poi], start_lat=48.8556, start_lng=2.3658, round_trip=False,
+        duration_min=60, spine_area="Le Marais", routing_client=None,
+    )
+    plans = build_poi_beat_plans(route, snap, lenses=["history"])
+    assert plans[0].beats[0].id == "b-dark", (
+        "the child of the requested parent leads; the off-family beat follows"
+    )
+    # A leaf request stays exact: dark_history asked for by name still leads.
+    leaf = build_poi_beat_plans(route, snap, lenses=["dark_history"])
+    assert leaf[0].beats[0].id == "b-dark"
+    # No request, no bias: the heavier beat keeps today's order.
+    unbiased = build_poi_beat_plans(route, snap, lenses=None)
+    assert unbiased[0].beats[0].id == "b-views"

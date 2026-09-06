@@ -1459,6 +1459,23 @@ def end_b_sentinel_from_id(poi_id: str) -> POI | None:
 # ---------------------------------------------------------------------------
 
 
+def expanded_interest_lenses(
+    lenses: Iterable[str] | None, snapshot: CorpusSnapshot
+) -> frozenset[str] | None:
+    """The requested subjects plus their one-hop family — parent and child, the SAME
+    hop `_lens_relation` classifies POIs by, read off ``snapshot.lens_neighbors`` and
+    spelled once for the beat matcher. Beats carry leaf lenses only, so a request for
+    a parent ("history") matches nothing at a beat without this; with it, the parent
+    stands for its children. None stays None: no request, no bias."""
+    if not lenses:
+        return None
+    low = frozenset(s.lower() for s in lenses)
+    family = set(low)
+    for lens in low:
+        family |= snapshot.lens_neighbors.get(lens, frozenset())
+    return frozenset(family)
+
+
 def build_poi_beat_plans(
     route: Route, snapshot: CorpusSnapshot, *, lenses: Iterable[str] | None
 ) -> tuple[POIBeats, ...]:
@@ -1471,11 +1488,12 @@ def build_poi_beat_plans(
     harnesses are routed through it too so they measure the shipped pipeline.
     """
     require_materialized_snapshot(snapshot, operation="beat planning")
+    family = expanded_interest_lenses(lenses, snapshot)
     plans: list[POIBeats] = []
     for poi in route.pois:
         beats = list(snapshot.beats_for(poi.id))
         beats.extend(route.demoted_beats.get(poi.id, ()))
-        plans.append(select_poi_beats(poi, beats, interest_lenses=lenses))
+        plans.append(select_poi_beats(poi, beats, interest_lenses=family))
     return tuple(plans)
 
 
@@ -1493,11 +1511,12 @@ def build_poi_extra_beats(
     what the tour voiced, in priority order. POIs with no extras are omitted.
     """
     require_materialized_snapshot(snapshot, operation="extra-beat planning")
+    family = expanded_interest_lenses(lenses, snapshot)
     out: dict[str, tuple[str, ...]] = {}
     for poi in route.pois:
         beats = list(snapshot.beats_for(poi.id))
         beats.extend(route.demoted_beats.get(poi.id, ()))
-        extras = extra_beat_ids(poi, beats, voiced_by_poi.get(poi.id, ()), interest_lenses=lenses)
+        extras = extra_beat_ids(poi, beats, voiced_by_poi.get(poi.id, ()), interest_lenses=family)
         if extras:
             out[poi.id] = extras
     return out
@@ -1820,7 +1839,11 @@ def planned_capped_audio_seconds(
     audio currency — no tier floor; tier dwell survives only as C8's reported
     minute floor. Pure per (poi, lenses, allowance); memoize at the call site.
     """
-    plan = select_poi_beats(poi, snapshot.beats_for(poi.id), interest_lenses=lenses)
+    plan = select_poi_beats(
+        poi,
+        snapshot.beats_for(poi.id),
+        interest_lenses=expanded_interest_lenses(lenses, snapshot),
+    )
     kept, _overflow = govern_poi_beats(plan, allowance)
     return planned_audio_seconds(kept.beats)
 
