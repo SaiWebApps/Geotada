@@ -175,19 +175,29 @@ def _actual(session, slug: str) -> dict:
     }
 
 
-def _cmp(label: str, exp: set, act: set, drift: list, sample=lambda x: x) -> None:
+def _cmp(
+    label: str, exp: set, act: set, drift: list, sample=lambda x: x, *, warn_only=False
+) -> None:
+    """``warn_only`` (the cloud property lanes): the divergence is printed in
+    full but does not fail parity. The cloud graph legitimately LAGS the repo
+    between deliberate deploys, so a property behind on Aura is staleness on a
+    documented cadence, not silent drift — while an ID-set divergence is
+    corruption on any target and always fails."""
     missing, extra = exp - act, act - exp
-    status = "OK  " if not (missing or extra) else "DRIFT"
+    if not (missing or extra):
+        print(f"    [OK  ] {label}: repo={len(exp)} db={len(act)}")
+        return
+    status = "STALE" if warn_only else "DRIFT"
     print(f"    [{status}] {label}: repo={len(exp)} db={len(act)}", end="")
-    if missing or extra:
-        print(f"  (missing {len(missing)}, extra {len(extra)})")
-        for m in sorted(missing, key=lambda x: str(sample(x)))[:5]:
-            print(f"        - missing: {sample(m)}")
-        for e in sorted(extra, key=lambda x: str(sample(x)))[:5]:
-            print(f"        + extra:   {sample(e)}")
-        drift.append(f"{label}: -{len(missing)}/+{len(extra)}")
+    print(f"  (missing {len(missing)}, extra {len(extra)})")
+    for m in sorted(missing, key=lambda x: str(sample(x)))[:5]:
+        print(f"        - missing: {sample(m)}")
+    for e in sorted(extra, key=lambda x: str(sample(x)))[:5]:
+        print(f"        + extra:   {sample(e)}")
+    if warn_only:
+        print("        (cloud lags the repo until the next deliberate deploy)")
     else:
-        print()
+        drift.append(f"{label}: -{len(missing)}/+{len(extra)}")
 
 
 def main() -> int:
@@ -229,6 +239,7 @@ def main() -> int:
                 act["footprints"],
                 drift,
                 sample=lambda t: f"{t[0]} r={t[1]} role={t[2]}",
+                warn_only=not is_local,
             )
             _cmp("beats (beat_id)", exp["beat_ids"], act["beat_ids"], drift)
             _cmp(
@@ -237,6 +248,7 @@ def main() -> int:
                 act["body_hashes"],
                 drift,
                 sample=lambda t: t[0],
+                warn_only=not is_local,
             )
             _cmp("areas (name)", exp["area_names"], act["area_names"], drift)
             _cmp(
