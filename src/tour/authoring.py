@@ -47,7 +47,13 @@ from .contract import (
     Sentence,
     ValidationReport,
 )
-from .generation import GLUE_REFLECTION, _nav_walk_minutes, _sum_audio, transit_class_beat_ids
+from .generation import (
+    GLUE_REFLECTION,
+    _nav_walk_minutes,
+    _sum_audio,
+    is_walk_concurrent,
+    transit_class_beat_ids,
+)
 from .reflection import reflection_slots
 from .routing import leg_walk_seconds
 from .validation import placement_floor_hits, validate_script, validate_source_traceability
@@ -967,6 +973,60 @@ def _keep_threads(
     return out
 
 
+LINE_DROPPED_DEGRADATION = "line_dropped_where_untrue"
+
+
+def _drop_corpus_leg_lines_untrue_where_they_play(
+    composed: Script,
+    report: ValidationReport,
+    beat_sequence: BeatSequence,
+    *,
+    vignette_beat_ids: frozenset[str],
+    transit_beat_ids: frozenset[str],
+) -> tuple[int, Script]:
+    """ADR 0001's rule at FIRST compose: drop the failing line, say so, never
+    refuse the day for it — scoped to the one class where a drop is safe.
+
+    Eligible: a placement/leg-voice hit on a walk-concurrent CORPUS sentence
+    (a vignette one-liner, a transit-beat line) — self-contained units, the
+    class a sentence-level drop cannot orphan. A sentence inside a stop's
+    continuous prose is never dropped here, and writer glue keeps the bounded
+    reroll + refusal path. Returns (dropped_count, reduced_script)."""
+    from .degradations import record
+
+    flagged: dict[int, tuple[Sentence, list[str]]] = {}
+    for sentence, code in report.forbidden_phrase_hits:
+        if sentence.source_type != "beat":
+            continue
+        if not is_walk_concurrent(sentence, vignette_beat_ids, transit_beat_ids):
+            continue
+        flagged.setdefault(id(sentence), (sentence, []))[1].append(code)
+    if not flagged:
+        return 0, composed
+    kept = tuple(s for s in composed.script if id(s) not in flagged)
+    for sentence, codes in flagged.values():
+        record(
+            kind=LINE_DROPPED_DEGRADATION,
+            human=(
+                "One line written for a walk was not true where it plays, so it "
+                "was left unsaid; the walk simply continues without it."
+            ),
+            component="authoring.finalize_certification_composition",
+            cause=(
+                f"{', '.join(sorted(codes))}: {sentence.text!r}. ADR 0001 — "
+                "silence over wrongness, never refuse the day."
+            ),
+            stop_index=str(sentence.stop_idx),
+        )
+    reduced = composed.model_copy(
+        update={
+            "script": kept,
+            "total_audio_seconds": _sum_audio(kept, beat_sequence),
+        }
+    )
+    return len(flagged), reduced
+
+
 CLOSE_NOT_AUTHORED_DEGRADATION = "close_not_authored"
 
 
@@ -1239,6 +1299,23 @@ def finalize_certification_composition(
         base_validator=validate_authorized_sources,
     )
     report = verifier(composed)
+    # THE FIRST-COMPOSE DROP VALVE (P9R-S1; ADR 0001 extended): when the ONLY
+    # thing between this day and serving is a corpus leg line untrue where it
+    # plays, the line is dropped and disclosed rather than the day refused.
+    # The reduced script re-runs the FULL verifier, so a drop that breaks
+    # anything else still fails closed; when hits remain, the refusal carries
+    # the residual report, which is what the bounded reroll acts on.
+    if not report.passed:
+        dropped, reduced = _drop_corpus_leg_lines_untrue_where_they_play(
+            composed,
+            report,
+            beat_sequence,
+            vignette_beat_ids=vignette_beat_ids,
+            transit_beat_ids=transit_beat_ids,
+        )
+        if dropped:
+            retry_report = verifier(reduced)
+            composed, report = reduced, retry_report
 
     def finish(
         final_script: Script, threads_by_stop: dict[int, dict[str, str]]
