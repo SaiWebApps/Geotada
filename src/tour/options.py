@@ -34,6 +34,7 @@ from .selection import (
     LENS_FLOOR,
     CorpusSnapshot,
     band_for_spotlight,
+    expanded_interest_lenses,
     gravity,
     is_dwell_band,
     lens_relevance,
@@ -163,6 +164,10 @@ def build_route_option(
     roles = {p.id: p.poi_role for p in route.pois}
     pois_by_id: dict[str, POI] = {p.id: p for p in route.pois}
     lenses_fs = frozenset(script.inputs.lenses or ())
+    # The S3 label rule (dominant_lens's ``prefer``): a card on a lensed day is
+    # labelled by the asked family, the same expansion the session stops use —
+    # one stop never wears two labels on one wire.
+    prefer = expanded_interest_lenses(script.inputs.lenses, snapshot)
 
     # --- narration, split the way the tourist experiences it -------------------
     # A vignette's line is voiced by its OWN card below, so it is stripped from the
@@ -212,6 +217,7 @@ def build_route_option(
             _vignette_stop(
                 vp,
                 lenses=lenses_fs,
+                prefer=prefer,
                 snapshot=snapshot,
                 narration=one_liner_by_poi[vp.id],
             )
@@ -225,6 +231,7 @@ def build_route_option(
                 role=roles.get(sp.id, "stop"),
                 beats_by_id=beats_by_id,
                 lenses=lenses_fs,
+                prefer=prefer,
                 snapshot=snapshot,
                 narration=per_stop.get(i, ""),
                 has_deeper_dive=bool(sequence.overflow_by_poi.get(sp.id)),
@@ -238,6 +245,7 @@ def build_route_option(
         _vignette_stop(
             vp,
             lenses=lenses_fs,
+            prefer=prefer,
             snapshot=snapshot,
             narration=one_liner_by_poi[vp.id],
         )
@@ -269,6 +277,7 @@ def _build_stop(
     role: str,
     beats_by_id: dict[str, BeatRef],
     lenses: frozenset[str],
+    prefer: frozenset[str] | None,
     snapshot: CorpusSnapshot,
     narration: str,
     has_deeper_dive: bool,
@@ -296,7 +305,7 @@ def _build_stop(
         name=sp.name,
         lat=sp.lat,
         lng=sp.lng,
-        lens=dominant_lens(sp.beat_ids, beats_by_id),
+        lens=dominant_lens(sp.beat_ids, beats_by_id, prefer=prefer),
         visit_or_walk_past=("walk_past" if role == "walk_by_only" else "visit"),
         minutes=round(sp.dwell_seconds / 60),
         band=band,
@@ -315,6 +324,7 @@ def _vignette_stop(
     poi: POI,
     *,
     lenses: frozenset[str],
+    prefer: frozenset[str] | None,
     snapshot: CorpusSnapshot,
     narration: str,
 ) -> RouteOptionStop:
@@ -332,7 +342,7 @@ def _vignette_stop(
         name=poi.name,
         lat=poi.lat,
         lng=poi.lng,
-        lens=dominant_lens(tuple(beats), beats),
+        lens=dominant_lens(tuple(beats), beats, prefer=prefer),
         visit_or_walk_past="walk_past",
         minutes=0,
         band="vignette",

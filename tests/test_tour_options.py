@@ -404,6 +404,76 @@ def test_build_route_option_carries_the_leg_and_vignette_narration_cards():
     assert opt.eta_seconds == 600 + 486 + 300 + 60
 
 
+def test_the_option_card_label_answers_the_request_like_the_session_does():
+    """Phase 9 S3.M6 — the S3.M3 label rule reaches the option cards too.
+
+    The session stops label through ``dominant_lens(prefer=family)`` in the API
+    adapter, but the SAME stop's option card is built here, and a card labelled
+    by plain majority wears whatever context rode along — one stop, two labels
+    on one wire. The label rule lives in ONE place (``dominant_lens``); this
+    pins that the one interleave passes it the request's expanded family, for
+    dwell cards and walk-past vignettes alike.
+
+    The fixture asks for the PARENT lens ("history"); the stop's beats are two
+    dark_history and one hidden_history (a child of history, per the snapshot's
+    lens_neighbors). Plain majority says dark_history; the person's day says
+    hidden_history. UNDO: drop ``prefer=`` from either dominant_lens call in
+    options.py -> that card reads "dark_history" -> RED."""
+    poi = POI(id="p1", name="Anchor", tier=5, poi_role="stop", lat=48.85, lng=2.35)
+    vpoi = POI(id="v1", name="Fountain", tier=2, poi_role="stop", lat=48.855, lng=2.355)
+    beats_by_id = {
+        "b1": BeatRef(id="b1", poi_id="p1", lenses=("dark_history",)),
+        "b2": BeatRef(id="b2", poi_id="p1", lenses=("dark_history",)),
+        "b3": BeatRef(id="b3", poi_id="p1", lenses=("hidden_history",)),
+    }
+    vbeats = (
+        BeatRef(id="vb1", poi_id="v1", lenses=("dark_history",), active_status="active",
+                script_body="A quiet fountain from another century. It still runs."),
+        BeatRef(id="vb2", poi_id="v1", lenses=("dark_history",), active_status="active",
+                script_body="Its basin fed the whole street."),
+        BeatRef(id="vb3", poi_id="v1", lenses=("hidden_history",), active_status="active",
+                script_body="A smugglers' mark is cut into the rim."),
+    )
+    route = Route(
+        pois=(poi,),
+        transits=(TransitSegment(from_poi_id=None, to_poi_id="p1", distance_m=500,
+                                 walk_seconds=810),),
+        total_walk_distance_m=500, total_walk_seconds=810,
+        vignettes={0: (vpoi,)},
+    )
+    script = Script(
+        city_slug="paris", generated_at="2026-06-12T00:00:00Z",
+        inputs=TourInput(start=(48.85, 2.35), duration_min=60, city_slug="paris",
+                         lenses=["history"]),
+        total_audio_seconds=300, total_walking_seconds=810, total_walk_distance_m=500,
+        total_planned_seconds=1200,
+        selected_pois=(
+            ScriptPOI(id="p1", name="Anchor", tier=5, lat=48.85, lng=2.35,
+                      dwell_seconds=300, beat_ids=("b1", "b2", "b3")),
+        ),
+        lens_coverage={}, script=(), validation=ValidationReport(),
+    )
+    snapshot = _snap(
+        [poi, vpoi],
+        beats_by_poi={"p1": list(beats_by_id.values()), "v1": list(vbeats)},
+        lens_neighbors={
+            "history": frozenset({"hidden_history"}),
+            "hidden_history": frozenset({"history"}),
+        },
+    )
+    opt = build_route_option(
+        route, script, beats_by_id, route_id="rt", snapshot=snapshot,
+        sequence=BeatSequence(poi_beats=(), vignette_beats={0: vbeats}),
+    )
+    by_id = {s.poi_id: s for s in opt.stops}
+    assert by_id["p1"].lens == "hidden_history", (
+        f"the dwell card wears {by_id['p1'].lens!r} on a history day"
+    )
+    assert by_id["v1"].lens == "hidden_history", (
+        f"the vignette card wears {by_id['v1'].lens!r} on a history day"
+    )
+
+
 def test_route_option_round_trips_with_explicit_spotlight_fields():
     """The new fields survive a full model_dump -> model_validate round-trip when
     set to non-default values, so the contract actually carries them."""
