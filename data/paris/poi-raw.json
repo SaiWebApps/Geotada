@@ -29966,7 +29966,7 @@
     "longitude": 2.32892,
     "trigger_radius": 270,
     "poi_role": "setting",
-    "_poi_role_reasoning": "Sub-POI within Jardin des Tuileries; discrete enough to stand and listen",
+    "_poi_role_reasoning": "A long riverside-of-the-garden terrace a person strolls along rather than a single discrete stand — the walk-in rule (you walk INTO a place you move around in) makes it a setting, and its reviewed manège anchor is where a person stands to be told the site's own story.",
     "city_name": "paris",
     "typical_duration_min": 12,
     "visit_seconds_inside": null,

@@ -504,6 +504,8 @@ def _backfill_beat_texts(session, beats: list[dict], city_name: str) -> dict[str
         UNWIND $beats AS b
         MATCH (beat:NarrativeBeat {beat_id: b.beat_id})
         MATCH (new:POI {name: b.poi_name, city_name: $city})
+        // Body places legitimately share names ("Bench"); a beat never homes there.
+        WHERE new.poi_role IS NULL OR new.poi_role <> 'body'
         WITH beat, collect(new) AS homes
         // A poi_name matching two POIs would double-link; refuse, never guess.
         WHERE size(homes) = 1

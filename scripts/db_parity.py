@@ -8,8 +8,10 @@ this is the gate that makes drift LOUD instead of discovered-by-accident.
 For every city it compares, against the profile injected by Make:
   - POIs        : name_key set (in-bbox, from poi-raw.json) vs POI nodes
   - footprints  : (name_key, trigger_radius, poi_role) vs the POI nodes' own
+  - anchors     : (name_key, canonical anchors JSON) vs the POI nodes' own
   - beats       : beat_id set (uploadable AND linkable) vs POI-reachable beats
   - beat bodies : (beat_id, sha256 of normalized script_body) vs the graph's text
+  - placement   : (beat_id, sub_location, trigger_address) vs the graph's own
   - areas       : name set (areas.json) vs Area nodes
   - POI->Area   : resolvable within_edges vs WITHIN edges
 
@@ -99,16 +101,33 @@ def _expected(slug: str) -> dict:
         (canonical_name_key(p["name"]), p.get("trigger_radius", 10), p.get("poi_role"))
         for p in in_poi
     }
+
+    def _canon_anchors(raw) -> str | None:
+        if not isinstance(raw, list) or not raw:
+            return None
+        return json.dumps(raw, ensure_ascii=False, sort_keys=True)
+
+    anchors = {
+        (canonical_name_key(p["name"]), _canon_anchors(p.get("anchors")))
+        for p in in_poi
+    }
     body_hashes = {
         (b["beat_id"], _normalized_script_body_hash(b.get("script_body") or ""))
+        for b in uploadable
+        if b.get("poi_name") in poi_names
+    }
+    placement = {
+        (b["beat_id"], b.get("sub_location") or None, b.get("trigger_address") or None)
         for b in uploadable
         if b.get("poi_name") in poi_names
     }
     return {
         "poi_keys": poi_keys,
         "footprints": footprints,
+        "anchors": anchors,
         "beat_ids": linkable,
         "body_hashes": body_hashes,
+        "placement": placement,
         "area_names": area_names,
         "p2a": p2a,
         "unlinkable": unlinkable,
@@ -149,12 +168,35 @@ def _actual(session, slug: str) -> dict:
         )
         if r["k"]
     }
+    def _canon_anchors_str(raw) -> str | None:
+        if not raw:
+            return None
+        return json.dumps(json.loads(raw), ensure_ascii=False, sort_keys=True)
+
+    anchors = {
+        (r["k"], _canon_anchors_str(r["a"]))
+        for r in q(
+            "MATCH (p:POI {city_name:$city}) "
+            "WHERE p.poi_role IS NULL OR p.poi_role <> 'body' "
+            "RETURN p.name_key AS k, p.anchors AS a"
+        )
+        if r["k"]
+    }
     body_hashes = {
         (r["b"], _normalized_script_body_hash(r["body"] or ""))
         for r in q(
             "MATCH (:POI {city_name:$city})-[:HAS_BEAT]->(b:NarrativeBeat) "
             "WHERE b.beat_id IS NOT NULL "
             "RETURN DISTINCT b.beat_id AS b, b.script_body AS body"
+        )
+    }
+    placement = {
+        (r["b"], r["sub"], r["trig"])
+        for r in q(
+            "MATCH (:POI {city_name:$city})-[:HAS_BEAT]->(b:NarrativeBeat) "
+            "WHERE b.beat_id IS NOT NULL "
+            "RETURN DISTINCT b.beat_id AS b, b.sub_location AS sub, "
+            "b.trigger_address AS trig"
         )
     }
     area_names = {r["n"] for r in q("MATCH (a:Area {city_name:$city}) RETURN a.name AS n")}
@@ -168,8 +210,10 @@ def _actual(session, slug: str) -> dict:
     return {
         "poi_keys": poi_keys,
         "footprints": footprints,
+        "anchors": anchors,
         "beat_ids": beat_ids,
         "body_hashes": body_hashes,
+        "placement": placement,
         "area_names": area_names,
         "p2a": p2a,
     }
@@ -241,11 +285,27 @@ def main() -> int:
                 sample=lambda t: f"{t[0]} r={t[1]} role={t[2]}",
                 warn_only=not is_local,
             )
+            _cmp(
+                "anchors (key, reviewed set)",
+                exp["anchors"],
+                act["anchors"],
+                drift,
+                sample=lambda t: t[0],
+                warn_only=not is_local,
+            )
             _cmp("beats (beat_id)", exp["beat_ids"], act["beat_ids"], drift)
             _cmp(
                 "beat bodies (id, body hash)",
                 exp["body_hashes"],
                 act["body_hashes"],
+                drift,
+                sample=lambda t: t[0],
+                warn_only=not is_local,
+            )
+            _cmp(
+                "beat placement (id, sub, trigger)",
+                exp["placement"],
+                act["placement"],
                 drift,
                 sample=lambda t: t[0],
                 warn_only=not is_local,
