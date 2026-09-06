@@ -306,6 +306,8 @@ class ItineraryStop {
     String? scriptBody,
     String? closeAudioUrl,
     String? fullCloseAudioUrl,
+    String? legAudioUrl,
+    double? legAudioDurationSec,
   }) {
     // EVERY field rides through (Phase 6 S6.8 found the class: this copy used
     // to drop narration, the closes, the threads and the full telling — the
@@ -340,8 +342,8 @@ class ItineraryStop {
       fullCloseAudioUrl: fullCloseAudioUrl ?? this.fullCloseAudioUrl,
       trigger: trigger,
       legNarration: legNarration,
-      legAudioUrl: legAudioUrl,
-      legAudioDurationSec: legAudioDurationSec,
+      legAudioUrl: legAudioUrl ?? this.legAudioUrl,
+      legAudioDurationSec: legAudioDurationSec ?? this.legAudioDurationSec,
       segments: segments,
     );
   }

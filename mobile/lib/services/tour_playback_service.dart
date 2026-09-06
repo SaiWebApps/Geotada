@@ -642,6 +642,52 @@ class TourPlaybackService extends ChangeNotifier {
   String? get legTextLine => _legTextLine;
   String? _legTextLine;
 
+  /// A text-only leg is UNDER WAY: the re-voiced file may have landed on the
+  /// server since this session was fetched (the ADR's background voicing, with
+  /// this walker's arrival as its deadline). The page watches this and
+  /// refetches the session; [adoptSessionAudio] takes the fresh audio in.
+  bool get audioCatchUpDue => _legTextLine != null;
+
+  /// Adopt AUDIO the server has voiced since the held session was fetched —
+  /// never a plan change: a fresh stop's file is taken only for the stop the
+  /// walk already holds, matched by id, and only when the fresh WORDS are the
+  /// held words (a mismatch means another replan happened; that arrives
+  /// through [holdSession], never through this door). Returns how many stops
+  /// gained a file.
+  int adoptSessionAudio(List<ItineraryStop> fresh) {
+    final byId = {
+      for (final stop in fresh)
+        if (stop.stopId != null) stop.stopId!: stop,
+    };
+    // The same stop rides both the working list and the planned one; one
+    // adoption is one stop, counted once by id.
+    final adoptedIds = <String>{};
+    List<ItineraryStop> take(List<ItineraryStop> held) => [
+          for (final stop in held)
+            () {
+              final update = stop.stopId == null ? null : byId[stop.stopId];
+              if (update == null ||
+                  stop.legAudioUrl != null ||
+                  update.legAudioUrl == null ||
+                  update.legNarration != stop.legNarration) {
+                return stop;
+              }
+              adoptedIds.add(stop.stopId!);
+              return stop.copyWith(
+                legAudioUrl: update.legAudioUrl,
+                legAudioDurationSec: update.legAudioDurationSec,
+              );
+            }(),
+        ];
+    final stops = take(_stops);
+    final planned = take(_planned);
+    if (adoptedIds.isEmpty) return 0;
+    _stops = List.unmodifiable(stops);
+    _planned = List.unmodifiable(planned);
+    notifyListeners();
+    return adoptedIds.length;
+  }
+
   /// S6.6 (design §5.5; W6.2 R3, 9/11 by name): THE LINGER RULE — a linger
   /// OFFERS the full telling on the screen, silently; a TAP plays it. Never
   /// auto-play on stillness. The offer shows only at a standing seam INSIDE the
@@ -2075,6 +2121,7 @@ class TourPlaybackService extends ChangeNotifier {
     }
     if (_played.contains(legKey) || _audioService.isPlaying) return;
     _startTourClockIfNeeded(); // the first play starts the tour clock (R1.3)
+    _legTextLine = null; // the caught-up file says the words; the screen line is done
     _audioService.play(legKey, url, title: target.poiName);
     notifyListeners();
   }

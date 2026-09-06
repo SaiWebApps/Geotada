@@ -1175,6 +1175,72 @@ void main() {
       expect(service.legTextLine, isNull, reason: 'arrival clears the line');
     });
 
+    // Cycle 6 (ADR full letter): the background voicing lands the re-voiced
+    // file on the server DURING the walk. The page refetches when the service
+    // says a text-only leg is under way (audioCatchUpDue) and hands the fresh
+    // stops in; [adoptSessionAudio] takes AUDIO ONLY, for the same words, and
+    // the leg piece then plays mid-walk — the screen line retires.
+    test('caught-up leg audio adopted mid-leg plays, and the screen line '
+        'retires', () async {
+      final stops = [
+        _makeStop(sortOrder: 1, beatId: 'b1', lat: base, lng: 2.35, audioUrl: url,
+            radiusM: 20),
+        _makeStop(sortOrder: 2, beatId: 'b2', stopId: 's2',
+            lat: base + 400 * degPerMeterLat, lng: 2.35,
+            audioUrl: url, radiusM: 20,
+            legNarration: 'Leaving Stop 1 behind, head for Stop 2, '
+                'about a 4-minute walk away.'),
+      ];
+      await service.startTour(stops);
+      gps.simulatePosition(base, 2.35);
+      audio.simulateComplete();
+      gps.simulatePosition(base + 60 * degPerMeterLat, 2.35); // out: the text-only leg
+      expect(service.legTextLine, isNotNull);
+      expect(service.audioCatchUpDue, isTrue,
+          reason: 'a text-only leg under way is the refetch signal');
+      // The server voiced the line since the session was fetched.
+      final adopted = service.adoptSessionAudio([
+        _makeStop(sortOrder: 2, beatId: 'b2', stopId: 's2',
+            lat: base + 400 * degPerMeterLat, lng: 2.35,
+            audioUrl: url, radiusM: 20,
+            legNarration: 'Leaving Stop 1 behind, head for Stop 2, '
+                'about a 4-minute walk away.',
+            legAudioUrl: 'https://cdn.ondoway.com/leg2-revoiced.mp3'),
+      ]);
+      expect(adopted, 1);
+      gps.simulatePosition(base + 100 * degPerMeterLat, 2.35); // next fix: it plays
+      expect(audio.currentBeatId, 's2-leg',
+          reason: 'the caught-up file plays on the walk it was voiced for');
+      expect(service.legTextLine, isNull,
+          reason: 'the file says the words; the screen line is done');
+      expect(service.audioCatchUpDue, isFalse);
+    });
+
+    test('adoption refuses a file whose words are not the held words', () async {
+      final stops = [
+        _makeStop(sortOrder: 1, beatId: 'b1', lat: base, lng: 2.35, audioUrl: url,
+            radiusM: 20),
+        _makeStop(sortOrder: 2, beatId: 'b2', stopId: 's2',
+            lat: base + 400 * degPerMeterLat, lng: 2.35,
+            audioUrl: url, radiusM: 20, legNarration: 'Head for Stop 2.'),
+      ];
+      await service.startTour(stops);
+      gps.simulatePosition(base, 2.35);
+      audio.simulateComplete();
+      gps.simulatePosition(base + 60 * degPerMeterLat, 2.35);
+      final adopted = service.adoptSessionAudio([
+        _makeStop(sortOrder: 2, beatId: 'b2', stopId: 's2',
+            lat: base + 400 * degPerMeterLat, lng: 2.35,
+            audioUrl: url, radiusM: 20,
+            legNarration: 'A DIFFERENT line entirely.',
+            legAudioUrl: 'https://cdn.ondoway.com/other.mp3'),
+      ]);
+      expect(adopted, 0,
+          reason: 'audio for other words is another replan; it arrives '
+              'through holdSession, never this door');
+      expect(service.legTextLine, 'Head for Stop 2.');
+    });
+
     test('a leg whose file exists plays it and shows no extra line', () async {
       final stops = [
         _makeStop(sortOrder: 1, beatId: 'b1', lat: base, lng: 2.35, audioUrl: url,

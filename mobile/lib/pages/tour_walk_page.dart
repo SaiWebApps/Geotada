@@ -4,6 +4,7 @@ import 'package:apple_maps_flutter/apple_maps_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ondoway/models/trip.dart';
+import 'package:ondoway/services/auth_service.dart';
 import 'package:ondoway/services/tour_playback_service.dart';
 import 'package:ondoway/services/trip_service.dart';
 import 'package:ondoway/theme/dims.dart';
@@ -104,6 +105,38 @@ class _TourWalkPageState extends State<TourWalkPage> {
     _engine = context.read<TourPlaybackService>();
   }
 
+  /// The last time the page went to the server for caught-up audio, and the
+  /// in-flight guard — one fetch at a time, at most one every twenty seconds.
+  DateTime? _audioCatchUpAt;
+  bool _audioCatchUpInFlight = false;
+
+  /// A text-only leg is under way: the re-voiced file may have landed since the
+  /// session was fetched (the ADR's background voicing, the walker's arrival as
+  /// its deadline). Refetch and adopt AUDIO ONLY — a plan change still arrives
+  /// through the replan path, never through this door.
+  Future<void> _maybeCatchUpAudio() async {
+    final engine = _engine;
+    if (engine == null || !engine.audioCatchUpDue || _audioCatchUpInFlight) {
+      return;
+    }
+    final last = _audioCatchUpAt;
+    if (last != null && DateTime.now().difference(last).inSeconds < 20) return;
+    _audioCatchUpInFlight = true;
+    _audioCatchUpAt = DateTime.now();
+    try {
+      final token = context.read<AuthService>().accessToken;
+      if (token == null) return;
+      final session = await context
+          .read<TripService>()
+          .fetchSession(widget.trip.tripId, token);
+      engine.adoptSessionAudio(session.stops);
+    } catch (_) {
+      // Offline: the words stay on the screen — the ADR's floor holds.
+    } finally {
+      _audioCatchUpInFlight = false;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -115,6 +148,7 @@ class _TourWalkPageState extends State<TourWalkPage> {
       // here would repaint the map every second whatever happened — and would
       // schedule a frame forever, which is a tree that never settles.
       context.read<TourPlaybackService>().tick();
+      _maybeCatchUpAudio();
     });
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
