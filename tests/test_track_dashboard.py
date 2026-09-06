@@ -93,6 +93,29 @@ class TestDerivedState:
         _issue(db, "I2", "S2", "pending")
         assert track.derived_story_state(db, "S2", "Verifier") == "Planner"
 
+    def test_a_no_op_row_is_settled_not_outstanding(self, db):
+        """A no-op is a written decision that a milestone deliberately does not
+        happen — its history kept, its work retired. A settled row: a story
+        whose rows are all completed-or-no-op sits at Verifier, the owner can
+        call it Done, and the retired row neither drags the percentage down
+        nor pads it up. Otherwise any story that ever re-planned a row away
+        could never be Done — a box lying about finished work."""
+        _feature(db, "f", _now())
+        _story(db, "S1", "f")
+        _issue(db, "I1", "S1", "completed")
+        _issue(db, "I2", "S1", "no-op")
+        assert track.derived_story_state(db, "S1", "PM") == "Verifier"
+        args = argparse.Namespace(
+            id="S1", state="Done", who="owner", why=None, sent_back=False,
+            db=None, json=False,
+        )
+        track.cmd_story_state(db, args)
+        row = db.execute("SELECT state FROM stories WHERE id='S1'").fetchone()
+        assert row["state"] == "Done"
+        health = track.health_of(db, feature="f")
+        assert health["progress"] == 100
+        assert health["issues_total"] == 1, "a retired row is not counted work"
+
     def test_state_of_reports_the_derived_state(self, db):
         _feature(db, "f", _now())
         _story(db, "S1", "f", state="PM")  # stale hand label

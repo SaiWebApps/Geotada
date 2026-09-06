@@ -53,6 +53,12 @@ STORY_STATES = ("PM", "Planner", "QA", "Implementer", "Verifier", "Done")
 #: blocked is bookkeeping; re-running a suite for it would be pure waste.
 PROVEN = "completed"
 
+#: The statuses that leave a row SETTLED: proved, or retired by a written replan
+#: decision (`no-op` — the milestone deliberately does not happen; its history
+#: stays). A settled row is not outstanding work, so it neither blocks a story's
+#: Done nor counts in the progress arithmetic's denominator.
+SETTLED = (PROVEN, "no-op")
+
 #: How long a single step's command may run before this gives up on it. A step
 #: is meant to be atomic — one command, seconds — so a command still going after
 #: this is a step that was never atomic, and saying so is more useful than
@@ -189,7 +195,7 @@ def derived_story_state(conn: sqlite3.Connection, story_id: str, persisted: str)
         "SELECT status FROM issues WHERE story=?", (story_id,))]
     if not statuses:
         return "PM"
-    if all(s == PROVEN for s in statuses):
+    if all(s in SETTLED for s in statuses):
         return "Verifier"
     if all(s == "pending" for s in statuses):
         return "Planner"
@@ -347,15 +353,16 @@ def cmd_story_state(conn: sqlite3.Connection, args: argparse.Namespace) -> None:
     if args.state not in STORY_STATES:
         raise Refused(f"{args.state!r} is not a story state; one of {list(STORY_STATES)}")
 
-    # A story is Done only when every issue under it is. Otherwise "Done" would
-    # be exactly the agent's-word claim this whole command exists to refuse.
+    # A story is Done only when every issue under it is settled — proved, or
+    # retired by a written no-op. Otherwise "Done" would be exactly the
+    # agent's-word claim this whole command exists to refuse.
     if args.state == "Done":
         outstanding = conn.execute(
-            "SELECT id FROM issues WHERE story=? AND status != ?",
-            (args.id, PROVEN)).fetchall()
+            "SELECT id FROM issues WHERE story=? AND status NOT IN (?, ?)",
+            (args.id, *SETTLED)).fetchall()
         if outstanding:
             raise Refused(
-                f"story {args.id} has {len(outstanding)} issue(s) not completed "
+                f"story {args.id} has {len(outstanding)} issue(s) not settled "
                 f"({', '.join(r['id'] for r in outstanding)}). A story is finished when its "
                 "work is, not when someone says so."
             )
@@ -416,8 +423,10 @@ def health_of(conn: sqlite3.Connection, feature: str | None = None) -> dict:
         " AND story IN (SELECT id FROM stories WHERE feature=?)" if feature else ""
     )
     scope_args: tuple = (feature,) if feature else ()
+    # A no-op row is retired work, not work: counting it in the denominator
+    # would report a feature under 100% forever after any replan retired a row.
     total = conn.execute(
-        "SELECT COUNT(*) FROM issues WHERE 1=1" + scope_sql, scope_args
+        "SELECT COUNT(*) FROM issues WHERE status != 'no-op'" + scope_sql, scope_args
     ).fetchone()[0]
     done = conn.execute(
         "SELECT COUNT(*) FROM issues WHERE status=?" + scope_sql,
