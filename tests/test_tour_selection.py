@@ -3913,7 +3913,13 @@ def test_a_lensed_day_never_seats_a_lens_miss_story_stop():
 
 def test_a_pinned_place_outranks_the_subject_gate():
     """Theo pins the thing he came for; a pin is the person's own hand on the day
-    and no subject gate second-guesses it."""
+    and no subject gate second-guesses it.
+
+    The mechanism is the FORCE-SEAT pass, not a carve-out in the gate itself:
+    the gate may drop a pinned miss from the open pool, and the force-seat pass
+    seats every held stop straight from the snapshot afterwards. UNDO: skip the
+    force-seat pass (guard out its `if held_ids:` block) -> the gated pool never
+    offers the pinned miss and nothing re-seats it -> RED."""
     lat, lng = 48.8555, 2.3656
     pois = [
         _lens_poi(f"hit{i}", lat + 0.0005 + 0.0005 * i, lng) for i in range(1, 9)

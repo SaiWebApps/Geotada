@@ -2760,8 +2760,6 @@ def _select_route_once(
         if (
             lens_gate
             and interest
-            and poi.id not in input.pinned_poi_ids
-            and (replan is None or poi.id not in replan.protected_poi_ids)
             and _lens_relation(poi, interest, snapshot) == "miss"
         ):
             # THE SUBJECT GATE (Phase 9 S3): on a lensed request, a story
@@ -2769,11 +2767,13 @@ def _select_route_once(
             # direct/one-hop/miss the spotlight classifies by — leaves the
             # dwell pool, so a place that can answer swaps in. An off-subject
             # stop is dropped or replaced, never served mislabelled; fewer
-            # honest stops beat a padded day. A PIN outranks the gate (the
-            # person's own hand on the day), a replan's protected promises do
-            # too, and `select_route`'s valve lifts the gate — saying so —
-            # rather than refuse a day a thin area used to serve. Walking past
-            # stays fine: vignettes are untouched.
+            # honest stops beat a padded day. The gate decides only the OPEN
+            # pool: a pin and a replan's protected promises never ride it —
+            # the force-seat pass below seats every held stop straight from
+            # the snapshot, so the person's own hand on the day outranks this
+            # exclusion by construction. `select_route`'s valve lifts the gate
+            # — saying so — rather than refuse a day a thin area used to
+            # serve. Walking past stays fine: vignettes are untouched.
             continue
         if poi.place_category and poi.place_category in input.category_minus:
             # "LESS OF THIS TODAY" (Phase 4 dial, W4.2 — Greta's "not what I did
