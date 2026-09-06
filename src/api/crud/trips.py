@@ -29,6 +29,7 @@ def route_script_to_stops(
     extra_by_poi: dict[str, tuple[str, ...]] | None = None,
     triggers: Mapping[str, StopTrigger] | None = None,
     anchors: Mapping[str, tuple[Anchor, ...]] | None = None,
+    prefer_lenses: frozenset[str] | None = None,
 ) -> list[dict[str, Any]]:
     """Adapt the engine's ordered ScriptPOIs into the stop dicts create_trip_with_stops expects.
 
@@ -97,7 +98,7 @@ def route_script_to_stops(
                 "beat_ids": beat_ids,
                 "extra_beat_ids": list(extras.get(sp.id, ())),
                 "primary_beat_id": beat_ids[0] if beat_ids else None,
-                "lens_name": dominant_lens(sp.beat_ids, beats_by_id),
+                "lens_name": dominant_lens(sp.beat_ids, beats_by_id, prefer=prefer_lenses),
                 "duration_min": duration_min,
                 "importance_tier": sp.tier,
                 "start_time": time_str,

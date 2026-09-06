@@ -126,6 +126,7 @@ from src.tour.selection import (
     build_poi_extra_beats,
     build_poi_extra_narration,
     end_b_sentinel_from_id,
+    expanded_interest_lenses,
     load_paris_corpus,
     pick_spine_area,
     planned_audio_by_poi,
@@ -686,6 +687,9 @@ def generate_trip(
         # Phase 7 S7.7 (B): the marquee's reviewed anchors, off the same route — the
         # story is cut at them into chapters (design §5.6 segments; W7.2 R4).
         anchors=place_anchors(route),
+        # Phase 9 S3: the label answers the request — the asked family, expanded
+        # the same one hop the matcher and the gate use.
+        prefer_lenses=expanded_interest_lenses(tour_input.lenses, snapshot),
     )
 
     # Step 4.6: persist the RESOLVED engine input + every flavour's ordered
@@ -1433,6 +1437,9 @@ def compose_trip(
         # Phase 7 S7.7 (B): the marquee's reviewed anchors, off the same route — the
         # story is cut at them into chapters (design §5.6 segments; W7.2 R4).
         anchors=place_anchors(route),
+        # Phase 9 S3: the label answers the request — the asked family, expanded
+        # the same one hop the matcher and the gate use.
+        prefer_lenses=expanded_interest_lenses(tour_input.lenses, snapshot),
     )
     for idx, stop in enumerate(stops):
         stop["extra_narration"] = extra_narration_by_poi.get(stop["poi_id"])

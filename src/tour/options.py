@@ -43,12 +43,24 @@ from .selection import (
 from .visit_time import served_elapsed_seconds
 
 
-def dominant_lens(beat_ids: tuple[str, ...], beats_by_id: dict[str, BeatRef]) -> str | None:
+def dominant_lens(
+    beat_ids: tuple[str, ...],
+    beats_by_id: dict[str, BeatRef],
+    *,
+    prefer: frozenset[str] | None = None,
+) -> str | None:
     """The most common lens across a stop's beats, or None if no beat is lensed.
 
     Computed from the beats themselves (BeatRef.lenses) — never fabricated.
     Ties break deterministically by lens name so the result is stable across
     runs. (Moved from the API adapter in M6 so the engine and API share it.)
+
+    ``prefer`` (Phase 9 S3) is the requested subject family, expanded: when any
+    voiced beat answers it, the label is the most common ASKED lens — the stop's
+    role in the person's own day — never the plain majority of whatever context
+    rode along, which is how an architecture request came back wearing
+    "Dark History". A stop with nothing on the request keeps the plain majority:
+    the label stays true to the words either way.
     """
     counts: dict[str, int] = {}
     for bid in beat_ids:
@@ -59,6 +71,10 @@ def dominant_lens(beat_ids: tuple[str, ...], beats_by_id: dict[str, BeatRef]) ->
             counts[lens] = counts.get(lens, 0) + 1
     if not counts:
         return None
+    if prefer:
+        asked = {name: n for name, n in counts.items() if name.lower() in prefer}
+        if asked:
+            return sorted(asked, key=lambda lname: (-asked[lname], lname))[0]
     return sorted(counts, key=lambda lname: (-counts[lname], lname))[0]
 
 

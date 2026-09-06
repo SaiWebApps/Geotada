@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from src.api.crud.trips import route_script_to_stops
 from src.tour.contract import BeatRef, Script, ScriptPOI, Sentence, TourInput, ValidationReport
+from src.tour.options import dominant_lens
 
 
 def _poi(pid: str, name: str, *, tier: int, beat_ids: tuple[str, ...], dwell: int) -> ScriptPOI:
@@ -220,3 +221,43 @@ def test_a_leg_line_records_the_stop_it_was_written_from():
         "recorded for every stop, not only the ones whose leg happens to carry words — "
         "a stop that gains a line later still knows which walk it describes"
     )
+
+
+def test_the_label_answers_the_request_when_any_voiced_beat_does():
+    """S3.M3 — the measured fault: Camille's Notre-Dame voiced two architecture
+    beats yet wore `hidden_history`, because the label was the plain majority of
+    whatever else rode along. When the person asked for subjects, the label is the
+    most common ASKED-family lens among the voiced beats — the stop's role in HER
+    day — and only a stop with nothing on the request keeps the plain majority.
+    No request: unchanged, ties alphabetical as ever."""
+    beats = {
+        "a1": BeatRef(id="a1", poi_id="p1", lenses=("historic_arch",)),
+        "a2": BeatRef(id="a2", poi_id="p1", lenses=("historic_arch",)),
+        "h1": BeatRef(id="h1", poi_id="p1", lenses=("hidden_history",)),
+        "h2": BeatRef(id="h2", poi_id="p1", lenses=("hidden_history",)),
+        "h3": BeatRef(id="h3", poi_id="p1", lenses=("dark_history",)),
+    }
+    ids = list(beats)
+    assert dominant_lens(ids, beats) == "hidden_history"
+    assert dominant_lens(
+        ids, beats, prefer=frozenset({"historic_arch", "arch_design"})
+    ) == "historic_arch"
+    # Nothing on the request: the honest plain majority stands.
+    assert dominant_lens(
+        ids, beats, prefer=frozenset({"visual_art"})
+    ) == "hidden_history"
+
+
+def test_the_adapter_threads_the_preferred_family_into_every_stop_label():
+    pois = [_poi("p1", "Notre-Dame", tier=5, beat_ids=("a1", "h1", "h2"), dwell=600)]
+    beats = {
+        "a1": BeatRef(id="a1", poi_id="p1", lenses=("historic_arch",)),
+        "h1": BeatRef(id="h1", poi_id="p1", lenses=("hidden_history",)),
+        "h2": BeatRef(id="h2", poi_id="p1", lenses=("hidden_history",)),
+    }
+    plain = route_script_to_stops(pois, beats, {})
+    assert plain[0]["lens_name"] == "hidden_history"
+    preferred = route_script_to_stops(
+        pois, beats, {}, prefer_lenses=frozenset({"historic_arch"})
+    )
+    assert preferred[0]["lens_name"] == "historic_arch"
