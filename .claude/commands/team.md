@@ -285,6 +285,13 @@ critic — and
 `Agent(subagent_type:'qa')` for the undo test on the new tests, and paste
 their verdicts. The human, not you, decides it's done.
 
+**Every actionable acceptance or QA finding is dispositioned before the story
+closes** — a tracker row on this story (built now), a tracker row on the
+feature or a named story (owner-scheduled), or a written won't-fix with its
+reason — never a UI chip, never prose alone. The tracker is the one record
+the verdicts feed; a finding parked anywhere else is a deferral wearing a
+costume.
+
 ---
 
 ## Rules

@@ -1135,6 +1135,75 @@
         "radius_m": 40.0,
         "indoor": false,
         "basis": "The crematorium and its columbarium corridors sit just north-east of the main rond-point, and the corpus beat directs the visitor along the first corridor of the lower level; a person stands in the forecourt between the pavilions to take the building in before going down. Forty metres round the forecourt covers the entrances to the corridors and stops well short of the Piaf and Wilde anchors further east."
+      },
+      {
+        "label": "Balzac and Nerval",
+        "sub_locations": [
+          "balzac-tomb",
+          "nerval-tomb"
+        ],
+        "lat": 48.86218,
+        "lng": 2.39066,
+        "radius_m": 30.0,
+        "indoor": false,
+        "basis": "Balzac's column with the bronze bust by David d'Angers stands in division 48 on the Chemin des Acacias loop, and the corpus's own text places Nerval directly opposite it — one standing position serves both: a person stands on the path between the two graves and turns. Thirty metres covers both plots and the path."
+      },
+      {
+        "label": "Delacroix's tomb",
+        "sub_locations": [
+          "delacroix-tomb"
+        ],
+        "lat": 48.8617,
+        "lng": 2.3915,
+        "radius_m": 25.0,
+        "indoor": false,
+        "basis": "The black Volvic-stone sarcophagus in division 49, a short walk along from Balzac; a person stands on the path before it to look at the austere Roman form. Twenty-five metres is the plot and the path, clear of the Balzac position."
+      },
+      {
+        "label": "Allan Kardec's dolmen",
+        "sub_locations": [
+          "kardec-tomb"
+        ],
+        "lat": 48.86279,
+        "lng": 2.39221,
+        "radius_m": 25.0,
+        "indoor": false,
+        "basis": "The flower-covered dolmen in division 44 draws a standing crowd of its own; a person stands at the railing among the tributes to read the inscription the beat quotes. Twenty-five metres holds the plot and the gathering space in front of it."
+      },
+      {
+        "label": "Rossini's cenotaph",
+        "sub_locations": [
+          "rossini-tomb"
+        ],
+        "lat": 48.85955,
+        "lng": 2.3885,
+        "radius_m": 25.0,
+        "indoor": false,
+        "basis": "The cenotaph stands on the Avenue Principale a short way up from the main entrance; a person stands on the avenue itself to look at it. Twenty-five metres spans the avenue and the plot without reaching the entrance gates."
+      },
+      {
+        "label": "The Monument aux Morts",
+        "sub_locations": [
+          "monument-aux-morts",
+          "bartholome-tomb",
+          "david-heart-tomb"
+        ],
+        "lat": 48.86075,
+        "lng": 2.3895,
+        "radius_m": 40.0,
+        "indoor": false,
+        "basis": "Bartholome's memorial fills the hillside where the Avenue Principale meets the grand steps; a person stands back on the avenue to take the carved procession in. The corpus places Bartholome's own tomb nearby and David's heart on the second set of steps, so forty metres round the monument covers all three as one standing position."
+      },
+      {
+        "label": "Cino del Duca's Pieta",
+        "sub_locations": [
+          "cino-del-duca-tomb"
+        ],
+        "lat": 48.8611,
+        "lng": 2.395,
+        "radius_m": 25.0,
+        "indoor": false,
+        "basis": "The Messina Pieta with its standing Virgin is in the divisions north-east of the crematorium; a person stands before the white marble group to see why the pose is unusual. Twenty-five metres is the plot and its path, clear of the columbarium forecourt."
       }
     ]
   },
