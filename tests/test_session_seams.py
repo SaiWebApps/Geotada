@@ -131,13 +131,18 @@ def test_the_replan_brain_is_only_on_the_server():
 
     # THE POSITIVE CLAUSE: exactly ONE method changes the current plan, keyed on a
     # server contingency id, and the working stop list is assigned only by the
-    # tour lifecycle and that method's re-ordering.
+    # tour lifecycle, that method's re-ordering, and the audio catch-up's
+    # same-words adoption (P9R-S6: it swaps a held stop for a copy carrying the
+    # file the server voiced for the SAME words, id-matched — no stop added,
+    # dropped or moved, so it is not a plan decision; a plan change still
+    # arrives only through the one selector).
     play_src = corpus[playback]
     assert play_src.count(THE_ONE_SELECTOR) == 1, "the one selector is not exactly one"
     assignments = re.findall(r"^\s*_stops = .*$", play_src, flags=re.MULTILINE)
-    assert len(assignments) == 3, (
-        "the working stop list is assigned only in startTour, stopTour and the "
-        f"selector's re-ordering; found {len(assignments)}: {assignments}"
+    assert len(assignments) == 4, (
+        "the working stop list is assigned only in startTour, stopTour, the "
+        "selector's re-ordering and adoptSessionAudio's same-words audio swap; "
+        f"found {len(assignments)}: {assignments}"
     )
 
 

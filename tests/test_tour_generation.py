@@ -1271,10 +1271,15 @@ def test_transit_only_stop_dropped_beat_is_not_reported_as_voiced():
     # until 2026-08-06; the number is the same, the reason is not, and the
     # property under test is unchanged: never ABOVE the floor on unvoiced audio.
     assert sp2.dwell_seconds == 300
-    # (1c) FIX: because beat_ids no longer marks it voiced, keep-exploring
-    # re-classifies the unreachable content as an extra the user CAN reach.
+    # (1c) P9R-S1.M6 (Paulo's acceptance finding): a rejected transit beat is
+    # NOT an extra either. Extras play STANDING at the stop, and this beat's
+    # words are a walk's narration for a walk this route does not take —
+    # re-classifying it as reachable was how "Walk up boulevard de Sébastopol"
+    # reached the keep-exploring tap. Unreachable is correct: transit-class
+    # beats never enter the extras pool (one function set with the pick and
+    # the anchor block).
     extras = extra_beat_ids(p2, (p2_transit,), sp2.beat_ids)
-    assert "p2-transit" in extras
+    assert "p2-transit" not in extras
     # (2) The zero-emission condition still holds (anchor filter intact).
     assert not any(s.source_type == "beat" and s.stop_idx == 1 for s in script.script), (
         "stop 1 emitted a beat sentence — the transit-class filter changed; "
