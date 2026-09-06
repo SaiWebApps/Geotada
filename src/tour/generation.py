@@ -188,6 +188,23 @@ _COMPASS_RE = re.compile(
 TRANSIT_NARRATIVE_FUNCTIONS: frozenset[str] = frozenset(
     {"transition", "transit", "navigation"}
 )
+
+#: A body whose OPENING clause is one of these describes arriving FROM somewhere —
+#: the one shape that lets a previous stop's name vouch for a transit beat's
+#: direction. A name that merely appears later in the body is where the beat is
+#: GOING (a destination street), and matching it picked the guidebook's own
+#: approach for a walker arriving the other way.
+_ORIGIN_CLAUSE_RE = re.compile(
+    r"^(?:from|leave|leaving|starting at|exit(?:ing)?)\b", re.IGNORECASE
+)
+
+#: A guidebook's own itinerary — true of its route, never of this one. The same
+#: class as compass, refused at the same gate.
+_ITINERARY_RE = re.compile(
+    r"\bwhere (?:the|our|this) (?:walk|tour) (?:ends|begins|starts)\b"
+    r"|\bour next stop\b|\bthe (?:walk|tour) continues\b",
+    re.IGNORECASE,
+)
 _MINUTE_WORDS: dict[str, int] = {
     "one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6, "seven": 7,
     "eight": 8, "nine": 9, "ten": 10, "eleven": 11, "twelve": 12, "thirteen": 13,
@@ -1155,35 +1172,57 @@ def _find_directional_transit_beat(
 ) -> BeatRef | None:
     """Return the first transit-class beat whose direction matches the segment.
 
-    A transit beat at ``stop`` is acceptable iff at least one of
-    ``prev_name`` / ``dest_name`` appears in its ``trigger_address`` or
-    ``script_body`` (case-insensitive substring). Otherwise the beat's
-    encoded direction does not match the actual route segment and
-    using it would produce a geographically wrong opener.
+    ``prev_name`` (a beat at the ARRIVAL stop) vouches only as a verified
+    ORIGIN: named in the beat's ``trigger_address``, or named by the body's
+    opening origin clause (``_ORIGIN_CLAUSE_RE`` — "From X…", "Leave X…"). A
+    name that merely appears somewhere in the body is where the beat is GOING,
+    and a destination-street match once picked Frommer's Châtelet approach for
+    a walker arriving along the very street the beat turns into.
+    ``dest_name`` (a beat at the DEPARTURE stop) keeps the substring check:
+    the walker stands at the beat's own POI, so its origin is where they are.
 
-    Two refusals, both because a direction this code cannot verify is a direction
-    it must not speak. A beat that speaks COMPASS carries the bearing of the walk
-    its guidebook took — "exit at the north-east corner" is an instruction about
-    another route, and no name match makes it true of this one. And a call with no
-    names to check against has nothing to vouch for the beat at all. Either way the
-    caller falls through to the deterministic nav template, which names both ends,
-    speaks the routed minutes and cannot say a compass point.
+    Three refusals, each because a direction this code cannot verify is a
+    direction it must not speak. A beat that speaks COMPASS carries the bearing
+    of the walk its guidebook took. A beat that speaks the guidebook's OWN
+    ITINERARY ("where the walk ends") promises a route this day never takes.
+    And a call with no names to check against has nothing to vouch for the beat
+    at all. In every case the caller falls through to the deterministic nav
+    template, which names both real ends, speaks the routed minutes and cannot
+    say a compass point.
     """
     skip = consumed or set()
-    needles = [s for s in (prev_name, dest_name) if s]
-    if not needles:
+    if not prev_name and not dest_name:
         return None
     for beat in stop.beats:
         if beat.id in skip:
             continue
         if (beat.narrative_function or "").lower() not in TRANSIT_NARRATIVE_FUNCTIONS:
             continue
-        haystack = (f"{beat.trigger_address or ''} {beat.script_body or ''}").lower()
-        if _COMPASS_RE.search(haystack):
+        body = beat.script_body or ""
+        haystack = (f"{beat.trigger_address or ''} {body}").lower()
+        if _COMPASS_RE.search(haystack) or _ITINERARY_RE.search(haystack):
             continue
-        if any(n.lower() in haystack for n in needles):
+        if prev_name and _is_verified_origin(prev_name, beat):
+            return beat
+        if dest_name and dest_name.lower() in haystack:
             return beat
     return None
+
+
+def _is_verified_origin(prev_name: str, beat: BeatRef) -> bool:
+    """Does ``beat`` verifiably describe arriving FROM ``prev_name``?
+
+    Yes only when the name is in ``trigger_address``, or when the body's first
+    sentence is an origin clause (``_ORIGIN_CLAUSE_RE``) that names it.
+    """
+    prev = prev_name.lower()
+    if prev in (beat.trigger_address or "").lower():
+        return True
+    sents = split_sentences(beat.script_body or "")
+    if not sents:
+        return False
+    opening = sents[0]
+    return bool(_ORIGIN_CLAUSE_RE.match(opening)) and prev in opening.lower()
 
 
 # ---------------------------------------------------------------------------

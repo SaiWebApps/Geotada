@@ -2075,10 +2075,90 @@ def test_a_transit_beat_that_speaks_a_bearing_is_never_picked_for_the_leg():
 
 def test_a_transit_beat_is_only_reusable_when_a_name_can_vouch_for_its_direction():
     """Called with no names there is nothing to check the beat's direction against, so
-    it cannot be shown to describe this segment. The old fail-open returned it anyway."""
+    it cannot be shown to describe this segment. The old fail-open returned it anyway.
+
+    P9R-S1.M1 amendment (decisions doc §2: "the corpus transit-beat substring
+    gate ... under-covers", wrong directions on ANY day): the second assertion
+    used to accept "the square" as origin evidence when the body merely walks
+    INTO the square — the destination-mention fault. A previous stop now
+    vouches as ORIGIN only (trigger_address, or the opening origin clause), so
+    the same call picks nothing."""
     plain = _beat("t-plain", "b", body="Walk on to the square.", nf="transition")
     stop = POIBeats(
         poi_id="b", poi_name="B", ordering_strategy="narrative_function", beats=(plain,)
     )
     assert _find_directional_transit_beat(stop) is None
-    assert _find_directional_transit_beat(stop, prev_name="the square") is plain
+    assert _find_directional_transit_beat(stop, prev_name="the square") is None
+
+
+def test_a_destination_street_mention_never_vouches_for_an_origin():
+    """P9R-S1.M1 — Paulo's fatal pick, as measured. Frommer's Châtelet approach
+    ("Walk up boulevard de Sébastopol and turn right into rue de Rivoli into
+    square de la Tour St-Jacques") was picked for a walker arriving ALONG rue
+    de Rivoli from the east, because the previous stop is a street the beat
+    merely turns into. The line is true of the guidebook's own approach and
+    false of his; the pick must refuse it and fall to the template that names
+    both real ends. UNDO: restore the substring haystack match for prev_name
+    -> the Frommer's beat is picked again -> RED."""
+    frommers = _beat(
+        "t-seb",
+        "tsj",
+        body="Walk up boulevard de Sébastopol and turn right into rue de Rivoli "
+        "into square de la Tour St-Jacques.",
+        nf="transition",
+    )
+    stop = POIBeats(
+        poi_id="tsj",
+        poi_name="Tour Saint-Jacques",
+        ordering_strategy="narrative_function",
+        beats=(frommers,),
+    )
+    assert _find_directional_transit_beat(stop, prev_name="Rue de Rivoli") is None
+
+
+def test_a_verified_origin_still_vouches_two_ways():
+    """The pick keeps its value where the direction is real: a previous stop
+    named in the beat's trigger_address, or named by the body's opening origin
+    clause, is a verified origin — the beat genuinely describes arriving from
+    there, so its turns are true for this walk."""
+    by_addr = _beat(
+        "t-addr",
+        "tsj",
+        body="Walk up to the square and the tower rises ahead.",
+        nf="transition",
+        addr="corner of Rue de Rivoli",
+    )
+    by_clause = _beat(
+        "t-clause",
+        "tsj",
+        body="From the Rue de Rivoli, cut through to the square de la Tour "
+        "St-Jacques and the tower rises ahead.",
+        nf="transition",
+    )
+    stop_addr = POIBeats(
+        poi_id="tsj", poi_name="Tour Saint-Jacques",
+        ordering_strategy="narrative_function", beats=(by_addr,),
+    )
+    stop_clause = POIBeats(
+        poi_id="tsj", poi_name="Tour Saint-Jacques",
+        ordering_strategy="narrative_function", beats=(by_clause,),
+    )
+    assert _find_directional_transit_beat(stop_addr, prev_name="Rue de Rivoli") is by_addr
+    assert _find_directional_transit_beat(stop_clause, prev_name="Rue de Rivoli") is by_clause
+
+
+def test_an_itinerary_phrase_is_refused_at_the_pick_like_a_compass_point():
+    """A guidebook's own itinerary ("where the walk ends", "our next stop") is
+    true of its route and never of this one — the same class as compass, refused
+    at the same gate."""
+    itinerary = _beat(
+        "t-itin",
+        "tsj",
+        body="From the Rue de Rivoli, walk on to where the walk ends at the tower.",
+        nf="transition",
+    )
+    stop = POIBeats(
+        poi_id="tsj", poi_name="Tour Saint-Jacques",
+        ordering_strategy="narrative_function", beats=(itinerary,),
+    )
+    assert _find_directional_transit_beat(stop, prev_name="Rue de Rivoli") is None
