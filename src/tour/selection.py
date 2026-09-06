@@ -1691,7 +1691,11 @@ def build_poi_beat_plans_capped(
     elif narration_density == "more":
         ceiling = MAX_DWELL_AUDIO_SECONDS + MAX_DWELL_AUDIO_SECONDS // 2
     final_caps = [ceiling if c is None else min(c, ceiling) for c in dom_caps]
-    capped = [govern_poi_beats(plan, cap) for plan, cap in zip(plans, final_caps, strict=True)]
+    family = expanded_interest_lenses(lenses, snapshot)
+    capped = [
+        govern_poi_beats(plan, cap, interest=family)
+        for plan, cap in zip(plans, final_caps, strict=True)
+    ]
     # Protect the last NARRATED stop's closing-friendly beat from the cap. The closing
     # glue fires after the last beat of the last stop WITH content, and
     # reorder_final_stop_for_closing (which runs later, in generate) can only reorder
@@ -1839,12 +1843,9 @@ def planned_capped_audio_seconds(
     audio currency — no tier floor; tier dwell survives only as C8's reported
     minute floor. Pure per (poi, lenses, allowance); memoize at the call site.
     """
-    plan = select_poi_beats(
-        poi,
-        snapshot.beats_for(poi.id),
-        interest_lenses=expanded_interest_lenses(lenses, snapshot),
-    )
-    kept, _overflow = govern_poi_beats(plan, allowance)
+    family = expanded_interest_lenses(lenses, snapshot)
+    plan = select_poi_beats(poi, snapshot.beats_for(poi.id), interest_lenses=family)
+    kept, _overflow = govern_poi_beats(plan, allowance, interest=family)
     return planned_audio_seconds(kept.beats)
 
 

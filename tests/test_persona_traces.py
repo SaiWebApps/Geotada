@@ -596,3 +596,47 @@ def test_no_leg_line_outlives_its_pair_and_every_reviewed_anchor_gets_its_chapte
         "no leg line carried a recorded pair on any served day — the check would pass "
         "vacuously, so the field is not reaching the wire"
     )
+
+
+@needs_neo4j
+def test_a_lensed_day_serves_the_subject_it_was_asked_for(served, live_neo4j):
+    """S3 across the eleven: the walker cannot check the label against the corpus,
+    so the wire must never dress a stop in a subject nobody asked for.
+
+    On every served day whose request named subjects, every story stop's label sits
+    inside the asked family — the request's lenses plus their one-hop parents and
+    children, the same expansion the matcher, the gate and the label all read. A
+    rest (no beat) and an unlensed stop (nothing claimed) assert nothing.
+
+    And the floor the design session fixed: the three days that served before the
+    subject work — camille, greta, rosemary — still serve after it.
+
+    UNDO: blank the adapter's `prefer` threading -> Camille's Notre-Dame wears
+    `hidden_history` again -> RED. Drop the pool gate -> a lens-miss stop returns
+    with an off-family label -> RED.
+    """
+    from src.tour.selection import LOAD_LENS_HIERARCHY_CYPHER, _lens_neighbor_map
+
+    for name in ("camille", "greta", "rosemary"):
+        assert name in served, f"{name} served before the subject work and must still"
+
+    with live_neo4j.session() as graph:
+        neighbors = _lens_neighbor_map(graph.run(LOAD_LENS_HIERARCHY_CYPHER).data())
+
+    labels_checked = 0
+    for name, trace in served.items():
+        lenses = trace.request.get("lenses") or []
+        if not lenses:
+            continue
+        family = {s.lower() for s in lenses}
+        for lens in list(family):
+            family |= set(neighbors.get(lens, frozenset()))
+        for stop in (trace.session or {}).get("stops", []):
+            if not stop.get("beat_id") or not stop.get("lens_name"):
+                continue
+            labels_checked += 1
+            assert stop["lens_name"].lower() in family, (
+                f"{name} asked for {lenses} and {stop['poi_name']} is dressed as "
+                f"{stop['lens_name']!r} — a subject nobody asked for"
+            )
+    assert labels_checked, "no lensed label was checked — the clause would pass vacuously"

@@ -263,7 +263,10 @@ def extra_beat_ids(
 
 
 def govern_poi_beats(
-    plan: POIBeats, allowance_seconds: int | None
+    plan: POIBeats,
+    allowance_seconds: int | None,
+    *,
+    interest: frozenset[str] | None = None,
 ) -> tuple[POIBeats, tuple[str, ...]]:
     """Cap a POI's emitted plan to a per-stop audio allowance (C9 governor).
 
@@ -289,8 +292,29 @@ def govern_poi_beats(
         consumed += secs
     if cut >= len(plan.beats):
         return plan, ()
-    capped = plan.model_copy(update={"beats": plan.beats[:cut]})
-    return capped, tuple(b.id for b in plan.beats[cut:])
+    kept = list(plan.beats[:cut])
+    overflow = list(plan.beats[cut:])
+    # Phase 9 S3: a stop seated FOR a subject must not be governed mute on it.
+    # The arc orders the buckets, so an off-family hook can outrank every
+    # on-family beat and the prefix cut sheds the lot. When the person asked
+    # and the prefix keeps none of the family the plan holds, swap ONE in for
+    # the last kept beat — the cold-open never moves, and the seconds move by
+    # at most one beat, the same bounded overshoot the first-beat rule already
+    # ratifies. No interest, or the family already kept: the plain prefix,
+    # byte-identical.
+    if interest:
+        def on_family(beat: BeatRef) -> bool:
+            return any(lens.lower() in interest for lens in beat.lenses)
+
+        if not any(on_family(beat) for beat in kept):
+            wanted = next((beat for beat in overflow if on_family(beat)), None)
+            if wanted is not None:
+                overflow.remove(wanted)
+                if len(kept) > 1:
+                    overflow.insert(0, kept.pop())
+                kept.append(wanted)
+    capped = plan.model_copy(update={"beats": tuple(kept)})
+    return capped, tuple(b.id for b in overflow)
 
 
 # --- ordering strategies ----------------------------------------------------

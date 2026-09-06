@@ -24,6 +24,7 @@ from src.tour.beat_select import (
 from src.tour.contract import POI, BeatRef, BeatSequence, PhysicalCue, POIBeats, Route, ScriptPOI
 from src.tour.fixtures import NOTRE_DAME_SUB_LOCATION_ORDER
 from src.tour.generation import _find_orientation_beat
+from src.tour.routing import beat_spoken_seconds
 
 
 def _poi(name: str, tier: int = 5) -> POI:
@@ -1921,3 +1922,36 @@ def test_the_asked_subject_survives_the_cap_on_both_strategies():
                lenses=("dark_history",))]
     plan = select_poi_beats(_poi("spatial"), spatial, interest_lenses=interest)
     assert "asked" in {b.id for b in plan.beats}
+
+
+def test_the_governor_never_cuts_the_day_down_to_none_of_the_asked_subject():
+    """S3, measured through the API: Camille's Tuileries voiced dark_history and
+    parks while its architecture beat sat in the overflow — the narrative arc
+    orders the buckets, so an off-family hook outranks an on-family deepen, and
+    the allowance prefix cut everything after it. When the person asked for
+    subjects and the prefix keeps none of the family the plan holds, the governor
+    swaps ONE in — the bounded one-beat overshoot it already ratifies — so a
+    served stop is never mute on the very subject that seated it."""
+    beats = (
+        _beat("hook-off", narrative_function="hook", word_count=150,
+              lenses=("dark_history",)),
+        _beat("open-off", narrative_function="establishing", word_count=150,
+              lenses=("parks_gardens",)),
+        _beat("asked", narrative_function="deepen", word_count=150,
+              lenses=("historic_arch",)),
+    )
+    plan = POIBeats(poi_id="p", poi_name="P", ordering_strategy="narrative_function",
+                    beats=beats)
+    seconds = beat_spoken_seconds(beats[0])
+    kept, overflow = govern_poi_beats(
+        plan, seconds * 2, interest=frozenset({"historic_arch", "arch_design"})
+    )
+    kept_ids = [b.id for b in kept.beats]
+    assert "asked" in kept_ids, f"the asked subject was governed away: {kept_ids}"
+    assert kept_ids[0] == "hook-off", "the cold-open is never swapped out"
+    assert "open-off" in overflow
+
+    # No interest, or the family already kept: byte-identical to the plain prefix.
+    plain, plain_over = govern_poi_beats(plan, seconds * 2)
+    assert [b.id for b in plain.beats] == ["hook-off", "open-off"]
+    assert plain_over == ("asked",)
