@@ -583,6 +583,30 @@
         "radius_m": 50.0,
         "indoor": false,
         "basis": "The colonnaded court with the Buren columns is the palace's own forecourt; a person stands among the striped stumps to look back at the facades. Half the footprint covers the court and its gates and stops short of the garden galleries."
+      },
+      {
+        "label": "The Galerie de Beaujolais",
+        "sub_locations": [
+          "galerie-de-beaujolais",
+          "Galerie de Beaujolais"
+        ],
+        "lat": 48.86635,
+        "lng": 2.33735,
+        "radius_m": 35.0,
+        "indoor": false,
+        "basis": "The north gallery closes the garden's far end along rue de Beaujolais; the Grand Véfour and Colette's windows the corpus points at are on this arcade, a full two hundred metres from the palace forecourt where the whole footprint's story otherwise plays."
+      },
+      {
+        "label": "The Galerie de Valois",
+        "sub_locations": [
+          "galerie-de-valois",
+          "Galerie de Valois"
+        ],
+        "lat": 48.86525,
+        "lng": 2.338,
+        "radius_m": 40.0,
+        "indoor": false,
+        "basis": "The east gallery runs the garden's whole Valois side; its shopfront arcade is where the gallery's own beat stands a person, and the radius spans the colonnade without reaching the garden's centre lawn or the west side."
       }
     ]
   },

@@ -54,12 +54,15 @@ pytestmark = pytest.mark.timeout(900)
 
 #: How many of the eleven days the product SERVES at $0 today. MEASURED on this
 #: tree, 2026-08-24 (phase8-ledger.md §S8.5, the before-picture): camille (5
-#: stops), greta (3) and rosemary (1). Seven are refused by S8.3's placement
-#: floors and one (marcus) by the C3 audio floor — each named, each pinned by
+#: stops), greta (3) and rosemary (1); re-measured after P9R-S1, when paulo's
+#: day — refused at compose over two corpus lines the placement floors rightly
+#: caught — began serving through the origin-verified transit pick, the drop
+#: valve and the two reworded beats. The rest are refused by S8.3's placement
+#: floors or the C3 audio floor — each named, each pinned by
 #: `test_every_persona_day_either_serves_or_refuses_by_name`. A FLOOR, not an
 #: equality: a day that starts serving is never a failure; a day that stops
 #: serving is.
-SERVED_FLOOR = 3
+SERVED_FLOOR = 4
 
 #: The wire speaks in whole minutes (`start_time` is HH:MM and `dwell_seconds`
 #: is floored to minutes when a leg is read back), so a leg read off two clocks
@@ -609,7 +612,8 @@ def test_a_lensed_day_serves_the_subject_it_was_asked_for(served, live_neo4j):
     rest (no beat) and an unlensed stop (nothing claimed) assert nothing.
 
     And the floor the design session fixed: the three days that served before the
-    subject work — camille, greta, rosemary — still serve after it.
+    subject work — camille, greta, rosemary — still serve after it; paulo joins
+    them at P9R-S1, his compose no longer refused over the walk's own narration.
 
     UNDO: blank the adapter's `prefer` threading -> Camille's Notre-Dame wears
     `hidden_history` again -> RED. Drop the pool gate -> a lens-miss stop returns
@@ -617,8 +621,8 @@ def test_a_lensed_day_serves_the_subject_it_was_asked_for(served, live_neo4j):
     """
     from src.tour.selection import LOAD_LENS_HIERARCHY_CYPHER, _lens_neighbor_map
 
-    for name in ("camille", "greta", "rosemary"):
-        assert name in served, f"{name} served before the subject work and must still"
+    for name in ("camille", "greta", "rosemary", "paulo"):
+        assert name in served, f"{name} must serve — a served day going refused is a failure"
 
     with live_neo4j.session() as graph:
         neighbors = _lens_neighbor_map(graph.run(LOAD_LENS_HIERARCHY_CYPHER).data())
