@@ -1462,6 +1462,29 @@ def test_extra_beat_ids_are_full_minus_voiced_in_order():
     assert set(extras).isdisjoint(voiced), "an extra is never something already voiced"
 
 
+def test_a_refused_walk_line_never_falls_through_to_keep_exploring():
+    """P9R-S1.M6 — Paulo's re-judge: the origin-verified pick rightly refuses a
+    transit beat for a walker arriving another way, and the extras pool then
+    swept the UNVOICED beat into "keep exploring here" — where it plays
+    ungated, standing in the square, telling him to walk up a boulevard he is
+    not on. Extras play STANDING at the stop, so the walk's own narration
+    (TRANSIT_NARRATIVE_FUNCTIONS — one definition with the pick and the
+    anchor-block filter) never enters the pool. UNDO: drop the transit filter
+    from extra_beat_ids -> the Frommer's line is an extra again -> RED."""
+    poi = _poi("tour-saint-jacques", tier=5)
+    frommers = _beat(
+        "t-seb",
+        narrative_function="transition",
+        script_body="Walk up boulevard de Sébastopol and turn right into the square.",
+        poi_id=poi.id,
+    )
+    story = _flat_beats(3)
+    beats = [*story, frommers]
+    voiced = [b.id for b in story]
+    extras = extra_beat_ids(poi, beats, voiced)
+    assert "t-seb" not in extras, extras
+
+
 def test_extra_beat_ids_empty_when_all_voiced():
     poi = _poi("thin", tier=5)
     beats = _flat_beats(5)  # under the cap -> the tour voiced them all

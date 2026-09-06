@@ -256,10 +256,23 @@ def extra_beat_ids(
     order for the flat strategy, walk order for the spatial strategies. Empty when
     the tour voiced everything the stop had. (The spatial strategies voice the
     best-scoring beats, R1, so these extras are the lower-value remainder.)
+
+    Transit-class beats never enter the pool: extras play STANDING at the stop
+    (the tap), and a walk's own narration — a beat the origin-verified pick may
+    have rightly refused for this route — read standing still tells the person
+    to walk a road they are not on. Same function set as the pick and the
+    anchor-block filter (``TRANSIT_NARRATIVE_FUNCTIONS``), one definition.
     """
+    from .generation import TRANSIT_NARRATIVE_FUNCTIONS  # cycle avoidance
+
     voiced = set(voiced_ids)
     full = select_poi_beats_full(poi, beats, interest_lenses=interest_lenses)
-    return tuple(b.id for b in full.beats if b.id not in voiced)
+    return tuple(
+        b.id
+        for b in full.beats
+        if b.id not in voiced
+        and (b.narrative_function or "").lower() not in TRANSIT_NARRATIVE_FUNCTIONS
+    )
 
 
 def govern_poi_beats(
