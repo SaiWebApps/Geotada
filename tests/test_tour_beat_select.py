@@ -1885,3 +1885,39 @@ def test_governor_seam_preserves_every_beat_and_voiced_contiguity():
     assert len(voiced_groups) == len(set(voiced_groups)), (
         f"the voiced prefix splits a sub-anchor: {voiced_groups}"
     )
+
+
+# ---------------------------------------------------------------------------
+# S3.M4 — the asked subject survives the cap.
+# ---------------------------------------------------------------------------
+
+
+def test_the_asked_subject_survives_the_cap_on_both_strategies():
+    """A stop's per-tier ceiling keeps the best beats by score; when the person
+    asked for a subject, an on-family beat must never be displaced by off-family
+    padding — otherwise the day the matcher steered is undone at the cap, which
+    is how a stop full of asked-for stories still voiced everything else.
+    Interest arrives pre-expanded (the matcher's own one hop), so a bare leaf
+    set here stands for any request."""
+    interest = ["dark_history"]
+    # FLAT strategy: 13 beats in one function bucket against a 12-beat ceiling;
+    # the lone on-family beat is the LIGHTEST, so without the lens key it is the
+    # one the ceiling sheds.
+    flat = [
+        _beat(f"pad{i}", narrative_function="deepen", word_count=200,
+              lenses=("waterways_views",))
+        for i in range(12)
+    ] + [_beat("asked", narrative_function="deepen", word_count=10,
+               lenses=("dark_history",))]
+    plan = select_poi_beats(_poi("flat"), flat, interest_lenses=interest)
+    assert "asked" in {b.id for b in plan.beats}, "the asked beat outranks the padding"
+
+    # SPATIAL strategy: sub-located beats under the same ceiling.
+    spatial = [
+        _beat(f"pad{i}", sub_location=f"spot-{i}", word_count=200,
+              lenses=("waterways_views",))
+        for i in range(12)
+    ] + [_beat("asked", sub_location="spot-asked", word_count=10,
+               lenses=("dark_history",))]
+    plan = select_poi_beats(_poi("spatial"), spatial, interest_lenses=interest)
+    assert "asked" in {b.id for b in plan.beats}
