@@ -709,7 +709,7 @@
     "latitude": 48.8637,
     "longitude": 2.3372,
     "importance_tier": 5,
-    "trigger_radius": 100,
+    "trigger_radius": 300,
     "typical_duration_min": 30,
     "kid_friendly": "yes",
     "name_variations": [
@@ -1129,13 +1129,12 @@
         "lng": 2.33735,
         "radius_m": 35.0,
         "indoor": false,
-        "basis": "The north gallery closes the garden's far end along rue de Beaujolais; the Grand Véfour and Colette's windows the corpus points at are on this arcade, a full two hundred metres from the palace forecourt where the whole footprint's story otherwise plays."
+        "basis": "The north gallery closes the garden's far end along rue de Beaujolais; a person stands on this arcade — where the Grand Véfour and Colette's windows the corpus points at actually are — a full two hundred metres from the palace forecourt where the whole footprint's story otherwise plays."
       },
       {
         "label": "The Galerie de Valois",
         "sub_locations": [
-          "galerie-de-valois",
-          "Galerie de Valois"
+          "galerie-de-valois"
         ],
         "lat": 48.86525,
         "lng": 2.338,

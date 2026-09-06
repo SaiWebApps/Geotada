@@ -416,6 +416,12 @@ def _backfill_anchors(session, pois: list[dict], city_name: str) -> dict[str, in
             "name_key": canonical_name_key(poi["name"]),
             "city_name": city_name,
             "anchors": json.dumps(poi["anchors"], ensure_ascii=False),
+            # The anchored place's own modelling rides with its chapters: the
+            # kind-aware standing rule (tests/test_poi_anchors.py) binds the
+            # anchors to the place's role and footprint, so the three fields
+            # are one reviewed record and sync together.
+            "poi_role": poi.get("poi_role"),
+            "trigger_radius": poi.get("trigger_radius"),
         }
         for poi in pois
         if isinstance(poi.get("anchors"), list) and poi["anchors"]
@@ -426,7 +432,9 @@ def _backfill_anchors(session, pois: list[dict], city_name: str) -> dict[str, in
         """
         UNWIND $pois AS poi
         MATCH (p:POI {name_key: poi.name_key, city_name: poi.city_name})
-        SET p.anchors = poi.anchors
+        SET p.anchors        = poi.anchors,
+            p.poi_role       = poi.poi_role,
+            p.trigger_radius = poi.trigger_radius
         RETURN count(p) AS updated
         """,
         pois=params,
