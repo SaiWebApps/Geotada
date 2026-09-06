@@ -803,10 +803,31 @@ def test_a_dirty_local_tree_is_stamped_and_warned_never_refused(monkeypatch, cap
     assert deployed.commit_sha == "a" * 40 and deployed.local_dirty_tree is False
 
 
+def _orangerie_pin(live_neo4j) -> list[str]:
+    """Rosemary's doc names the Orangerie, so her day carries it as her own pin.
+
+    The S3 subject gate reads the dwell pool by beat family, and the Orangerie's
+    one active beat is tagged war_conflict — a miss for visual_art at any hop —
+    so her art-lensed day honestly sheds it (fewer honest stops beat a padded
+    day; the Phase 9 decisions doc §4). Her doc's three-stop shape (Orangerie,
+    bench, Orsay) survives as HER hand on the day: a pin outranks the gate by
+    design, and everything downstream (the seated rest, the promise-tier
+    timings) keeps the geometry it was measured on."""
+    with live_neo4j.session() as s:
+        row = s.run(
+            "MATCH (p:POI {city_name: 'paris'}) "
+            "WHERE toLower(p.name) CONTAINS 'orangerie' "
+            "RETURN p.id AS id ORDER BY p.id LIMIT 1"
+        ).single()
+    assert row, "the live graph carries no Orangerie POI — re-sync the dev corpus"
+    return [row["id"]]
+
+
 @needs_neo4j
 def test_a_day_with_a_rest_generates_on_the_app_path(client, live_neo4j) -> None:
     """Rosemary's day at her own doc's leg length (Orsay round trip, take-it-easy,
-    art lens, a 13-minute cap) seats a BENCH — a rest with no story beat. The app
+    art lens, the Orangerie pinned — `_orangerie_pin` — and a 13-minute cap) seats
+    a BENCH — a rest with no story beat. The app
     path (`/trips/generate`, the model the phone reads) must carry it: until
     2026-08-18 it 500'd on the rest's missing beat, and every family / take-it-easy
     day that seated a rest was unreachable from the phone while the preview path
@@ -826,6 +847,7 @@ def test_a_day_with_a_rest_generates_on_the_app_path(client, live_neo4j) -> None
             party="take_it_easy",
             lenses=["visual_art"],
             max_leg_minutes=13,
+            pinned_poi_ids=_orangerie_pin(live_neo4j),
         ),
     )
     assert resp.status_code == 201, resp.text
@@ -1160,7 +1182,8 @@ class TestLivingSession:
     ):
         """W5.14 / S5.16 — THE PROMISE TIER ON THE LIVE PATH, on Rosemary's own day
         (Orsay round trip, take-it-easy, art lens, her doc's 13-minute legs: the
-        Orangerie, her bench, the Orsay). Forty-six minutes late out of the Orangerie —
+        Orangerie — carried as her own pin, `_orangerie_pin` — her bench, the
+        Orsay). Forty-six minutes late out of the Orangerie —
         beyond every precomputed band (the last late band ends at 40) — the live replan
         used to hand back "Bench" alone,
         the Orsay dropped as fabric to keep an 8-minute rest, in silence (the D6
@@ -1194,6 +1217,7 @@ class TestLivingSession:
                 party="take_it_easy",
                 lenses=["visual_art"],
                 max_leg_minutes=13,
+                pinned_poi_ids=_orangerie_pin(live_neo4j),
                 # Phase 8 S8.4: the serving gate (§7.2) measures this day's echo at
                 # ~0.117 audio-per-walking — a coin-flip under C3's 0.12 floor,
                 # whose calibration corpus held no take-it-easy day (the W8.6
