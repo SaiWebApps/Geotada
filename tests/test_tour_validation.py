@@ -729,6 +729,45 @@ def test_placement_floor_flags_moving_lines_in_auto_played_stop_pieces():
         )
 
 
+def test_the_walks_own_transit_beat_plays_on_the_leg_not_the_stop():
+    """P9R-S1.M2 — Paulo's Sébastopol line was refused `moving_line_auto_played`
+    because the floor read the walk's own corpus narration as stationary stop
+    content: `_build_transit` picks a transit beat FOR the leg, but the
+    placement rule knew only glue labels and vignette ids. With the transit ids
+    supplied the sentence takes the LEG branch — motion imperatives are true
+    where they play — and the leg branch's own floors still apply (arrived
+    deixis stays refused). Omitting the ids keeps the conservative stationary
+    default. UNDO: drop `transits` from the floor's is_walk_concurrent call
+    -> the moving line is flagged again -> RED."""
+    from src.tour.validation import placement_floor_hits
+
+    walk_line = Sentence(
+        text="Walk up the boulevard and turn right into the square.",
+        source_id="t-1", source_type="beat", stop_idx=1,
+    )
+    hits = placement_floor_hits(
+        _floor_script([walk_line]), vignette_beat_ids=frozenset(),
+        leg_minutes_by_stop={}, goes_inside_by_stop={},
+        transit_beat_ids=frozenset({"t-1"}),
+    )
+    assert hits == [], hits
+    hits = placement_floor_hits(
+        _floor_script([walk_line]), vignette_beat_ids=frozenset(),
+        leg_minutes_by_stop={}, goes_inside_by_stop={},
+    )
+    assert any(code.startswith("moving_line_auto_played:") for _, code in hits), hits
+    arrived = Sentence(
+        text="You're standing before the tower now.",
+        source_id="t-1", source_type="beat", stop_idx=1,
+    )
+    hits = placement_floor_hits(
+        _floor_script([arrived]), vignette_beat_ids=frozenset(),
+        leg_minutes_by_stop={}, goes_inside_by_stop={},
+        transit_beat_ids=frozenset({"t-1"}),
+    )
+    assert any(code.startswith("arrived_word_on_leg:") for _, code in hits), hits
+
+
 def test_placement_floor_allows_a_door_line_only_where_the_wire_says_door():
     """W8.2 R2, Aiko's door rule: a through-the-door sentence plays only where
     the wire says door=true. At a stop the plan prices INSIDE, "step inside" is

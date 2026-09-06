@@ -461,11 +461,14 @@ def placement_floor_hits(
     leg_minutes_by_stop: Mapping[int, int],
     goes_inside_by_stop: Mapping[int, bool],
     tap_only_stops: frozenset[int] | set[int] = frozenset(),
+    transit_beat_ids: frozenset[str] | set[str] = frozenset(),
 ) -> list[tuple[Sentence, str]]:
     """(sentence, code) for every sentence untrue WHERE IT PLAYS (W8.2 R1/R2/R5).
 
     Placement is the frozen rule itself (``is_walk_concurrent`` + the vignette
-    ids), never inferred from prose. Checked SENTENCE BY SENTENCE within each
+    and transit ids — a corpus transit beat is the walk's own narration and
+    plays ON the leg, so its motion imperatives are true where they play),
+    never inferred from prose. Checked SENTENCE BY SENTENCE within each
     piece (R2, Marcus: "never the opening alone"). The floors:
 
     - ``fused_across_playback_contexts`` — one sentence citing both a seated
@@ -483,12 +486,13 @@ def placement_floor_hits(
     """
     out: list[tuple[Sentence, str]] = []
     vignettes = frozenset(vignette_beat_ids)
+    transits = frozenset(transit_beat_ids)
     for sentence in script.script:
         cited = set(sentence.cited_beat_ids)
         if cited & vignettes and cited - vignettes:
             out.append((sentence, "fused_across_playback_contexts"))
         units = split_sentences(sentence.text) or [sentence.text]
-        if is_walk_concurrent(sentence, vignettes):
+        if is_walk_concurrent(sentence, vignettes, transits):
             for unit in units:
                 word = _arrived_word_in(unit)
                 if word:

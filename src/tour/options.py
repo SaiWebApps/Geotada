@@ -28,7 +28,7 @@ from .contract import (
     RouteOptionStop,
     Script,
 )
-from .generation import is_walk_concurrent, vignette_one_liner_text
+from .generation import is_walk_concurrent, transit_class_beat_ids, vignette_one_liner_text
 from .routing import leg_walk_seconds, total_walk_seconds
 from .selection import (
     LENS_FLOOR,
@@ -176,12 +176,19 @@ def build_route_option(
     # model uses, so a sentence shown on a leg card is exactly a sentence the rubric
     # scored as costing no elapsed time.
     vignette_beat_ids = {b.id for beats in sequence.vignette_beats.values() for b in beats}
+    # The walk's own corpus narration (P9R-S1): transit-beat sentences ride the
+    # leg card, exactly where the phone plays them.
+    transit_ids = transit_class_beat_ids(beats_by_id.values())
     dwell_sents: dict[int, list[str]] = {}
     leg_sents: dict[int, list[str]] = {}
     for sentence in script.script:
         if sentence.source_type == "beat" and sentence.source_id in vignette_beat_ids:
             continue
-        bucket = leg_sents if is_walk_concurrent(sentence, vignette_beat_ids) else dwell_sents
+        bucket = (
+            leg_sents
+            if is_walk_concurrent(sentence, vignette_beat_ids, transit_ids)
+            else dwell_sents
+        )
         bucket.setdefault(sentence.stop_idx, []).append(sentence.text)
     # Display-normalize dashes so the text READS the way the audio SOUNDS (a comma
     # pause, not a dangling stroke).

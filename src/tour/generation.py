@@ -73,7 +73,9 @@ CONCURRENT_GLUE_LABELS: frozenset[str] = frozenset({"GLUE_NAV", "GLUE_REFLECTION
 
 
 def is_walk_concurrent(
-    sentence, vignette_beat_ids: frozenset[str] | set[str] = frozenset()
+    sentence,
+    vignette_beat_ids: frozenset[str] | set[str] = frozenset(),
+    transit_beat_ids: frozenset[str] | set[str] = frozenset(),
 ) -> bool:
     """Is this sentence spoken WHILE THE TOURIST WALKS, rather than at a stop?
 
@@ -82,13 +84,28 @@ def is_walk_concurrent(
     rides a leg the tourist is walking anyway. Everything else is spoken standing
     still at a stop and does consume the tour's minutes.
 
-    ``vignette_beat_ids`` identifies walk-past one-liners, which are beat-sourced
-    rather than glue. Omitting it is the CONSERVATIVE direction: those sentences
-    then count as stationary, which can only make a time-budget check stricter.
+    ``vignette_beat_ids`` identifies walk-past one-liners, and
+    ``transit_beat_ids`` the corpus transit beats ``_build_transit`` voices FOR
+    the leg (derive them with ``transit_class_beat_ids``) — both beat-sourced
+    rather than glue. Omitting either is the CONSERVATIVE direction: those
+    sentences then count as stationary, which can only make a time-budget check
+    stricter.
     """
     if sentence.source_id in CONCURRENT_GLUE_LABELS:
         return True
-    return sentence.source_id in vignette_beat_ids
+    return sentence.source_id in vignette_beat_ids or sentence.source_id in transit_beat_ids
+
+
+def transit_class_beat_ids(beats: Iterable[BeatRef]) -> frozenset[str]:
+    """Ids of the transit-class beats among ``beats`` — the walk's own corpus
+    narration, keyed by TRANSIT_NARRATIVE_FUNCTIONS (one definition, shared with
+    the pick and the anchor-block filter, so a beat is leg content everywhere or
+    nowhere)."""
+    return frozenset(
+        beat.id
+        for beat in beats
+        if (beat.narrative_function or "").lower() in TRANSIT_NARRATIVE_FUNCTIONS
+    )
 
 
 #: Words per minute of narrated speech — the ONE rate the tour's audio clock uses.
@@ -513,6 +530,9 @@ def generate(
         route,
         vignette_beat_ids=frozenset(
             beat.id for beats in beat_sequence.vignette_beats.values() for beat in beats
+        ),
+        transit_beat_ids=transit_class_beat_ids(
+            beat for plan in beat_sequence.poi_beats for beat in plan.beats
         ),
     )
     # NOTE: same-beat NEAR-verbatim de-dup (suppress_same_beat_near_duplicates) is
@@ -1366,6 +1386,7 @@ def _drop_door_lines_at_doorless_stops(
     route: Route,
     *,
     vignette_beat_ids: frozenset[str] = frozenset(),
+    transit_beat_ids: frozenset[str] = frozenset(),
 ) -> list[Sentence]:
     """Remove through-the-door units at stops whose visit stays OUTSIDE.
 
@@ -1391,7 +1412,7 @@ def _drop_door_lines_at_doorless_stops(
     out: list[Sentence] = []
     for sentence in sentences:
         if sentence.stop_idx not in doorless or is_walk_concurrent(
-            sentence, vignette_beat_ids
+            sentence, vignette_beat_ids, transit_beat_ids
         ):
             out.append(sentence)
             continue
@@ -1618,6 +1639,8 @@ __all__ = [
     "GLUE_STAGING",
     "SYNTHESIZED_OPENER",
     "generate",
+    "is_walk_concurrent",
     "split_sentences",
     "spoken_minute_counts",
+    "transit_class_beat_ids",
 ]

@@ -65,7 +65,12 @@ from .certification_provider import (
 )
 from .compose_gate import ComposeVerificationError
 from .contract import BeatSequence, POIBeats, ReplanContext, Route, Script, Sentence, TourInput
-from .generation import CONCURRENT_GLUE_LABELS, generate, split_sentences
+from .generation import (
+    CONCURRENT_GLUE_LABELS,
+    generate,
+    split_sentences,
+    transit_class_beat_ids,
+)
 from .glue_client import NO_GLUE_SENTINEL, GlueClient
 from .premium_authorities import PREMIUM_AUTHORITIES, PremiumAuthorityHashes
 from .routing import MAX_REQUESTED_FRACTION, MIN_REQUESTED_FRACTION, RoutePlanningPolicy
@@ -1179,9 +1184,15 @@ def finalize_premium_tour(
     vignette_beat_ids = frozenset(
         beat.id for beats in plan.sequence.vignette_beats.values() for beat in beats
     )
+    # The walk's own corpus narration (P9R-S1): a transit-class beat's sentences
+    # freeze as leg playback, so the phone plays them while walking.
+    transit_beat_ids = transit_class_beat_ids(
+        beat for pb in plan.sequence.poi_beats for beat in pb.beats
+    )
     source_assignments = derive_playback_assignments(
         plan.source,
         vignette_beat_ids=vignette_beat_ids,
+        transit_beat_ids=transit_beat_ids,
     )
     # The composer legitimately emits a transition sentence the frozen stitch did not
     # contain. Placement for a RECOGNISED source_id is a pure function of that id, so
@@ -1192,7 +1203,7 @@ def finalize_premium_tour(
         source_script=plan.source,
         source_assignments=source_assignments,
         provider_script=composition.script,
-        derivable_leg_source_ids=CONCURRENT_GLUE_LABELS | vignette_beat_ids,
+        derivable_leg_source_ids=CONCURRENT_GLUE_LABELS | vignette_beat_ids | transit_beat_ids,
     )
     build = BuildFingerprint(
         commit_sha=identity.commit_sha,

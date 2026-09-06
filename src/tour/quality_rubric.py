@@ -32,6 +32,7 @@ from src.tour.generation import (
     _END_B_SENTINEL_PREFIX,
     SPOKEN_WPM,
     is_walk_concurrent,
+    transit_class_beat_ids,
 )
 from src.tour.narration_quality import score_narration
 from src.tour.routing import haversine_m, total_walk_seconds
@@ -339,6 +340,9 @@ def _concurrent_audio_seconds(script: Script, beat_sequence: BeatSequence | None
     * vignette beat sentences — walk-past one-liners voiced inside the leg
       (``generation._vignette_one_liners``), identified via
       ``beat_sequence.vignette_beats``.
+    * transit-class beat sentences — the walk's own corpus narration
+      (``generation._build_transit``), identified via
+      ``transit_class_beat_ids`` over the seated beats (P9R-S1).
 
     Everything else — anchor beat sentences, the cold open, staging, closing — is
     spoken at a stop with the tourist standing still, and stays in the time budget.
@@ -348,12 +352,18 @@ def _concurrent_audio_seconds(script: Script, beat_sequence: BeatSequence | None
     stricter, never wrongly pass a tour).
     """
     vignette_ids: set[str] = set()
+    transit_ids: frozenset[str] = frozenset()
     if beat_sequence is not None:
         vignette_ids = {
             b.id for beats in beat_sequence.vignette_beats.values() for b in beats
         }
+        transit_ids = transit_class_beat_ids(
+            beat for plan in beat_sequence.poi_beats for beat in plan.beats
+        )
     words = sum(
-        _words(s.text) for s in script.script if is_walk_concurrent(s, vignette_ids)
+        _words(s.text)
+        for s in script.script
+        if is_walk_concurrent(s, vignette_ids, transit_ids)
     )
     return round(words / SPOKEN_WPM * 60)
 

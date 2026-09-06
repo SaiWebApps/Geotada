@@ -504,10 +504,19 @@ def partition_final_script(
 
 
 def derive_playback_assignments(
-    script: Script, *, vignette_beat_ids: Iterable[str]
+    script: Script,
+    *,
+    vignette_beat_ids: Iterable[str],
+    transit_beat_ids: Iterable[str] = (),
 ) -> tuple[PlaybackAssignment, ...]:
-    """Emit and freeze today's explicit playback policy at generation time."""
+    """Emit and freeze today's explicit playback policy at generation time.
+
+    ``transit_beat_ids`` (P9R-S1): the corpus transit beats ``_build_transit``
+    voices FOR the leg — their sentences freeze as leg playback, so the phone
+    plays the walk's own narration while walking, never standing at the stop.
+    """
     frozen_vignette_ids = frozenset(vignette_beat_ids)
+    frozen_transit_ids = frozenset(transit_beat_ids)
     seated_beat_ids = {beat_id for poi in script.selected_pois for beat_id in poi.beat_ids}
     assignments: list[PlaybackAssignment] = []
     for sentence_index, sentence in enumerate(script.script):
@@ -518,7 +527,9 @@ def derive_playback_assignments(
         # to re-spell its glue-label set inline, so the freeze and the audio
         # clock could drift apart (dedup-review finding, 2026-08-07).
         placement: Placement = (
-            "leg" if is_walk_concurrent(sentence, frozen_vignette_ids) else "stop"
+            "leg"
+            if is_walk_concurrent(sentence, frozen_vignette_ids, frozen_transit_ids)
+            else "stop"
         )
         assignments.append(
             PlaybackAssignment(

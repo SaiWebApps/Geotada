@@ -40,7 +40,9 @@ from src.tour.generation import (
     _synth_first_leg_text,
     _template_nav,
     generate,
+    is_walk_concurrent,
     split_sentences,
+    transit_class_beat_ids,
 )
 from src.tour.glue_client import NO_GLUE_SENTINEL, MockGlueClient
 from src.tour.options import build_route_option
@@ -2145,6 +2147,33 @@ def test_a_verified_origin_still_vouches_two_ways():
     )
     assert _find_directional_transit_beat(stop_addr, prev_name="Rue de Rivoli") is by_addr
     assert _find_directional_transit_beat(stop_clause, prev_name="Rue de Rivoli") is by_clause
+
+
+def test_the_walks_own_narration_is_walk_concurrent():
+    """P9R-S1.M2 — a corpus transit beat is picked FOR the leg (`_build_transit`)
+    but its sentences used to classify as stationary: `is_walk_concurrent` knew
+    only glue labels and vignette ids, so the playback freeze booked the walk's
+    own narration onto the STOP, and the placement floor then refused the day
+    for a motion imperative that is true while walking. The transit ids are the
+    third input to THE one rule; omitted, the conservative stationary default
+    stands. UNDO: drop the `transit_beat_ids` membership check -> RED."""
+    line = Sentence(
+        text="Walk up the boulevard and the tower rises ahead.",
+        source_id="t-1",
+        source_type="beat",
+        stop_idx=1,
+    )
+    assert not is_walk_concurrent(line), "omitted ids stay the conservative default"
+    assert is_walk_concurrent(line, frozenset(), frozenset({"t-1"}))
+    assert not is_walk_concurrent(line, frozenset(), frozenset({"other"}))
+
+
+def test_transit_class_beat_ids_reads_the_one_function_set():
+    """The helper every caller derives the leg's beat ids with reads
+    TRANSIT_NARRATIVE_FUNCTIONS — one definition, no drift."""
+    walk = _beat("t-w", "p", body="Walk on.", nf="transition")
+    story = _beat("s-1", "p", body="A story.", nf="establishing")
+    assert transit_class_beat_ids([walk, story]) == frozenset({"t-w"})
 
 
 def test_an_itinerary_phrase_is_refused_at_the_pick_like_a_compass_point():

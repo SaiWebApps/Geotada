@@ -47,7 +47,7 @@ from .contract import (
     Sentence,
     ValidationReport,
 )
-from .generation import GLUE_REFLECTION, _nav_walk_minutes, _sum_audio
+from .generation import GLUE_REFLECTION, _nav_walk_minutes, _sum_audio, transit_class_beat_ids
 from .reflection import reflection_slots
 from .routing import leg_walk_seconds
 from .validation import placement_floor_hits, validate_script, validate_source_traceability
@@ -1166,6 +1166,9 @@ def finalize_certification_composition(
     vignette_beat_ids = frozenset(
         beat.id for beats in beat_sequence.vignette_beats.values() for beat in beats
     )
+    # The walk's own corpus narration (P9R-S1): transit-class beats play ON the
+    # leg, so the floor judges them by the leg's rules, not the stop's.
+    transit_beat_ids = transit_class_beat_ids(beats_by_id.values())
     leg_minutes_by_stop = {
         index: minutes
         for index, transit in enumerate(route.transits)
@@ -1192,6 +1195,7 @@ def finalize_certification_composition(
                     leg_minutes_by_stop=leg_minutes_by_stop,
                     goes_inside_by_stop=goes_inside_by_stop,
                     tap_only_stops=tap_only_stops,
+                    transit_beat_ids=transit_beat_ids,
                 )
             )
         if not scan_glue_for_invention:
