@@ -929,7 +929,7 @@
     "latitude": 48.846222,
     "longitude": 2.337051,
     "trigger_radius": 390,
-    "poi_role": "stop",
+    "poi_role": "setting",
     "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
     "city_name": "paris",
     "typical_duration_min": 40,
@@ -947,7 +947,20 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A public garden with open gates and free entry; visitors walk straight through with no ticket or screening."
+    "queue_basis": "A public garden with open gates and free entry; visitors walk straight through with no ticket or screening.",
+    "anchors": [
+      {
+        "label": "The orchard and apiary",
+        "sub_locations": [
+          "orchard-apiary"
+        ],
+        "lat": 48.844,
+        "lng": 2.3337,
+        "radius_m": 40.0,
+        "indoor": false,
+        "basis": "The pear-and-apple orchard fills the garden's southwest corner where the beat itself places it, adjacent to the rue Auguste-Comte; a person stands among the rows there, three hundred and fifty metres from the garden pin."
+      }
+    ]
   },
   {
     "name": "Sainte-Chapelle",
@@ -2380,6 +2393,18 @@
         "radius_m": 60.0,
         "indoor": false,
         "basis": "The triangular square opens off the bridge's mid-river terrace behind the Henri IV statue; a person steps off the bridge and stands inside the triangle to look at the brick-and-stone houses the corpus tells. Half the footprint reaches from the statue's steps into the square."
+      },
+      {
+        "label": "The Henri IV statue",
+        "sub_locations": [
+          "henry-iv-statue",
+          "square-du-vert-galant"
+        ],
+        "lat": 48.85712,
+        "lng": 2.34085,
+        "radius_m": 60.0,
+        "indoor": false,
+        "basis": "The bronze horseman stands on the terre-plein at the bridge's middle, directly above the steps down to the square du Vert-Galant — one standing position for both named spots, and a person looks at the statue from the platform around it."
       }
     ]
   },
@@ -2711,7 +2736,7 @@
     "importance_tier": 5,
     "latitude": 48.8636,
     "longitude": 2.3274,
-    "trigger_radius": 300,
+    "trigger_radius": 430,
     "poi_role": "setting",
     "_poi_role_reasoning": "Tier 5, large footprint area (trigger_radius=100m or area keywords in name/description)",
     "city_name": "paris",
@@ -2773,7 +2798,31 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A public royal garden entered through open gateways from the street with no ticket or screening, so visitors walk straight in."
+    "queue_basis": "A public royal garden entered through open gateways from the street with no ticket or screening, so visitors walk straight in.",
+    "anchors": [
+      {
+        "label": "The central pool",
+        "sub_locations": [
+          "central-pool"
+        ],
+        "lat": 48.86431,
+        "lng": 2.32348,
+        "radius_m": 30.0,
+        "indoor": false,
+        "basis": "The garden's round basin — the corpus's own Grand Bassin Rond record pins it — is where a person stands at the pool the Supreme Being ceremony departed from, nearly three hundred metres from the garden pin."
+      },
+      {
+        "label": "The Jardin du Carrousel",
+        "sub_locations": [
+          "jardin-du-carrousel"
+        ],
+        "lat": 48.862,
+        "lng": 2.3325,
+        "radius_m": 45.0,
+        "indoor": false,
+        "basis": "The Carrousel garden fills the eastern end between the Arc du Carrousel and the Tuileries proper; a person stands on its lawns under the arch's sightline, four hundred metres east of the mid-garden pin."
+      }
+    ]
   },
   {
     "name": "Conciergerie",
@@ -3587,13 +3636,14 @@
         "sub_locations": [
           "monument-aux-morts",
           "bartholome-tomb",
-          "david-heart-tomb"
+          "david-heart-tomb",
+          "gericault-tomb"
         ],
         "lat": 48.86075,
         "lng": 2.3895,
         "radius_m": 40.0,
         "indoor": false,
-        "basis": "Bartholome's memorial fills the hillside where the Avenue Principale meets the grand steps; a person stands back on the avenue to take the carved procession in. The corpus places Bartholome's own tomb nearby and David's heart on the second set of steps, so forty metres round the monument covers all three as one standing position."
+        "basis": "Bartholome's memorial fills the hillside where the Avenue Principale meets the grand steps; a person stands back on the avenue to take the carved procession in. The corpus places Bartholome's own tomb nearby and David's heart on the second set of steps, so forty metres round the monument covers all three as one standing position; Géricault's tomb in division 12 adjoins the same carrefour — the walk reads Bartholomé, the Monument and Géricault standing in one place."
       },
       {
         "label": "Cino del Duca's Pieta",
@@ -20019,7 +20069,7 @@
     "importance_tier": 4,
     "latitude": 48.879339,
     "longitude": 2.304005,
-    "trigger_radius": 150,
+    "trigger_radius": 380,
     "poi_role": "setting",
     "_poi_role_reasoning": "Trigger_radius 150m and the description (\"public park,\" follies scattered across it) plus beats like \"Enter the park,\" \"Continue along the alley,\" and \"Wandering through Monceau\" describe walking-through-an-area narration, not a single stop.",
     "typical_duration_min": 30,
@@ -20037,7 +20087,20 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A free public park entered through open railing gates without a ticket or check; there is no line to enter."
+    "queue_basis": "A free public park entered through open railing gates without a ticket or check; there is no line to enter.",
+    "anchors": [
+      {
+        "label": "The Courcelles rotunda",
+        "sub_locations": [
+          "courcelles-entrance"
+        ],
+        "lat": 48.87995,
+        "lng": 2.30905,
+        "radius_m": 30.0,
+        "indoor": false,
+        "basis": "The Rotonde de Chartres gate on boulevard de Courcelles is the park's north entrance the beat seats its bench inside; a person stands at the wrought-iron and gold gates — the corpus's Musée Cernuschi record on the east edge calibrates the park's span from the west-side pin."
+      }
+    ]
   },
   {
     "name": "Place du Tertre",
@@ -26426,7 +26489,20 @@
     "queue_minutes_peak": 0,
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
-    "queue_basis": "A large open public park entered freely through gates with no ticket or screening, so no queue forms."
+    "queue_basis": "A large open public park entered freely through gates with no ticket or screening, so no queue forms.",
+    "anchors": [
+      {
+        "label": "The horse-market halles",
+        "sub_locations": [
+          "book-market"
+        ],
+        "lat": 48.83225,
+        "lng": 2.3004,
+        "radius_m": 25.0,
+        "indoor": false,
+        "basis": "The old horse market's pavilions stand just inside the rue des Morillons entrance at the park's north edge; the weekend book dealers set their tables under them, and a person stands beneath the iron roofs to look along the rows."
+      }
+    ]
   },
   {
     "name": "La Ruche",

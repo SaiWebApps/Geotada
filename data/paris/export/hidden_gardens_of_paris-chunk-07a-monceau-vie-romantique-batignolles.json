@@ -5,7 +5,7 @@
     "latitude": 48.879339,
     "longitude": 2.304005,
     "importance_tier": 4,
-    "trigger_radius": 150,
+    "trigger_radius": 380,
     "typical_duration_min": 30,
     "kid_friendly": "yes",
     "name_variations": [
@@ -400,7 +400,19 @@
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
     "queue_basis": "A free public park entered through open railing gates without a ticket or check; there is no line to enter.",
-    "anchors": null
+    "anchors": [
+      {
+        "label": "The Courcelles rotunda",
+        "sub_locations": [
+          "courcelles-entrance"
+        ],
+        "lat": 48.87995,
+        "lng": 2.30905,
+        "radius_m": 30.0,
+        "indoor": false,
+        "basis": "The Rotonde de Chartres gate on boulevard de Courcelles is the park's north entrance the beat seats its bench inside; a person stands at the wrought-iron and gold gates — the corpus's Musée Cernuschi record on the east edge calibrates the park's span from the west-side pin."
+      }
+    ]
   },
   {
     "name": "Musée Jacquemart-André",

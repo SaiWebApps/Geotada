@@ -515,16 +515,29 @@ def test_every_prefix_is_decent_and_wrap_up_ends_with_a_close(served):
     assert stops_checked, "no stop was checked for its close (§5.3 measured nothing)"
 
 
-def _anchored_poi_ids(driver) -> set[str]:
-    """The graph ids of every place carrying reviewed anchors — read from the graph the
-    day was planned from, so the pin follows the data rather than a hardcoded list."""
+def _anchor_subs_and_beat_subs(driver) -> tuple[dict[str, set[str]], dict[str, str]]:
+    """Per anchored place, the sub-locations its reviewed anchors name; and per beat
+    id, the beat's own sub_location — read from the graph the day was planned from,
+    so the pin follows the data rather than a hardcoded list."""
+    import json as _json
+
+    anchored: dict[str, set[str]] = {}
+    sub_by_beat: dict[str, str] = {}
     with driver.session() as session:
-        return {
-            record["id"]
-            for record in session.run(
-                "MATCH (p:POI {city_name: 'paris'}) WHERE p.anchors IS NOT NULL RETURN p.id AS id"
-            )
-        }
+        for record in session.run(
+            "MATCH (p:POI {city_name: 'paris'}) WHERE p.anchors IS NOT NULL "
+            "RETURN p.id AS id, p.anchors AS anchors"
+        ):
+            subs: set[str] = set()
+            for anchor in _json.loads(record["anchors"]):
+                subs.update(anchor.get("sub_locations") or [])
+            anchored[record["id"]] = subs
+        for record in session.run(
+            "MATCH (b:NarrativeBeat) WHERE b.sub_location IS NOT NULL "
+            "RETURN b.id AS id, b.sub_location AS sub"
+        ):
+            sub_by_beat[record["id"]] = record["sub"]
+    return anchored, sub_by_beat
 
 
 @needs_neo4j
@@ -557,7 +570,7 @@ def test_no_leg_line_outlives_its_pair_and_every_reviewed_anchor_gets_its_chapte
     UNDO: blank `leg_from_poi_id` in the adapter -> nothing carries provenance -> RED.
     Take the anchors back off the graph -> a reviewed place emits no chapters -> RED.
     """
-    anchored_ids = _anchored_poi_ids(live_neo4j)
+    anchored_subs, sub_by_beat = _anchor_subs_and_beat_subs(live_neo4j)
     legs_checked = 0
     anchored_checked = 0
     versions_checked = 0
@@ -585,14 +598,32 @@ def test_no_leg_line_outlives_its_pair_and_every_reviewed_anchor_gets_its_chapte
                         "— it names an end nobody is coming from"
                     )
 
+    # THE CHAPTER OBLIGATION FOLLOWS THE VOICED NAMED SPOT. A day whose lens
+    # voices only sub-less beats at an anchored place owes no chapter (Camille's
+    # architecture day at the pool-anchored Tuileries names no spot); a day that
+    # VOICES a named spot must tell it standing there — an unclaimed voiced sub
+    # is the S1 disease (Sofia's galleries), and the ratchet holds: anchoring a
+    # place obliges its voiced named spots, every one.
     for name, trace in served.items():
         for stop in (trace.session or {}).get("stops", []):
-            if stop["poi_id"] in anchored_ids:
-                anchored_checked += 1
-                assert stop.get("segments"), (
-                    f"{name}: {stop['poi_name']} carries reviewed anchors but emitted no "
-                    "chapter — its named spots are being told from the footprint's edge"
-                )
+            named = anchored_subs.get(stop["poi_id"])
+            if named is None:
+                continue
+            voiced_subs = {sub_by_beat.get(bid) for bid in stop.get("beat_ids", [])}
+            voiced_subs.discard(None)
+            if not voiced_subs:
+                continue
+            anchored_checked += 1
+            unclaimed = voiced_subs - named
+            assert not unclaimed, (
+                f"{name}: {stop['poi_name']} voices named spot(s) {sorted(unclaimed)} "
+                "no reviewed anchor claims — they are being told from the "
+                "footprint's edge"
+            )
+            assert stop.get("segments"), (
+                f"{name}: {stop['poi_name']} voices anchored spots but emitted no "
+                "chapter — its named spots are being told from the footprint's edge"
+            )
 
     assert versions_checked, "no served day to check"
     assert legs_checked, (

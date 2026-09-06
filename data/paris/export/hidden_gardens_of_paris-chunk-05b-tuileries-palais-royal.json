@@ -5,7 +5,7 @@
     "latitude": 48.8636,
     "longitude": 2.3274,
     "importance_tier": 5,
-    "trigger_radius": 300,
+    "trigger_radius": 430,
     "typical_duration_min": 40,
     "kid_friendly": "yes",
     "name_variations": [
@@ -701,7 +701,30 @@
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
     "queue_basis": "A public royal garden entered through open gateways from the street with no ticket or screening, so visitors walk straight in.",
-    "anchors": null
+    "anchors": [
+      {
+        "label": "The central pool",
+        "sub_locations": [
+          "central-pool"
+        ],
+        "lat": 48.86431,
+        "lng": 2.32348,
+        "radius_m": 30.0,
+        "indoor": false,
+        "basis": "The garden's round basin — the corpus's own Grand Bassin Rond record pins it — is where a person stands at the pool the Supreme Being ceremony departed from, nearly three hundred metres from the garden pin."
+      },
+      {
+        "label": "The Jardin du Carrousel",
+        "sub_locations": [
+          "jardin-du-carrousel"
+        ],
+        "lat": 48.862,
+        "lng": 2.3325,
+        "radius_m": 45.0,
+        "indoor": false,
+        "basis": "The Carrousel garden fills the eastern end between the Arc du Carrousel and the Tuileries proper; a person stands on its lawns under the arch's sightline, four hundred metres east of the mid-garden pin."
+      }
+    ]
   },
   {
     "name": "Palais-Royal",

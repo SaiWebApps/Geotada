@@ -1207,7 +1207,19 @@
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
     "queue_basis": "A large open public park entered freely through gates with no ticket or screening, so no queue forms.",
-    "anchors": null
+    "anchors": [
+      {
+        "label": "The horse-market halles",
+        "sub_locations": [
+          "book-market"
+        ],
+        "lat": 48.83225,
+        "lng": 2.3004,
+        "radius_m": 25.0,
+        "indoor": false,
+        "basis": "The old horse market's pavilions stand just inside the rue des Morillons entrance at the park's north edge; the weekend book dealers set their tables under them, and a person stands beneath the iron roofs to look along the rows."
+      }
+    ]
   },
   {
     "name": "La Ruche",

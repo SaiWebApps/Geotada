@@ -496,6 +496,18 @@
         "radius_m": 60.0,
         "indoor": false,
         "basis": "The triangular square opens off the bridge's mid-river terrace behind the Henri IV statue; a person steps off the bridge and stands inside the triangle to look at the brick-and-stone houses the corpus tells. Half the footprint reaches from the statue's steps into the square."
+      },
+      {
+        "label": "The Henri IV statue",
+        "sub_locations": [
+          "henry-iv-statue",
+          "square-du-vert-galant"
+        ],
+        "lat": 48.85712,
+        "lng": 2.34085,
+        "radius_m": 60.0,
+        "indoor": false,
+        "basis": "The bronze horseman stands on the terre-plein at the bridge's middle, directly above the steps down to the square du Vert-Galant — one standing position for both named spots, and a person looks at the statue from the platform around it."
       }
     ]
   }

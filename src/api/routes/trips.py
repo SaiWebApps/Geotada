@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import functools
 import hashlib
+import itertools
 import json
 import logging
 import re
@@ -2063,6 +2064,85 @@ def _revoice_replanned_legs(driver: Driver, item_ids: list[str]) -> None:
                 )
 
 
+
+
+def _prefer_keeping_over_a_longer_leg(
+    route,
+    tail: TourInput,
+    snapshot,
+    *,
+    routing_client,
+    policy,
+    ctx: ReplanContext,
+    base_stops,
+    remaining_ids: tuple[str, ...],
+):
+    """§4.5.3 on the live path: a replan that DROPS a stop may not mint a walking
+    leg longer than the day it replans already carried.
+
+    Detection first, spend second: only when the replanned route both dropped a
+    stop still ahead AND carries a leg past the base day's own longest (plus one
+    displayed minute of rounding) does this retry the ONE planner call with the
+    base ceiling as `longest_leg_ceiling_seconds` — and it serves whichever
+    answer has the SHORTER longest leg (ties to the fuller day), so the retry
+    can only improve the walk. The always-on form of this parameter was tried
+    and reverted (the ceiling refused the middle stops and the remainder fused
+    longer than anything it rejected); breach-triggered with a
+    take-the-better-day comparison is the bounded version of the carried rule:
+    prefer KEEPING a stop over minting a longer leg.
+    """
+    kept_ids = {p.id for p in route.pois}
+    dropped = set(remaining_ids) - kept_ids
+    if not dropped:
+        return route  # nothing dropped; the rule has nothing to re-check
+    if len(base_stops) < 2:
+        return route
+
+    def longest_leg(points) -> int:
+        legs = [
+            routing_client.leg_seconds(a[0], a[1], b[0], b[1])
+            for a, b in itertools.pairwise(points)
+        ]
+        return max(legs) if legs else 0
+
+    base_max = longest_leg([(st.lat, st.lng) for st in base_stops])
+    replanned_max = longest_leg(
+        [tail.start, *((p.lat, p.lng) for p in route.pois)]
+    )
+    if base_max <= 0 or replanned_max <= base_max + 60:
+        return route
+    # The lever is PROTECTION, not the ceiling: the ceiling bounds what may be
+    # inserted and cannot bound the walk that is left when nothing is (the
+    # reverted always-on form proved it). A protected stop force-seats, so the
+    # retry holds the dropped stops as promises; a finish that then moves is
+    # the disclosed trade (R2.4/R2.5), a fused walk past the day's own longest
+    # is the forbidden one (§4.5.3).
+    keeping_ctx = ctx.model_copy(
+        update={
+            "protected_poi_ids": tuple(
+                dict.fromkeys([*ctx.protected_poi_ids, *sorted(dropped)])
+            ),
+            "longest_leg_ceiling_seconds": base_max + 60,
+        }
+    )
+    try:
+        retried = select_route(
+            tail,
+            snapshot,
+            routing_client=routing_client,
+            planning_policy=policy,
+            replan=keeping_ctx,
+        )
+    except (CertificationPlanningInfeasibleError, TourabilityRefusedError):
+        return route  # holding the stops refused outright; the dropped day stands
+    retried_max = longest_leg([tail.start, *((p.lat, p.lng) for p in retried.pois)])
+    if retried_max < replanned_max or (
+        retried_max == replanned_max and len(retried.pois) > len(route.pois)
+    ):
+        return retried
+    return route
+
+
 @router.post("/trips/{trip_id}/session/replan", response_model=SessionPlan)
 @_reports_degradations
 def replan_trip_session(
@@ -2129,17 +2209,13 @@ def replan_trip_session(
         protected_poi_ids=protected,
         keep_to_poi_ids=remaining_ids,
         visited_poi_ids=tuple(st.poi_id for st in visited),
-        # §4.5.3's CEILING IS DELIBERATELY NOT PASSED HERE, and that is a measured
-        # decision, not an omission (Phase 8 S8.5, 2026-08-24). Handing the base
-        # day's longest leg to this replan as `longest_leg_ceiling_seconds` was
-        # tried and REVERTED: on Camille's day it made things worse, measured with
-        # one variable moved — the planner refused the middle stops because their
-        # insertion legs breached the 17-minute ceiling, and handed back the Arc
-        # straight to Notre-Dame as a single THIRTY-NINE minute walk, longer than
-        # anything it had just rejected. The ceiling bounds what may be inserted;
-        # it cannot bound the walk that is left when nothing is. Honouring §4.5.3
-        # on this path needs the planner to prefer KEEPING a stop over minting a
-        # longer leg — planner work, carried to W8.6, not a parameter.
+        # §4.5.3's CEILING IS NOT PASSED ON THE FIRST CALL. The always-on form
+        # was tried and reverted (the ceiling refused the middle stops and the
+        # remainder fused LONGER than anything it rejected — the Arc straight to
+        # Notre-Dame at thirty-nine minutes). The rule lives in
+        # `_prefer_keeping_over_a_longer_leg` instead: breach-triggered, one
+        # bounded retry WITH the ceiling, and the better day (the shorter
+        # longest leg) is the one served.
         floor_zero=True,
         listening_rate=body.listening_rate or 1.0,
     )
@@ -2151,6 +2227,16 @@ def replan_trip_session(
             )
         except (CertificationPlanningInfeasibleError, TourabilityRefusedError) as exc:
             raise HTTPException(422, _refusal_detail(exc)) from exc
+        route = _prefer_keeping_over_a_longer_leg(
+            route,
+            tail,
+            snapshot,
+            routing_client=routing_client,
+            policy=policy,
+            ctx=ctx,
+            base_stops=current.stops,
+            remaining_ids=remaining_ids,
+        )
         record_routing_degradations(route, component="trips.replan_trip_session")
 
     by_poi = {st.poi_id: st for st in current.stops}

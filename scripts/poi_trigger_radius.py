@@ -72,12 +72,13 @@ REVIEWED: dict[str, tuple[int, str]] = {
     # visit GOES INSIDE must have a footprint that covers its BUILDING, or leaving the
     # circle happens indoors and the next leg piece can start under the roof (Marcus).
     "Jardin des Tuileries": (
-        300,
+        430,
         "The garden runs about 900 m gate to gate and the pin sits mid-garden: at the "
         "old 100 the Concorde gate stood 325 m outside the circle, so entering there "
-        "played nothing for a five-minute walk (W7.13, Camille). 300 reaches the "
-        "central alleys and both terraces — the Luxembourg's 390 is the precedent "
-        "scale for a royal garden; the gates themselves are the carried polygon row.",
+        "played nothing for a five-minute walk (W7.13, Camille). 430 reaches both "
+        "terraces AND the Jardin du Carrousel at the east end — the spot the corpus "
+        "voices, 415 m from the pin, whose reviewed anchor says 'right here' there; "
+        "the gates themselves are the carried polygon row.",
     ),
     "La Samaritaine": (
         60,
@@ -121,6 +122,13 @@ REVIEWED: dict[str, tuple[int, str]] = {
         "the palace forecourt — so the far Beaujolais gallery is 295 m out. 300 covers "
         "the whole walk-in complex (the Tuileries precedent); the reviewed anchors, not "
         "the footprint edge, are what say 'right here' inside it.",
+    ),
+    "Parc Monceau": (
+        380,
+        "The park spans from the west-side pin to the Musée Cernuschi's east-edge gate "
+        "(the corpus's own record calibrates it, ~630 m); 380 reaches the Courcelles "
+        "rotunda on the north edge, where a person stands at the gate the corpus seats "
+        "a bench inside — the reviewed anchor, not the footprint edge, says 'right here'.",
     ),
     "Place de la Concorde": (
         120,

@@ -844,7 +844,19 @@
     "queue_minutes_offpeak": 0,
     "queue_peak_hours": [],
     "queue_basis": "A public garden with open gates and free entry; visitors walk straight through with no ticket or screening.",
-    "anchors": null
+    "anchors": [
+      {
+        "label": "The orchard and apiary",
+        "sub_locations": [
+          "orchard-apiary"
+        ],
+        "lat": 48.844,
+        "lng": 2.3337,
+        "radius_m": 40.0,
+        "indoor": false,
+        "basis": "The pear-and-apple orchard fills the garden's southwest corner where the beat itself places it, adjacent to the rue Auguste-Comte; a person stands among the rows there, three hundred and fifty metres from the garden pin."
+      }
+    ]
   },
   {
     "name": "Musée du Luxembourg",

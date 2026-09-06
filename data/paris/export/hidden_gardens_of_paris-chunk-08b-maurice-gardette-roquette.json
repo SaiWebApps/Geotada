@@ -1058,13 +1058,14 @@
         "sub_locations": [
           "monument-aux-morts",
           "bartholome-tomb",
-          "david-heart-tomb"
+          "david-heart-tomb",
+          "gericault-tomb"
         ],
         "lat": 48.86075,
         "lng": 2.3895,
         "radius_m": 40.0,
         "indoor": false,
-        "basis": "Bartholome's memorial fills the hillside where the Avenue Principale meets the grand steps; a person stands back on the avenue to take the carved procession in. The corpus places Bartholome's own tomb nearby and David's heart on the second set of steps, so forty metres round the monument covers all three as one standing position."
+        "basis": "Bartholome's memorial fills the hillside where the Avenue Principale meets the grand steps; a person stands back on the avenue to take the carved procession in. The corpus places Bartholome's own tomb nearby and David's heart on the second set of steps, so forty metres round the monument covers all three as one standing position; Géricault's tomb in division 12 adjoins the same carrefour — the walk reads Bartholomé, the Monument and Géricault standing in one place."
       },
       {
         "label": "Cino del Duca's Pieta",
