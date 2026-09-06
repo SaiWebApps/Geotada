@@ -1964,14 +1964,40 @@ def select_route(
             score_penalty=score_penalty,
             planning_policy=planning_policy,
         )
-    route = _select_route_once(
-        input,
-        snapshot,
-        routing_client=routing_client,
-        score_penalty=score_penalty,
-        planning_policy=planning_policy,
-        replan=replan,
-    )
+    try:
+        route = _select_route_once(
+            input,
+            snapshot,
+            routing_client=routing_client,
+            score_penalty=score_penalty,
+            planning_policy=planning_policy,
+            replan=replan,
+        )
+    except (CertificationPlanningInfeasibleError, TourabilityRefusedError):
+        if not input.lenses:
+            raise
+        # THE SUBJECT VALVE (Phase 9 S3): the gate above must never turn a day
+        # a thin area used to serve into a refusal — the landmark-disclosure
+        # rule's own scenario, a lensed start where everything reachable misses.
+        # One retry with the gate lifted, and the day SAYS SO through the same
+        # channel every quiet degradation travels.
+        record(
+            kind="subject_gate_relaxed",
+            human=(
+                "This area is thin for the subjects you chose, so some stops "
+                "sit outside them rather than serving no day at all."
+            ),
+            component="selection.select_route",
+        )
+        route = _select_route_once(
+            input,
+            snapshot,
+            routing_client=routing_client,
+            score_penalty=score_penalty,
+            planning_policy=planning_policy,
+            replan=replan,
+            lens_gate=False,
+        )
     cap = input.max_leg_minutes
     # (§4.5.3's base-day ceiling binds INSIDE the pass — every admission, drop and
     # fold reads it as `max_leg_seconds` — but the street certification below is the
@@ -2215,6 +2241,7 @@ def _select_route_once(
     score_penalty: dict[str, float] | None = None,
     planning_policy: RoutePlanningPolicy = DEFAULT_ROUTE_PLANNING_POLICY,
     replan: ReplanContext | None = None,
+    lens_gate: bool = True,
 ) -> Route:
     """Compute the spine, score POIs, run greedy selection. Returns a Route.
 
@@ -2728,6 +2755,24 @@ def _select_route_once(
             # day (Greta, W5.2 R1.2); and a keep-to list confines the answer to
             # a subset of the planned day — no new building, no new narration
             # (Fiona & Dev, Nadia, Julien, Paulo, Greta — R1.2/R1.4).
+            continue
+        if (
+            lens_gate
+            and interest
+            and poi.id not in input.pinned_poi_ids
+            and (replan is None or poi.id not in replan.protected_poi_ids)
+            and _lens_relation(poi, interest, snapshot) == "miss"
+        ):
+            # THE SUBJECT GATE (Phase 9 S3): on a lensed request, a story
+            # candidate with NOTHING in the asked family — the same
+            # direct/one-hop/miss the spotlight classifies by — leaves the
+            # dwell pool, so a place that can answer swaps in. An off-subject
+            # stop is dropped or replaced, never served mislabelled; fewer
+            # honest stops beat a padded day. A PIN outranks the gate (the
+            # person's own hand on the day), a replan's protected promises do
+            # too, and `select_route`'s valve lifts the gate — saying so —
+            # rather than refuse a day a thin area used to serve. Walking past
+            # stays fine: vignettes are untouched.
             continue
         if poi.place_category and poi.place_category in input.category_minus:
             # "LESS OF THIS TODAY" (Phase 4 dial, W4.2 — Greta's "not what I did

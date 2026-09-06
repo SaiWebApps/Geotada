@@ -3850,3 +3850,103 @@ def test_a_parent_lens_counts_for_its_children_at_the_beat_matcher():
     # No request, no bias: the heavier beat keeps today's order.
     unbiased = build_poi_beat_plans(route, snap, lenses=None)
     assert unbiased[0].beats[0].id == "b-views"
+
+
+# ---------------------------------------------------------------------------
+# S3.M2 — a lensed day never seats a lens-miss story stop; the valve discloses.
+# ---------------------------------------------------------------------------
+
+
+def _lens_poi(pid: str, lat: float, lng: float, *, tier: int = 5) -> POI:
+    return _poi(pid, tier=tier, lat=lat, lng=lng, beat_count=0)
+
+
+def _lens_beat(bid: str, pid: str, lens: str) -> BeatRef:
+    return BeatRef(
+        id=bid, poi_id=pid, lenses=(lens,), narrative_function="deepen",
+        word_count=40, est_spoken_seconds=90, active_status="active", script_body="x",
+    )
+
+
+def _lens_snap(miss_ids: set[str], pois: list[POI]) -> CorpusSnapshot:
+    return _snap(
+        pois,
+        beats_by_poi={
+            p.id: [
+                _lens_beat(f"{p.id}-b{i}", p.id,
+                           "waterways_views" if p.id in miss_ids else "dark_history")
+                for i in range(5)
+            ]
+            for p in pois
+        },
+        lens_neighbors={"dark_history": frozenset({"history"})},
+    )
+
+
+def test_a_lensed_day_never_seats_a_lens_miss_story_stop():
+    """The measured fault: Camille's architecture day seated the Orangerie, whose
+    only beats answer a subject she never asked for. On a lensed request, a story
+    candidate with NOTHING in the asked family (the same direct/one-hop/miss the
+    POI spotlight classifies by) leaves the dwell pool, and the planner replaces
+    it — fewer honest stops beat a padded day. No request: untouched."""
+    lat, lng = 48.8555, 2.3656
+    pois = [
+        _lens_poi(f"hit{i}", lat + 0.0005 + 0.0005 * i, lng) for i in range(1, 9)
+    ] + [_lens_poi("miss1", lat + 0.0005, lng)]  # nearest and tier 5: seated today
+    snap = _lens_snap({"miss1"}, pois)
+    lensed = select_route(
+        TourInput(start=(lat, lng), duration_min=30, city_slug="paris",
+                  lenses=["dark_history"], round_trip=False),
+        snap,
+    )
+    assert "miss1" not in {p.id for p in lensed.pois}, (
+        f"the miss was seated on a lensed day: {[p.id for p in lensed.pois]}"
+    )
+    open_day = select_route(
+        TourInput(start=(lat, lng), duration_min=30, city_slug="paris", round_trip=False),
+        snap,
+    )
+    assert "miss1" in {p.id for p in open_day.pois}, (
+        "premise: without a lens the miss is attractive enough to seat"
+    )
+
+
+def test_a_pinned_place_outranks_the_subject_gate():
+    """Theo pins the thing he came for; a pin is the person's own hand on the day
+    and no subject gate second-guesses it."""
+    lat, lng = 48.8555, 2.3656
+    pois = [
+        _lens_poi(f"hit{i}", lat + 0.0005 + 0.0005 * i, lng) for i in range(1, 9)
+    ] + [_lens_poi("pinned-miss", lat + 0.0005, lng)]
+    snap = _lens_snap({"pinned-miss"}, pois)
+    route = select_route(
+        TourInput(start=(lat, lng), duration_min=30, city_slug="paris",
+                  lenses=["dark_history"], round_trip=False,
+                  pinned_poi_ids=("pinned-miss",)),
+        snap,
+    )
+    assert "pinned-miss" in {p.id for p in route.pois}
+
+
+def test_the_valve_serves_the_day_and_says_so_when_everything_misses():
+    """The Sorbonne rule, kept: a thin area where EVERY reachable place misses the
+    subject must not become a refusal where it served before. The gate lifts, the
+    day is built from what the city has, and the degradations channel says so —
+    the disclosure ethos every other pool exclusion follows."""
+    from src.tour.degradations import degradation_scope
+
+    lat, lng = 48.8555, 2.3656
+    pois = [
+        _lens_poi(f"m{i}", lat + 0.001 * i, lng) for i in range(1, 7)
+    ] + [_lens_poi("m0", lat + 0.0005, lng)]
+    snap = _lens_snap({f"m{i}" for i in range(0, 7)}, pois)
+    with degradation_scope() as rows:
+        route = select_route(
+            TourInput(start=(lat, lng), duration_min=30, city_slug="paris",
+                      lenses=["dark_history"], round_trip=False),
+            snap,
+        )
+    assert route.pois, "the day is served, never refused, when the area is thin"
+    assert any(r.kind == "subject_gate_relaxed" for r in rows), (
+        f"the valve must say so: {[r.kind for r in rows]}"
+    )
