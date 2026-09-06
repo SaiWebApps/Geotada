@@ -1216,6 +1216,9 @@ void main() {
       expect(service.audioCatchUpDue, isFalse);
     });
 
+    // UNDO: remove the words-match guard (update.legNarration !=
+    // stop.legNarration) from adoptSessionAudio -> the foreign file is adopted
+    // -> RED. (A return-0 mutation cannot discriminate this negative test.)
     test('adoption refuses a file whose words are not the held words', () async {
       final stops = [
         _makeStop(sortOrder: 1, beatId: 'b1', lat: base, lng: 2.35, audioUrl: url,
