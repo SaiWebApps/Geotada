@@ -225,6 +225,14 @@ Present, in one screen:
 chat. If they ask for changes, amend the plan and the tracker rows and
 re-present.
 
+**What "go" approves is the GOAL, not a milestone list.** Approval is spent
+once, at this boundary, and it covers every milestone in the plan AND every
+finding-derived story that traces to the goal line, for the life of the run.
+Name the run's BUDGET here too — wall-clock, spend, or cycle count — because
+the budget is one of the loop's two exits (Phase 6). Emergent work that
+cannot trace to the goal is an escalation, never quietly adopted and never
+quietly parked.
+
 # Phase 5 — execute, one milestone at a time (after "go")
 
 Record the approval first — you are transcribing their decision, never making
@@ -263,13 +271,17 @@ carries the removal AND every reference to the removed thing — its manifest,
 sweep, trap checks and receipt. No dead code, no hanging fragments, no
 string-anchored traps left for the next reader to step on.
 
-**If reality diverges from the plan — stop.** A wrong signature, a test that
-was supposed to be red but is green, a function that doesn't behave as the
-plan traced: that is a *planning* failure, and improvising a fix on the spot
-is how half-baked implementations happen. Say plainly what the plan got
-wrong, re-walk the affected path (Phase 2 rules), amend the plan and tracker
-for the remaining milestones, and show the human the diff in the plan before
-continuing. A divergence hidden is worse than a divergence found.
+**If reality diverges from the plan — stop the line, not the run.** A wrong
+signature, a test that was supposed to be red but is green, a function that
+doesn't behave as the plan traced: that is a *planning* failure, and
+improvising a fix on the spot is how half-baked implementations happen. Say
+plainly what the plan got wrong, re-walk the affected path (Phase 2 rules),
+amend the plan and tracker for the remaining milestones, and post the
+amendment as a sprint note — the written trail replaces a pause. An
+amendment that changes PRODUCT behaviour or an EXISTING test's assertions
+must cite the binding decision that arbitrates it; no citation, no
+proceeding — that is an escalation (the pause budget below). A divergence
+hidden is worse than a divergence found.
 
 **Gate commands run bare.** A gate command — `make lint`, a pytest run,
 `make audit`, any command whose exit code decides a claim — runs as the SOLE
@@ -280,28 +292,61 @@ code for that bare call is the only admissible evidence the gate passed; an
 Every `git commit` is immediately preceded by a bare `make lint` call of its
 own — a commit whose lint ran inside a chain is unproven.
 
-Run the full bar (`make audit`) once, after the last milestone — not between
-steps.
+Run the full bar (`make audit`) once per CYCLE — a story plus the findings
+it consumed — after its last milestone, not between steps.
 
-# Phase 6 — the end-to-end demo
+# Phase 6 — verdicts, and the cycle boundary
 
-Run the whole feature the way the human would use it — the real tour, the
-real screen, the real workbench page — and show them. Not "tests pass": *it
-works*, visibly. For tier 2+ work, also run
-`Agent(subagent_type:'acceptance')` on the produced artifact — told which
-personas the goal serves, so it judges as those people and not as a generic
-critic — and
-`Agent(subagent_type:'qa')` for the undo test on the new tests, and paste
-their verdicts. The human, not you, decides it's done.
+This phase is a boundary the run crosses, not an exit. Run the whole feature
+the way the human would use it — the real tour, the real screen, the real
+workbench page. Not "tests pass": *it works*, visibly. For tier 2+ work,
+run `Agent(subagent_type:'acceptance')` on the produced artifact — told
+which personas the goal serves, so it judges as those people and not as a
+generic critic — and `Agent(subagent_type:'qa')` for the undo test on the
+new tests, SEQUENTIALLY, and post their verdicts as sprint notes.
 
-**Every actionable acceptance or QA finding is dispositioned before the story
-closes** — a tracker row on this story (built now), a tracker row on the
-feature or a named story (owner-scheduled), or a written won't-fix with its
-reason — never a UI chip, never prose alone. The tracker is the one record
-the verdicts feed; a finding parked anywhere else is a deferral wearing a
-costume.
+**Findings are fuel.** Every actionable acceptance or QA finding is promoted
+to a tracker row — never a UI chip, never prose alone — walked at Phase 2
+rigor, adversarially plan-reviewed, and BUILT: the run re-enters Phase 5
+with the findings ordered by user impact. "Owner-scheduled" exists only for
+a finding that conflicts with a binding decision or exceeds the goal line —
+and that is an escalation to the human, never a drawer. A finding parked
+anywhere else is a deferral wearing a costume.
+
+**The run has exactly two exits.** (1) A PANEL — 2–3 adversarial agents on
+different models (skeptic / tour-adversary / acceptance) — unanimously
+judges the goal's personas served; one agent's SHIP is not the bar. (2) The
+budget named at "go" exhausts first. The exit report states which one
+fired, and when it was the budget, the honest gap — what the personas still
+experience that the goal's sentence forbids.
 
 ---
+
+## The pause budget, and the per-cycle floor
+
+Exactly three things interrupt the run and reach the human in chat:
+
+1. **A binding-decision conflict** — presented as a crisp either/or with a
+   recommendation.
+2. **Real money above the named threshold** — paid compose or TTS beyond the
+   test tiers.
+3. **An irreversible or destructive operation.**
+
+Everything else — divergences, re-walks, amendments, verdicts — is tracker
+notes and dashboard state. Chat carries escalations and the exit report;
+the dashboard is the narrative.
+
+Every cycle clears the same quality floor, because fewer pauses is never
+fewer checks:
+
+- **Adversarial plan review before building** — the reviewer attacks the
+  predicted artifacts, not the milestone names, and its objections are
+  resolved in the plan before the first test is written.
+- Red-first tests, the QA undo pass, and SEQUENTIAL verdict agents.
+- The full bar once per cycle.
+- **A skeptic pass over the previous cycle's claims after every context
+  compaction, and every third cycle regardless** — whichever comes first; a
+  refuted claim reopens its row.
 
 ## Shared assets — the manifest is the meeting
 
@@ -335,9 +380,14 @@ read-only.
 - **No guesses survive Phase 3.** Unknowns are resolved by running things
   now, never deferred.
 - **The plan never changes silently.** After "go", any divergence stops the
-  line and is shown to the human as a plan amendment.
-- **You never bless your own plan.** The human approves in chat; `track
-  approve` records, it never decides.
+  line, is re-walked, and lands as a written plan amendment with a sprint
+  note; product-behaviour and existing-test amendments cite the binding
+  decision that arbitrates them or escalate.
+- **You never bless your own plan.** The human approves the goal in chat
+  (`track approve` records, it never decides); every cycle's plan then faces
+  an adversarial review that is not you.
+- **The run ends at the persona bar or the budget — never at the bottom of
+  a milestone list.** Findings are consumed, not filed.
 - **A gate's evidence is its own exit code.** Gate commands run as the sole
   command of their invocation; a green claim cites that bare call's exit,
   never decorated output.
