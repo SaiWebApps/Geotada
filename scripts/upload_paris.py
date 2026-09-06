@@ -434,6 +434,47 @@ def _backfill_anchors(session, pois: list[dict], city_name: str) -> dict[str, in
     return {"updated": result.single()["updated"], "candidates": len(params)}
 
 
+def _backfill_beat_texts(session, beats: list[dict]) -> dict[str, int]:
+    """Re-sync ONLY the beats whose words changed (match by beat_id), and clear
+    exactly their audio.
+
+    A beat whose graph text differs from the repo's is a beat whose recorded
+    audio says the OLD words — serving that file under the new text is the
+    stale-line class S1 exists to kill — so ``audio_url`` is cleared for the
+    changed beats alone and the voicing pass re-voices them. Every other beat
+    keeps its paid audio byte-untouched. The full upload path re-syncs the
+    whole corpus; a text fix must never go through it — the
+    ``--provenance-only`` / ``--anchors-only`` precedent, applied to words.
+    """
+    params = []
+    for beat in beats:
+        beat_id = beat.get("beat_id", "")
+        script_body = beat.get("script_body", "")
+        if not beat_id or not script_body or _beat_blocked(beat):
+            continue
+        word_count = len(script_body.split())
+        params.append({
+            "beat_id": beat_id,
+            "script_body": script_body,
+            "duration_sec": beat.get("duration_sec") or max(30, int(word_count / 2.5)),
+            "est_spoken_seconds": beat.get("est_spoken_seconds"),
+        })
+    result = session.run(
+        """
+        UNWIND $beats AS b
+        MATCH (beat:NarrativeBeat {beat_id: b.beat_id})
+        WHERE beat.script_body <> b.script_body
+        SET beat.script_body        = b.script_body,
+            beat.duration_sec       = b.duration_sec,
+            beat.est_spoken_seconds = b.est_spoken_seconds,
+            beat.audio_url          = ''
+        RETURN count(beat) AS updated
+        """,
+        beats=params,
+    )
+    return {"updated": result.single()["updated"], "candidates": len(params)}
+
+
 def _upload_beats(session, beats: list[dict], city_name: str) -> dict[str, int]:
     """Upload NarrativeBeat nodes and link to POIs + Lenses via batched UNWIND.
 
@@ -603,10 +644,13 @@ def main() -> None:
     db_label = "local" if host in _LOCAL_HOSTS else f"cloud ({db or host})"
     provenance_only = "--provenance-only" in sys.argv
     anchors_only = "--anchors-only" in sys.argv
+    beats_only = "--beats-only" in sys.argv
     if provenance_only:
         mode = "PROVENANCE BACKFILL"
     elif anchors_only:
         mode = "ANCHOR BACKFILL"
+    elif beats_only:
+        mode = "BEAT TEXT BACKFILL"
     else:
         mode = f"{city_slug.upper()} DATA UPLOAD"
     print(f"\n{'='*60}")
@@ -634,6 +678,22 @@ def main() -> None:
     print("  [0/5] Validating beats (validate_beats gate)...")
     _assert_beats_valid(beats_file)
     print("         OK")
+
+    if beats_only:
+        # Text fixes onto a live graph: only the changed beats, only their audio
+        # cleared. Runs AFTER the validate gate — changed words are still words.
+        beats = _load_json(beats_file)
+        driver = create_driver()
+        try:
+            with driver.session(database=db) as session:
+                stats = _backfill_beat_texts(session, beats)
+            print(
+                f"  {stats['updated']} beat(s) re-synced (of {stats['candidates']} "
+                f"uploadable); their audio is cleared for re-voicing"
+            )
+        finally:
+            driver.close()
+        return
 
     if provenance_only:
         # Step 4.0 backfill: ONLY the three provenance fields, matched by

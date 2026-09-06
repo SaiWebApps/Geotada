@@ -131,6 +131,7 @@ check_db = @echo " $(LOCAL_DBS) " | grep -q " $(DB) " || \
 	render-auth-setup render-auth-status config-status \
 	sync sync-apple requirements lint format flutter-analyze \
 	test audit test-file test-live test-workbench golden-probe golden-diff \
+	backfill-beats \
 	score-saved-tours score-gold-text score-human-tours \
 	tour-batch-plan tour-batch-live tour-batch-review-plan tour-batch-review-live \
 	db-up db-down db-status db-reset db-parity \
@@ -674,6 +675,10 @@ backfill-provenance: ## Backfill beat provenance on the local dev graph.
 backfill-anchors: ## Backfill reviewed POI anchors onto the local dev graph. ARGS="<city>".
 	@$(PREFLIGHT) --label backfill-anchors uv python-deps db-dev
 	@$(LOCAL_EXEC) uv run python -m scripts.upload_paris --anchors-only $(ARGS)
+
+backfill-beats: ## Re-sync changed beat texts onto the local dev graph (clears their audio). ARGS="<city>".
+	@$(PREFLIGHT) --label backfill-beats uv python-deps db-dev
+	@$(LOCAL_EXEC) uv run python -m scripts.upload_paris --beats-only $(ARGS)
 
 backfill-poi-role: ## Apply reviewed POI roles. ARGS="--apply --neo4j" writes locally.
 	@$(PREFLIGHT) --label backfill-poi-role $(PRE_PY) db-dev

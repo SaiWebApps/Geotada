@@ -26254,7 +26254,7 @@
     "beat_id": "dbsync_7b8194fc",
     "poi_name": "Rue de la Verrerie",
     "lens": "hidden_history",
-    "script_body": "In the 14th century, the painter Jacquemin Gringonneur lived on this street and was commissioned to paint playing cards for the amusement of Charles VI, the mad king. Legend has it that the King of Hearts was modelled on Charles VI himself — a fitting tribute to a monarch whose bouts of insanity plunged France into chaos.",
+    "script_body": "In the 14th century, the painter Jacquemin Gringonneur lived on the Rue de la Verrerie and was commissioned to paint playing cards for the amusement of Charles VI, the mad king. Legend has it that the King of Hearts was modelled on Charles VI himself — a fitting tribute to a monarch whose bouts of insanity plunged France into chaos.",
     "physical_cues": [],
     "key_claims": [],
     "confidence": "HIGH",
@@ -26296,7 +26296,7 @@
       "enriched_at": "2026-04-12T04:38:53Z",
       "version": "v1"
     },
-    "script_body_hash": "b1b515761425cadcdc0f0cd44271c5f12d07037189d1a05d901b0884547170fc",
+    "script_body_hash": "27b3203a4ffe864af37b40063a78271d725e6e9f05f2cb2021b63080fba2b31b",
     "city_name": "paris",
     "book_slug": "legacy_unknown",
     "topic_slug": "legacy_unknown",
@@ -44738,7 +44738,7 @@
     "sub_location": null,
     "trigger_address": null,
     "beat_length_class": "seasoning",
-    "script_body": "A fire caused the bells to fall through the tower floors, leaving it hollow inside. Revolutionaries made use of this by dropping pellets of molten lead from the top of the tower into a vat of water below, in order to make bullets. The scientist Pascal also carried out barometric experiments here in 1648, and he invented the first calculator in history — which can be seen at the Musée des Arts et Métiers where the walk ends.",
+    "script_body": "A fire caused the bells to fall through the tower floors, leaving it hollow inside. Revolutionaries made use of this by dropping pellets of molten lead from the top of the tower into a vat of water below, in order to make bullets. The scientist Pascal also carried out barometric experiments here in 1648, and he invented the first calculator in history — which can be seen today at the Musée des Arts et Métiers.",
     "duration_sec": 34,
     "kid_friendly": "yes",
     "entities": [
@@ -44777,7 +44777,7 @@
       "generated_at": "2026-04-25T00:00:00Z",
       "city_name": "paris"
     },
-    "script_body_hash": "f4ed909bd7518326a047e203fdef5055c3069da4f3704260d9e1e2a57a1a2793",
+    "script_body_hash": "8f82b99851470c49907a1700ba83dc49c1250d2c061631a81306b768942ca4a4",
     "_fixup_notes": [
       "subject_tag: kebab-hyphenated tail (was 4 words)",
       "beat_length_class: re-classed from 'mid' to 'seasoning' (word_count=78)"
