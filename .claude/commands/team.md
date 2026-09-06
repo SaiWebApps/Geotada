@@ -271,6 +271,15 @@ wrong, re-walk the affected path (Phase 2 rules), amend the plan and tracker
 for the remaining milestones, and show the human the diff in the plan before
 continuing. A divergence hidden is worse than a divergence found.
 
+**Gate commands run bare.** A gate command — `make lint`, a pytest run,
+`make audit`, any command whose exit code decides a claim — runs as the SOLE
+command of its Bash invocation: never piped through `tail`/`grep`, never
+chained with `&&` or `;`, never followed by anything. The tool's own exit
+code for that bare call is the only admissible evidence the gate passed; an
+`exit=$?` echoed after a pipeline reports the pipe's tail, not the gate.
+Every `git commit` is immediately preceded by a bare `make lint` call of its
+own — a commit whose lint ran inside a chain is unproven.
+
 Run the full bar (`make audit`) once, after the last milestone — not between
 steps.
 
@@ -294,6 +303,26 @@ costume.
 
 ---
 
+## Shared assets — the manifest is the meeting
+
+Sub-agents cannot talk to each other mid-flight; the sprint-leader is the
+only meeting point, and the meeting's minutes are written BEFORE the spawn.
+The run directory carries `assets.md` beside `plan.md`: one row per asset a
+spawned agent may touch — path, owner, allowed operations, release state.
+No agent is spawned before its rows exist, and every agent prompt quotes its
+rows verbatim and states: write only these paths; everything else is
+read-only.
+
+- **One writer at a time.** Concurrent access to a shared mutable asset is
+  forbidden. Two parties needing the same asset run sequentially; the
+  manifest row names the order and the handoff state. QA and acceptance
+  never run concurrently for the same reason — even their *findings* are a
+  shared asset.
+- **Agents never delete.** Every spawned-agent prompt carries: "Delete
+  nothing, anywhere — including files you believe are scratch. Report
+  deletion candidates in your findings instead." Deletion is executed only
+  by the main session, through `/cleanup` when it is a real removal.
+
 ## Rules
 
 - **The walk is yours.** Locating code may be delegated; reading it may not.
@@ -309,6 +338,11 @@ costume.
   line and is shown to the human as a plan amendment.
 - **You never bless your own plan.** The human approves in chat; `track
   approve` records, it never decides.
+- **A gate's evidence is its own exit code.** Gate commands run as the sole
+  command of their invocation; a green claim cites that bare call's exit,
+  never decorated output.
+- **Assets are claimed in writing before any spawn.** `assets.md` rows
+  precede every agent; one writer at a time; agents never delete.
 - Genuine product trade-offs are escalated as a crisp either/or with a
   recommendation — never guessed silently, never buried.
 - Open-ended discovery ("find and fix whatever's wrong") is the wrong task

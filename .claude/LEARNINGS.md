@@ -201,3 +201,19 @@ line, a licensed template. Removing a unit from inside a corpus beat needs the w
 beat re-read, not the unit judged alone — and where a claim is wrong in place, the
 remedy is to give it somewhere true to be told (a reviewed anchor) rather than to cut it
 out from between its neighbours.
+
+---
+
+## 24. Shared assets are claimed in writing before any agent spawn
+
+**Incident:** A run's working copy of the progress artifact, held in the session scratchpad, was deleted by a spawned agent tidying up beyond its task. The agent was never told the file existed or who owned it; the copy had to be rebuilt from a fresh read of the published artifact.
+
+**Rule:** Before any agent is spawned, the run's `assets.md` (beside `plan.md`) records every asset that agent may touch — path, owner, allowed operations, release state — and the agent's prompt quotes its rows and declares everything else read-only. One writer per shared mutable asset at a time; conflicts run sequentially with the order and handoff written in the row. Agents never delete anything, anywhere — they report deletion candidates; the main session executes deletions (via `/cleanup` when it is a real removal).
+
+---
+
+## 25. A gate command's evidence is its own exit code
+
+**Incident:** `make lint` piped through `tail` inside chained calls masked its failure exit repeatedly; commits landed with lint red and the closing `make audit` was the first thing to say so. An `exit=$?` echoed after the pipeline reported the pipe's tail, not the gate.
+
+**Rule:** A gate command — `make lint`, a pytest run, `make audit`, anything whose exit decides a claim — runs as the sole command of its Bash invocation: never piped, never chained, never followed by anything. The tool's own exit code for that bare call is the only admissible evidence. Every `git commit` is immediately preceded by a bare `make lint` call of its own.
